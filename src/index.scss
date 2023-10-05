@@ -1,0 +1,76 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer components {
+  .container {
+    @apply px-2 mx-auto;
+  }
+
+  .h-screen {
+    height: 100vh;
+    height: 100svh;
+  }
+  .min-h-screen {
+    min-height: 100vh;
+    min-height: 100svh;
+  }
+  .max-h-screen {
+    max-height: 100vh;
+    max-height: 100svh;
+  }
+
+  .h-navbar {
+    @apply h-[var(--navbar-height,4rem)];
+  }
+
+  .mt-navbar {
+    @apply mt-[var(--navbar-height,4rem)];
+  }
+  .pt-navbar {
+    @apply pt-[var(--navbar-height,4rem)];
+  }
+}
+
+html {
+  @apply [--navbar-height:4rem];
+  @apply scroll-smooth;
+  @apply scroll-pt-[var(--navbar-height,4rem)];
+}
+
+html {
+  @apply bg-blue-600;
+}
+
+main {
+  @apply grid grid-flow-row mt-navbar;
+}
+
+footer {
+  @apply z-10;
+}
+
+.navbar {
+  @apply px-0 h-navbar;
+}
+.navbar-start,
+.navbar-end {
+  @apply flex-1 w-auto;
+}
+// .navbar-menu {
+//   @apply absolute inset-0 invisible w-full h-screen -translate-y-full pt-navbar bg-base-200/90 backdrop-blur-sm z-[-1];
+
+//   &__content {
+//     @apply container grid w-full h-full overflow-y-auto place-content-stretch;
+//   }
+// }
+
+.menu-icons {
+  a {
+    @apply p-2;
+  }
+}
+
+.input {
+  @apply text-sm;
+}

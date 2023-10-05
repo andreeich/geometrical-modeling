@@ -1,0 +1,15 @@
+{
+  "short_name": "Website Template",
+  "name": "@andreeich website template",
+  "icons": [
+    {
+      "src": "favicon.svg",
+      "type": "image/svg",
+      "sizes": "40x40"
+    }
+  ],
+  "start_url": ".",
+  "display": "standalone",
+  "theme_color": "#ffffff",
+  "background_color": "#ffffff"
+}
