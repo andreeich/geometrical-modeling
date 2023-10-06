@@ -22,73 +22,252 @@ function Scene() {
 
     // creating an object
     const figure = new THREE.Group();
-    // back shape
-    const backShape = new THREE.Shape();
-    backShape.moveTo(7, 3);
-    backShape.lineTo(6, 5);
-    backShape.lineTo(-6, 5);
-    backShape.lineTo(-7, 3);
-    backShape.lineTo(-7, -3);
-    backShape.lineTo(-6, -5);
-    backShape.lineTo(-3, -5);
-    backShape.moveTo(0, -5);
-    backShape.ellipse(0, 0, 3, 3, Math.PI, 0, false, 0);
-    backShape.lineTo(6, -5);
-    backShape.lineTo(7, -3);
-
-    const backMesh = new THREE.Mesh(
-      new THREE.ShapeGeometry(backShape),
-      new THREE.MeshBasicMaterial({
-        color: 0x00ff,
-        // wireframe: true,
-        linewidth: 10,
-      })
-    );
-
-    figure.add(backMesh);
-
+    // creating a material
+    const lineMaterial = new THREE.LineBasicMaterial({
+      color: 0x0000ff,
+      linewidth: 2,
+    });
+    // adding elements to the figure
     // bone shape
-    const boneShape = new THREE.Shape();
-    boneShape.moveTo(4 - Math.sqrt(3), 2);
-    boneShape.lineTo(-4, 2);
-    boneShape.moveTo(-4, 1);
-    boneShape.ellipse(0, 0, 2, 2, 0, -Math.PI, false, 0);
-    boneShape.lineTo(-4, 0);
-    boneShape.lineTo(-6, -1);
-    boneShape.moveTo(-4, -1);
-    boneShape.ellipse(0, 0, 2, 2, Math.PI, (-30 * Math.PI) / 180, false, 0);
-    boneShape.lineTo(4 - Math.sqrt(3), 0 - 2);
-    boneShape.moveTo(4, -1);
-    boneShape.ellipse(0, 0, 2, 2, (210 * Math.PI) / 180, 0, false, 0);
-    boneShape.lineTo(4, 0);
-    boneShape.lineTo(6, 1);
-    boneShape.moveTo(4, 1);
-    boneShape.ellipse(0, 0, 2, 2, 0, (210 * Math.PI) / 180, false, 0);
-
-    const boneMesh = new THREE.Mesh(
-      new THREE.ShapeGeometry(boneShape),
-      new THREE.MeshBasicMaterial({
-        color: 0x00ff00,
-        // wireframe: true,
-      })
+    figure.add(
+      new THREE.Line(
+        new THREE.BufferGeometry().setFromPoints([
+          new THREE.Vector2(-2, 2),
+          new THREE.Vector2(2, 2),
+        ]),
+        lineMaterial
+      )
     );
-
-    figure.add(boneMesh);
-
+    figure.add(
+      new THREE.Line(
+        new THREE.BufferGeometry().setFromPoints(
+          new THREE.EllipseCurve(
+            -2 - Math.sqrt(3), // ax
+            1, // aY
+            2, // xRadius
+            2, // yRadius
+            (30 * Math.PI) / 180, // aStartAngle
+            Math.PI, // aEndAngle
+            false, // aClockwise
+            0 // aRotation
+          ).getPoints(50)
+        ),
+        lineMaterial
+      )
+    );
+    figure.add(
+      new THREE.Line(
+        new THREE.BufferGeometry().setFromPoints([
+          new THREE.Vector2(-4 - Math.sqrt(3), 1),
+          new THREE.Vector2(-2 - Math.sqrt(3), 0),
+        ]),
+        lineMaterial
+      )
+    );
+    figure.add(
+      new THREE.Line(
+        new THREE.BufferGeometry().setFromPoints([
+          new THREE.Vector2(-2 - Math.sqrt(3), 0),
+          new THREE.Vector2(-4 - Math.sqrt(3), -1),
+        ]),
+        lineMaterial
+      )
+    );
+    figure.add(
+      new THREE.Line(
+        new THREE.BufferGeometry().setFromPoints(
+          new THREE.EllipseCurve(
+            -2 - Math.sqrt(3), // ax
+            -1, // aY
+            2, // xRadius
+            2, // yRadius
+            Math.PI, // aStartAngle
+            (-30 * Math.PI) / 180, // aEndAngle
+            false, // aClockwise
+            0 // aRotation
+          ).getPoints(50)
+        ),
+        lineMaterial
+      )
+    );
+    figure.add(
+      new THREE.Line(
+        new THREE.BufferGeometry().setFromPoints([
+          new THREE.Vector2(-2, -2),
+          new THREE.Vector2(2, -2),
+        ]),
+        lineMaterial
+      )
+    );
+    figure.add(
+      new THREE.Line(
+        new THREE.BufferGeometry().setFromPoints(
+          new THREE.EllipseCurve(
+            2 + Math.sqrt(3), // ax
+            -1, // aY
+            2, // xRadius
+            2, // yRadius
+            (210 * Math.PI) / 180, // aStartAngle
+            0, // aEndAngle
+            false, // aClockwise
+            0 // aRotation
+          ).getPoints(50)
+        ),
+        lineMaterial
+      )
+    );
+    figure.add(
+      new THREE.Line(
+        new THREE.BufferGeometry().setFromPoints([
+          new THREE.Vector2(4 + Math.sqrt(3), -1),
+          new THREE.Vector2(2 + Math.sqrt(3), 0),
+        ]),
+        lineMaterial
+      )
+    );
+    figure.add(
+      new THREE.Line(
+        new THREE.BufferGeometry().setFromPoints([
+          new THREE.Vector2(2 + Math.sqrt(3), 0),
+          new THREE.Vector2(4 + Math.sqrt(3), 1),
+        ]),
+        lineMaterial
+      )
+    );
+    figure.add(
+      new THREE.Line(
+        new THREE.BufferGeometry().setFromPoints(
+          new THREE.EllipseCurve(
+            2 + Math.sqrt(3), // ax
+            1, // aY
+            2, // xRadius
+            2, // yRadius
+            0, // aStartAngle
+            (150 * Math.PI) / 180, // aEndAngle
+            false, // aClockwise
+            0 // aRotation
+          ).getPoints(50)
+        ),
+        lineMaterial
+      )
+    );
     // circle shape
-    const circleShape = new THREE.Shape();
-    circleShape.moveTo(0, -5);
-    circleShape.ellipse(0, 0, 2, 2, 0, Math.PI * 2, false, 0);
-
-    const circleMesh = new THREE.Mesh(
-      new THREE.ShapeGeometry(circleShape),
-      new THREE.MeshBasicMaterial({
-        color: 0x00ff00,
-        // wireframe: true,
-      })
+    figure.add(
+      new THREE.Line(
+        new THREE.BufferGeometry().setFromPoints(
+          new THREE.EllipseCurve(
+            0, // ax
+            -5, // aY
+            2, // xRadius
+            2, // yRadius
+            0, // aStartAngle
+            2 * Math.PI, // aEndAngle
+            false, // aClockwise
+            0 // aRotation
+          ).getPoints(50)
+        ),
+        lineMaterial
+      )
     );
-
-    figure.add(circleMesh);
+    // back shape
+    figure.add(
+      new THREE.Line(
+        new THREE.BufferGeometry().setFromPoints([
+          new THREE.Vector2(-4 - Math.sqrt(3), 5),
+          new THREE.Vector2(-5 - Math.sqrt(3), 3),
+        ]),
+        lineMaterial
+      )
+    );
+    figure.add(
+      new THREE.Line(
+        new THREE.BufferGeometry().setFromPoints([
+          new THREE.Vector2(-5 - Math.sqrt(3), 3),
+          new THREE.Vector2(-5 - Math.sqrt(3), -3),
+        ]),
+        lineMaterial
+      )
+    );
+    figure.add(
+      new THREE.Line(
+        new THREE.BufferGeometry().setFromPoints([
+          new THREE.Vector2(-5 - Math.sqrt(3), -3),
+          new THREE.Vector2(-4 - Math.sqrt(3), -5),
+        ]),
+        lineMaterial
+      )
+    );
+    figure.add(
+      new THREE.Line(
+        new THREE.BufferGeometry().setFromPoints([
+          new THREE.Vector2(-4 - Math.sqrt(3), -5),
+          new THREE.Vector2(-3, -5),
+        ]),
+        lineMaterial
+      )
+    );
+    figure.add(
+      new THREE.Line(
+        new THREE.BufferGeometry().setFromPoints(
+          new THREE.EllipseCurve(
+            0, // ax
+            -5, // aY
+            3, // xRadius
+            3, // yRadius
+            Math.PI, // aStartAngle
+            2 * Math.PI, // aEndAngle
+            false, // aClockwise
+            0 // aRotation
+          ).getPoints(50)
+        ),
+        lineMaterial
+      )
+    );
+    figure.add(
+      new THREE.Line(
+        new THREE.BufferGeometry().setFromPoints([
+          new THREE.Vector2(3, -5),
+          new THREE.Vector2(4 + Math.sqrt(3), -5),
+        ]),
+        lineMaterial
+      )
+    );
+    figure.add(
+      new THREE.Line(
+        new THREE.BufferGeometry().setFromPoints([
+          new THREE.Vector2(4 + Math.sqrt(3), -5),
+          new THREE.Vector2(5 + Math.sqrt(3), -3),
+        ]),
+        lineMaterial
+      )
+    );
+    figure.add(
+      new THREE.Line(
+        new THREE.BufferGeometry().setFromPoints([
+          new THREE.Vector2(5 + Math.sqrt(3), -3),
+          new THREE.Vector2(5 + Math.sqrt(3), 3),
+        ]),
+        lineMaterial
+      )
+    );
+    figure.add(
+      new THREE.Line(
+        new THREE.BufferGeometry().setFromPoints([
+          new THREE.Vector2(5 + Math.sqrt(3), 3),
+          new THREE.Vector2(4 + Math.sqrt(3), 5),
+        ]),
+        lineMaterial
+      )
+    );
+    figure.add(
+      new THREE.Line(
+        new THREE.BufferGeometry().setFromPoints([
+          new THREE.Vector2(4 + Math.sqrt(3), 5),
+          new THREE.Vector2(-4 - Math.sqrt(3), 5),
+        ]),
+        lineMaterial
+      )
+    );
 
     // adding figure to the scene
     scene.add(figure);
