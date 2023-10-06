@@ -1,13 +1,14 @@
-import Form from "./Form";
-import ThreejsScene from "./Scene";
+import Scene from "./Scene";
+import SceneControl from "./SceneControl";
 
 function Main() {
   return (
     <main className="grid grid-flow-row mt-navbar">
       <section>
         <div className="container">
-          <div className="flex flex-col items-center">
-            <ThreejsScene />
+          <div className="grid items-center justify-center grid-cols-1 md:grid-cols-2">
+            <Scene />
+            <SceneControl />
           </div>
         </div>
       </section>
