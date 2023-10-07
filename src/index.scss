@@ -43,7 +43,7 @@ html {
 }
 
 main {
-  @apply grid grid-flow-row mt-navbar;
+  @apply grid grid-flow-row mb-10 mt-navbar;
 }
 
 footer {
@@ -73,4 +73,8 @@ footer {
 
 .input {
   @apply text-sm;
+}
+
+.input[type="number"] {
+  @apply w-full;
 }
