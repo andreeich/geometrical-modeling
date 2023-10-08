@@ -655,7 +655,7 @@ function Scene() {
                 ...points,
                 [key]: {
                   ...points[key],
-                  x: +e.target.value || +e.target.defaultValue,
+                  x: e.target.value || e.target.defaultValue,
                 },
               })
             }
@@ -698,7 +698,7 @@ function Scene() {
                 ...circles,
                 [key]: {
                   ...circles[key],
-                  x: +e.target.value || +e.target.defaultValue,
+                  x: e.target.value || e.target.defaultValue,
                 },
               })
             }
@@ -780,6 +780,349 @@ function Scene() {
     );
   });
 
+  // setting parameters for transformation
+  const paramsDefault = {
+    offset: {
+      x: {
+        value: 0,
+        ref: useRef(),
+      },
+      y: {
+        value: 0,
+        ref: useRef(),
+      },
+    },
+    rotation: {
+      angle: {
+        value: 0,
+        ref: useRef(),
+      },
+    },
+    vectors: {
+      x: {
+        x: {
+          value: 1,
+          ref: useRef(),
+        },
+        y: {
+          value: 0,
+          ref: useRef(),
+        },
+        // z: {
+        //   value: 0,
+        //   ref: useRef(),
+        // },
+        // o: {
+        //   value: 0,
+        //   ref: useRef(),
+        // },
+      },
+      y: {
+        x: {
+          value: 0,
+          ref: useRef(),
+        },
+        y: {
+          value: 1,
+          ref: useRef(),
+        },
+        // z: {
+        //   value: 0,
+        //   ref: useRef(),
+        // },
+        // o: {
+        //   value: 0,
+        //   ref: useRef(),
+        // },
+      },
+      // z: {
+      //   x: {
+      //     value: 0,
+      //     ref: useRef(),
+      //   },
+      //   y: {
+      //     value: 0,
+      //     ref: useRef(),
+      //   },
+      //   z: {
+      //     value: 1,
+      //     ref: useRef(),
+      //   },
+      //   o: {
+      //     value: 0,
+      //     ref: useRef(),
+      //   },
+      // },
+      o: {
+        x: {
+          value: 0,
+          ref: useRef(),
+        },
+        y: {
+          value: 0,
+          ref: useRef(),
+        },
+        // z: {
+        //   value: 0,
+        //   ref: useRef(),
+        // },
+        // o: {
+        //   value: 0,
+        //   ref: useRef(),
+        // },
+      },
+    },
+    projective: {
+      x: {
+        x: {
+          value: 1,
+          ref: useRef(),
+        },
+        y: {
+          value: 0,
+          ref: useRef(),
+        },
+        // z: {
+        //   value: 0,
+        //   ref: useRef(),
+        // },
+        // w: {
+        //   value: 0,
+        //   ref: useRef(),
+        // },
+        o: {
+          value: 0,
+          ref: useRef(),
+        },
+      },
+      y: {
+        x: {
+          value: 0,
+          ref: useRef(),
+        },
+        y: {
+          value: 1,
+          ref: useRef(),
+        },
+        // z: {
+        //   value: 0,
+        //   ref: useRef(),
+        // },
+        o: {
+          value: 0,
+          ref: useRef(),
+        },
+        // w: {
+        //   value: 0,
+        //   ref: useRef(),
+        // },
+      },
+      // z: {
+      //   x: {
+      //     value: 0,
+      //     ref: useRef(),
+      //   },
+      //   y: {
+      //     value: 0,
+      //     ref: useRef(),
+      //   },
+      //   z: {
+      //     value: 1,
+      //     ref: useRef(),
+      //   },
+        // o: {
+        //   value: 0,
+        //   ref: useRef(),
+        // },
+      // },
+      // o: {
+      //   x: {
+      //     value: 0,
+      //     ref: useRef(),
+      //   },
+      //   y: {
+      //     value: 0,
+      //     ref: useRef(),
+      //   },
+      //   // z: {
+      //   //   value: 0,
+      //   //   ref: useRef(),
+      //   // },
+      //   w: {
+      //     value: 1,
+      //     ref: useRef(),
+      //   },
+      // },
+      w: {
+        x: {
+          value: 1,
+          ref: useRef(),
+        },
+        y: {
+          value: 1,
+          ref: useRef(),
+        },
+        // z: {
+        //   value: 0,
+        //   ref: useRef(),
+        // },
+        o: {
+          value: 1,
+          ref: useRef(),
+        },
+      },
+    },
+  };
+
+  const [params, setParams] = useState(paramsDefault);
+
+  const offsetRows = Object.entries(params.offset).map(([key, value]) => {
+    return (
+      <label className="input-group input-group-xs" key={key}>
+        <span>{key.charAt(0).toUpperCase() + key.slice(1)}</span>
+        <input
+          type="number"
+          placeholder={value.value}
+          defaultValue={value.value}
+          ref={value.ref}
+          onChange={(e) =>
+            setParams({
+              ...params,
+              offset: {
+                ...params.offset,
+                [key]: {
+                  ...params.offset[key],
+                  value: e.target.value
+                    ? ~~e.target.value
+                    : ~~e.target.defaultValue,
+                },
+              },
+            })
+          }
+          className="w-full input input-xs input-bordered"
+        />
+      </label>
+    );
+  });
+  const rotationRows = Object.entries(params.rotation).map(([key, value]) => {
+    return (
+      <label className="input-group input-group-xs" key={key}>
+        <span>{key.charAt(0).toUpperCase() + key.slice(1)}</span>
+        <input
+          type="number"
+          placeholder={value.value}
+          defaultValue={value.value}
+          ref={value.ref}
+          onChange={(e) =>
+            setParams({
+              ...params,
+              rotation: {
+                ...params.rotation,
+                [key]: {
+                  ...params.rotation[key],
+                  value: e.target.value
+                    ? ~~e.target.value
+                    : ~~e.target.defaultValue,
+                },
+              },
+            })
+          }
+          className="w-full input input-xs input-bordered"
+        />
+      </label>
+    );
+  });
+  const vectorsRows = Object.entries(params.vectors).map(([key, value]) => {
+    return (
+      <div className="form-control" key={key}>
+        <label className="label">
+          <span className="label-text">
+            {key.charAt(0).toUpperCase() + key.slice(1)} Vector
+          </span>
+        </label>
+        <div className="gap-2 join">
+          {Object.entries(value).map(([k, v]) => {
+            return (
+              <label className="input-group input-group-xs" key={k}>
+                <span>{k.charAt(0).toUpperCase() + k.slice(1)}</span>
+                <input
+                  type="number"
+                  placeholder={v.value}
+                  defaultValue={v.value}
+                  ref={v.ref}
+                  onChange={(e) =>
+                    setParams({
+                      ...params,
+                      vectors: {
+                        ...params.vectors,
+                        [key]: {
+                          ...params.vectors[key],
+                          [k]: {
+                            ...params.vectors[key][k],
+                            value: e.target.value
+                              ? ~~e.target.value
+                              : ~~e.target.defaultValue,
+                          },
+                        },
+                      },
+                    })
+                  }
+                  className="w-full input input-xs input-bordered"
+                />
+              </label>
+            );
+          })}
+        </div>
+      </div>
+    );
+  });
+  const projectiveRows = Object.entries(params.projective).map(
+    ([key, value]) => {
+      return (
+        <div className="form-control" key={key}>
+          <label className="label">
+            <span className="label-text">
+              {key.charAt(0).toUpperCase() + key.slice(1)} Vector
+            </span>
+          </label>
+          <div className="gap-2 join">
+            {Object.entries(value).map(([k, v]) => {
+              return (
+                <label className="input-group input-group-xs" key={k}>
+                  <span>{key.toUpperCase() + k}</span>
+                  <input
+                    type="number"
+                    placeholder={v.value}
+                    defaultValue={v.value}
+                    ref={v.ref}
+                    onChange={(e) =>
+                      setParams({
+                        ...params,
+                        projective: {
+                          ...params.projective,
+                          [key]: {
+                            ...params.projective[key],
+                            [k]: {
+                              ...params.projective[key][k],
+                              value: e.target.value
+                                ? ~~e.target.value
+                                : ~~e.target.defaultValue,
+                            },
+                          },
+                        },
+                      })
+                    }
+                    className="w-full input input-xs input-bordered"
+                  />
+                </label>
+              );
+            })}
+          </div>
+        </div>
+      );
+    }
+  );
+
   const resetPoints = () => {
     setPoints(pointsDefault);
     for (const point of Object.values(points)) {
@@ -797,14 +1140,40 @@ function Scene() {
       circle.aERef.current.value = circle.aERef.current.defaultValue;
     }
   };
+  const resetEuTrans = () => {
+    setParams(paramsDefault);
+    for (const [key, param] of Object.entries(params)) {
+      if (key == "vectors") continue;
+      for (const setting of Object.values(param)) {
+        setting.ref.current.value = setting.ref.current.defaultValue;
+      }
+    }
+  };
+  const resetAfTrans = () => {
+    setParams(paramsDefault);
+    for (const param of Object.values(params.vectors)) {
+      for (const setting of Object.values(param)) {
+        setting.ref.current.value = setting.ref.current.defaultValue;
+      }
+    }
+  };
+  const resetPrTrans = () => {
+    setParams(paramsDefault);
+    for (const param of Object.values(params.projective)) {
+      for (const setting of Object.values(param)) {
+        setting.ref.current.value = setting.ref.current.defaultValue;
+      }
+    }
+  };
 
   useEffect(() => {
     // basic setup
     const scene = new THREE.Scene();
     scene.background = new THREE.Color(0xffffff);
 
-    const camera = new THREE.PerspectiveCamera(75, 1, 0.1, 1000);
-    camera.position.z = 12;
+    const camera = new THREE.PerspectiveCamera(75, 1, 0.1, 100000);
+    const cameraHeight = 12;
+    camera.position.z = cameraHeight;
 
     const renderer = new THREE.WebGLRenderer({ canvas: canvasRef.current });
     renderer.setSize(1000, 1000);
@@ -816,7 +1185,7 @@ function Scene() {
     // creating an object
     const figure = new THREE.Group();
     // adding grid
-    drawGrid(figure);
+    drawGrid(scene);
     // creating a material
     const lineMaterial = new THREE.LineBasicMaterial({
       color: 0x0000ff,
@@ -833,12 +1202,197 @@ function Scene() {
 
     // adding figure to the scene
     scene.add(figure);
+
+    // transformations
+    figure.position.x = params.offset.x.value;
+    figure.position.y = params.offset.y.value;
+    figure.rotation.z = params.rotation.angle.value;
+
+    const matrix = new THREE.Matrix4(
+      1,
+      0,
+      0,
+      0,
+      0,
+      1,
+      0,
+      0,
+      0,
+      0,
+      1,
+      0,
+      0,
+      0,
+      0,
+      1
+    );
+    // ! епределать o na w
+    const matrixAffine = new THREE.Matrix4(
+      params.vectors.x.x.value, // 1
+      params.vectors.y.x.value, // 0
+      0, // 0
+      params.vectors.o.x.value, // 0 d
+
+      params.vectors.x.y.value, // 0
+      params.vectors.y.y.value, // 1
+      0, // 0
+      params.vectors.o.y.value, // 0 h
+
+      0, // 0
+      0, // 0
+      1, // 1
+      0, // 0 l
+
+      0, // 0 m
+      0, // 0 n
+      0, // 0 o
+      1 // 1 p
+    );
+
+    // const matrixAffine = new THREE.Matrix4(
+    //   params.vectors.x.x.value, // 1
+    //   params.vectors.y.x.value, // 0
+    //   params.vectors.z.x.value, // 0
+    //   0, // 0 d
+
+    //   params.vectors.x.y.value, // 0
+    //   params.vectors.y.y.value, // 1
+    //   params.vectors.z.y.value, // 0
+    //   0, // 0 h
+
+    //   params.vectors.x.z.value, // 0
+    //   params.vectors.y.z.value, // 0
+    //   params.vectors.z.z.value, // 1
+    //   0, // 0 l
+
+    //   params.vectors.x.o.value, // 0 m
+    //   params.vectors.y.o.value, // 0 n
+    //   params.vectors.z.o.value, // 0 o
+    //   1 // 1 p
+    // );
+    // const matrixAffine = new THREE.Matrix4().makeBasis(
+    //   new THREE.Vector3(
+    //     params.vectors.x.x.value,
+    //     params.vectors.x.y.value,
+    //     params.vectors.x.z.value
+    //   ),
+    //   new THREE.Vector3(
+    //     params.vectors.y.x.value,
+    //     params.vectors.y.y.value,
+    //     params.vectors.y.z.value
+    //   ),
+    //   new THREE.Vector3(
+    //     params.vectors.z.x.value,
+    //     params.vectors.z.y.value,
+    //     params.vectors.z.z.value
+    //   )
+    // );
+    // Projective transformations
+    const matrixProjective = new THREE.Matrix4().setFromMatrix3(
+      new THREE.Matrix3(
+        params.projective.x.x.value * params.projective.w.x.value,  
+        params.projective.y.x.value * params.projective.w.x.value, 
+        params.projective.w.x.value,
+
+        params.projective.x.y.value * params.projective.w.y.value,   
+        params.projective.y.y.value * params.projective.w.y.value, 
+        params.projective.w.y.value,
+
+        params.projective.x.o.value * params.projective.w.o.value, 
+        params.projective.y.o.value * params.projective.w.o.value, 
+        params.projective.w.o.value,
+      )
+    );
+    // const matrixProjective = new THREE.Matrix4(
+    //   params.projective.x.x.value, // 1
+    //   params.projective.y.x.value, // 0
+    //   0, // 0
+    //   params.projective.o.x.value, // 0 d
+
+    //   params.projective.x.y.value, // 0
+    //   params.projective.y.y.value, // 1
+    //   0, // 0
+    //   params.projective.o.y.value, // 0 h
+
+    //   params.projective.y.x.value * params.projective.y.w.value, // 0
+    //   params.projective.x.y.value * params.projective.x.w.value, // 0
+    //   1, // 1
+    //   params.projective.o.w.value, // 0 l
+
+    //   params.projective.x.w.value, // 0 m
+    //   params.projective.y.w.value, // 0 n
+    //   0, // 0 o
+    //   params.projective.o.w.value // 1 p
+    // );
+    // const matrixProjective = new THREE.Matrix4(
+    //   params.projective.x.x.value, // 1
+    //   params.projective.y.x.value, // 0
+    //   0, // 0
+    //   params.projective.w.x.value, // 0 d
+
+    //   params.projective.x.y.value, // 0
+    //   params.projective.y.y.value, // 1
+    //   0, // 0
+    //   params.projective.w.y.value, // 0 h
+
+    //   params.projective.y.x.value * params.projective.w.x.value, // 0
+    //   params.projective.x.y.value * params.projective.w.y.value, // 0
+    //   1, // 1
+    //   params.projective.w.o.value, // 0 l
+
+    //   params.projective.x.o.value, // 0 m
+    //   params.projective.y.o.value, // 0 n
+    //   0, // 0 o
+    //   params.projective.w.o.value // 1 p
+    // );
+
+    const vectorX = new THREE.Vector3();
+    const vectorY = new THREE.Vector3();
+    const vectorZ = new THREE.Vector3();
+    matrixProjective.extractBasis(vectorX, vectorY, vectorZ);
+    console.log(vectorX, vectorY, vectorZ);
+    // console.log(camera.projectionMatrix);
+    // camera.updateProjectionMatrix(matrixProjective);
+    // Example of a simple perspective transformation
+
+    scene.applyMatrix4(matrixProjective);
+    camera.position.z =
+      cameraHeight * Math.max(...Array.from(matrixProjective.elements));
+    // scene.applyMatrix4(matrixAffine);
+    // camera.position.z =
+    //   cameraHeight * Math.max(...Array.from(matrixAffine.elements));
+    // const pers = new THREE.Matrix4(
+    //   2,0,0,0,
+    //     0,-2,0,0,
+    //     4,-1,-4.5,-1,
+    //     -1,-1.2,-4.5,-1
+    
+    // );
+    // const cube = new THREE.Mesh(
+    //   new THREE.BoxGeometry(1, 1, 0),
+    //   new THREE.MeshBasicMaterial({ color: 0x00ff00 })
+    //   );
+    //   const proj = new THREE.Matrix4(
+    //     1,0,0,0,
+    //     0,1,0,0,
+    //     0,0,1,0,
+    //     0,0,0,1
+    //     )
+    // // // const vX = new THREE.Vector3(), vY = new THREE.Vector3(), vZ = new THREE.Vector3();
+    // // // proj.extractBasis(vX,vY,vZ);
+    // // // console.log(vX,vY,vZ);
+    // proj.makePerspective(0,1,0,1,1,5);
+    // // console.log(proj.elements);
+    // // console.log(pers.elements);
+    // cube.applyMatrix4(pers)
+    // scene.add(cube);
+
     renderer.render(scene, camera);
 
     return () => {
       renderer.dispose();
     };
-  }, [points, circles]);
+  }, [points, circles, params]);
 
   return (
     <div className="grid items-start justify-center grid-cols-1 gap-2 md:grid-cols-2">
@@ -896,6 +1450,61 @@ function Scene() {
               <tbody>{circlesRows}</tbody>
             </table>
           </div>
+        </div>
+        <div className="p-4 space-y-2 border rounded-lg">
+          <div className="flex items-center justify-between gap-2">
+            <h2 className="text-lg font-bold text-center">
+              Euclidean Transformation
+            </h2>
+            <button
+              className="px-2 py-1 text-xs transition-shadow border rounded-md shadow active:shadow-none"
+              onClick={resetEuTrans}
+            >
+              Reset
+            </button>
+          </div>
+          <div className="flex flex-col">
+            <div className="form-control">
+              <label className="label">
+                <span className="label-text">Offset</span>
+              </label>
+              <div className="gap-2 join join-vertical">{offsetRows}</div>
+            </div>
+            <div className="form-control">
+              <label className="label">
+                <span className="label-text">Rotation</span>
+              </label>
+              <div className="gap-2 join join-vertical">{rotationRows}</div>
+            </div>
+          </div>
+        </div>
+        <div className="p-4 space-y-2 border rounded-lg">
+          <div className="flex items-center justify-between gap-2">
+            <h2 className="text-lg font-bold text-center">
+              Affine Transformation
+            </h2>
+            <button
+              className="px-2 py-1 text-xs transition-shadow border rounded-md shadow active:shadow-none"
+              onClick={resetAfTrans}
+            >
+              Reset
+            </button>
+          </div>
+          <div className="flex flex-col">{vectorsRows}</div>
+        </div>
+        <div className="p-4 space-y-2 border rounded-lg">
+          <div className="flex items-center justify-between gap-2">
+            <h2 className="text-lg font-bold text-center">
+              Projective Transformation
+            </h2>
+            <button
+              className="px-2 py-1 text-xs transition-shadow border rounded-md shadow active:shadow-none"
+              onClick={resetPrTrans}
+            >
+              Reset
+            </button>
+          </div>
+          <div className="flex flex-col">{projectiveRows}</div>
         </div>
       </div>
     </div>

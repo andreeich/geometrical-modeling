@@ -75,6 +75,9 @@ footer {
   @apply text-sm;
 }
 
-.input[type="number"] {
-  @apply w-full;
+.form-control {
+  @apply whitespace-nowrap;
+  .label-text {
+    @apply font-bold;
+  }
 }
