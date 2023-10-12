@@ -1,146 +1,299 @@
 import React, { useRef, useEffect, useState } from "react";
-import paperFull from "paper";
-import { PaperContainer } from "@psychobolt/react-paperjs/dist/index.dev";
+import * as THREE from "three";
+import { FontLoader } from "three/examples/jsm/loaders/FontLoader";
+import { TextGeometry } from "three/examples/jsm/geometries/TextGeometry";
+import regularFontJson from "three/examples/fonts/helvetiker_regular.typeface.json";
+import boldFontJson from "three/examples/fonts/helvetiker_bold.typeface.json";
+import matrix from "matrix-js";
 
-function drawFigure(paper, points, circles) {
-  // lines
-  new paper.Path.Line([points.a.x, points.a.y], [points.b.x, points.b.y]);
-  new paper.Path.Line([points.c.x, points.c.y], [points.d.x, points.d.y]);
-  new paper.Path.Line([points.d.x, points.d.y], [points.e.x, points.e.y]);
-  new paper.Path.Line([points.f.x, points.f.y], [points.g.x, points.g.y]);
-  new paper.Path.Line([points.h.x, points.h.y], [points.i.x, points.i.y]);
-  new paper.Path.Line([points.i.x, points.i.y], [points.j.x, points.j.y]);
-  new paper.Path.Line([points.k.x, points.k.y], [points.l.x, points.l.y]);
-  new paper.Path.Line([points.l.x, points.l.y], [points.m.x, points.m.y]);
-  new paper.Path.Line([points.m.x, points.m.y], [points.n.x, points.n.y]);
-  new paper.Path.Line([points.n.x, points.n.y], [points.o.x, points.o.y]);
-  new paper.Path.Line([points.p.x, points.p.y], [points.q.x, points.q.y]);
-  new paper.Path.Line([points.q.x, points.q.y], [points.r.x, points.r.y]);
-  new paper.Path.Line([points.r.x, points.r.y], [points.s.x, points.s.y]);
-  new paper.Path.Line([points.s.x, points.s.y], [points.t.x, points.t.y]);
-  new paper.Path.Line([points.t.x, points.t.y], [points.k.x, points.k.y]);
-  // circles
-  new paper.Path.Arc(getArcInfo(circles.u));
-  new paper.Path.Arc(getArcInfo(circles.v));
-  new paper.Path.Arc(getArcInfo(circles.w));
-  new paper.Path.Arc(getArcInfo(circles.x));
-  new paper.Path.Arc(getArcInfo(circles.y));
-  new paper.Path.Arc(getArcInfo(circles.z));
+function drawLines(figure, lineMaterial, points) {
+  // bone shape
+  figure.add(
+    new THREE.Line(
+      new THREE.BufferGeometry().setFromPoints([
+        new THREE.Vector2(points.a.x, points.a.y),
+        new THREE.Vector2(points.b.x, points.b.y),
+      ]),
+      lineMaterial
+    )
+  );
+  figure.add(
+    new THREE.Line(
+      new THREE.BufferGeometry().setFromPoints([
+        new THREE.Vector2(points.c.x, points.c.y),
+        new THREE.Vector2(points.d.x, points.d.y),
+      ]),
+      lineMaterial
+    )
+  );
+  figure.add(
+    new THREE.Line(
+      new THREE.BufferGeometry().setFromPoints([
+        new THREE.Vector2(points.d.x, points.d.y),
+        new THREE.Vector2(points.e.x, points.e.y),
+      ]),
+      lineMaterial
+    )
+  );
+  figure.add(
+    new THREE.Line(
+      new THREE.BufferGeometry().setFromPoints([
+        new THREE.Vector2(points.f.x, points.f.y),
+        new THREE.Vector2(points.g.x, points.g.y),
+      ]),
+      lineMaterial
+    )
+  );
+  figure.add(
+    new THREE.Line(
+      new THREE.BufferGeometry().setFromPoints([
+        new THREE.Vector2(points.h.x, points.h.y),
+        new THREE.Vector2(points.i.x, points.i.y),
+      ]),
+      lineMaterial
+    )
+  );
+  figure.add(
+    new THREE.Line(
+      new THREE.BufferGeometry().setFromPoints([
+        new THREE.Vector2(points.i.x, points.i.y),
+        new THREE.Vector2(points.j.x, points.j.y),
+      ]),
+      lineMaterial
+    )
+  );
+  // back shape
+  figure.add(
+    new THREE.Line(
+      new THREE.BufferGeometry().setFromPoints([
+        new THREE.Vector2(points.k.x, points.k.y),
+        new THREE.Vector2(points.l.x, points.l.y),
+      ]),
+      lineMaterial
+    )
+  );
+  figure.add(
+    new THREE.Line(
+      new THREE.BufferGeometry().setFromPoints([
+        new THREE.Vector2(points.l.x, points.l.y),
+        new THREE.Vector2(points.m.x, points.m.y),
+      ]),
+      lineMaterial
+    )
+  );
+  figure.add(
+    new THREE.Line(
+      new THREE.BufferGeometry().setFromPoints([
+        new THREE.Vector2(points.m.x, points.m.y),
+        new THREE.Vector2(points.n.x, points.n.y),
+      ]),
+      lineMaterial
+    )
+  );
+  figure.add(
+    new THREE.Line(
+      new THREE.BufferGeometry().setFromPoints([
+        new THREE.Vector2(points.n.x, points.n.y),
+        new THREE.Vector2(points.o.x, points.o.y),
+      ]),
+      lineMaterial
+    )
+  );
+  figure.add(
+    new THREE.Line(
+      new THREE.BufferGeometry().setFromPoints([
+        new THREE.Vector2(points.p.x, points.p.y),
+        new THREE.Vector2(points.q.x, points.q.y),
+      ]),
+      lineMaterial
+    )
+  );
+  figure.add(
+    new THREE.Line(
+      new THREE.BufferGeometry().setFromPoints([
+        new THREE.Vector2(points.q.x, points.q.y),
+        new THREE.Vector2(points.r.x, points.r.y),
+      ]),
+      lineMaterial
+    )
+  );
+  figure.add(
+    new THREE.Line(
+      new THREE.BufferGeometry().setFromPoints([
+        new THREE.Vector2(points.r.x, points.r.y),
+        new THREE.Vector2(points.s.x, points.s.y),
+      ]),
+      lineMaterial
+    )
+  );
+  figure.add(
+    new THREE.Line(
+      new THREE.BufferGeometry().setFromPoints([
+        new THREE.Vector2(points.s.x, points.s.y),
+        new THREE.Vector2(points.t.x, points.t.y),
+      ]),
+      lineMaterial
+    )
+  );
+  figure.add(
+    new THREE.Line(
+      new THREE.BufferGeometry().setFromPoints([
+        new THREE.Vector2(points.t.x, points.t.y),
+        new THREE.Vector2(points.k.x, points.k.y),
+      ]),
+      lineMaterial
+    )
+  );
 }
-function getArcInfo(circle) {
-  return {
-    from: {
-      x: circle.x + Math.cos(circle.aS) * circle.r,
-      y: circle.y + Math.sin(circle.aS) * circle.r,
-    },
-    through: {
-      x: circle.x + Math.cos((circle.aE - circle.aS) / 2) * circle.r,
-      y: circle.y + Math.sin((circle.aE - circle.aS) / 2) * circle.r,
-    },
-    to: {
-      x: circle.x + Math.cos(circle.aE) * circle.r,
-      y: circle.y + Math.sin(circle.aE) * circle.r,
-    },
-  };
-}
-
-// function drawText(figure, points, circles) {
-//   for (const [key, value] of Object.entries(points)) {
-//     const loader = new FontLoader();
-//     const font = loader.parse(regularFontJson);
-
-//     let text = new THREE.Mesh(
-//       new TextGeometry(key.toLocaleUpperCase(), {
-//         font,
-//         size: 0.3,
-//         height: 0,
-//       }),
-//       new THREE.MeshBasicMaterial({
-//         color: 0x000000,
-//       })
-//     );
-//     text.position.set(value.x + 0.1, value.y + 0.1);
-//     figure.add(text);
-//   }
-//   for (const [key, value] of Object.entries(circles)) {
-//     const loader = new FontLoader();
-//     const font = loader.parse(regularFontJson);
-
-//     let text = new THREE.Mesh(
-//       new TextGeometry(key.toLocaleUpperCase(), {
-//         font,
-//         size: 0.3,
-//         height: 0,
-//       }),
-//       new THREE.MeshBasicMaterial({
-//         color: 0x000000,
-//       })
-//     );
-//     switch (key) {
-//       case "y": {
-//         text.position.set(value.x - 0.4, value.y - 0.4);
-//         break;
-//       }
-//       case "z": {
-//         text.position.set(value.x + 0.1, value.y + 0.1);
-//         break;
-//       }
-//       default: {
-//         text.position.set(value.x, value.y);
-//       }
-//     }
-//     figure.add(text);
-//   }
-// }
-
-function drawAxes(paper, size) {
-  // drawing axes
-  // y
-  new paper.Path.Line(
-    [0, Math.floor(size / 2) + 1],
-    [0, -Math.floor(size / 2) - 1]
-  );
-  // x
-  new paper.Path.Line(
-    [Math.floor(size / 2) + 1, 0],
-    [-Math.floor(size / 2) - 1, 0]
-  );
-  // drawing arrows
-  // y
-  new paper.Path.Line(
-    [0, Math.floor(size / 2) + 1],
-    [0.3, Math.floor(size / 2) + 1 - 0.3]
-  );
-  new paper.Path.Line(
-    [0, Math.floor(size / 2) + 1],
-    [-0.3, Math.floor(size / 2) + 1 - 0.3]
-  );
-  // x
-  new paper.Path.Line(
-    [Math.floor(size / 2) + 1, 0],
-    [Math.floor(size / 2) + 1 - 0.3, 0.3]
-  );
-  new paper.Path.Line(
-    [Math.floor(size / 2) + 1, 0],
-    [Math.floor(size / 2) + 1 - 0.3, -0.3]
-  );
-  // drawing axis's names
-}
-function drawGrid(paper, size) {
-  // drawing a grid
-  for (let i = 0; i < size; i++) {
-    new paper.Path.Line(
-      [-Math.floor(size / 2) + i, Math.floor(size / 2)],
-      [-Math.floor(size / 2) + i, -Math.floor(size / 2)]
+function drawCircles(figure, lineMaterial, circles) {
+  for (const circle of Object.values(circles)) {
+    figure.add(
+      new THREE.Line(
+        new THREE.BufferGeometry().setFromPoints(circle.points),
+        lineMaterial
+      )
     );
-    new paper.Path.Line(
-      [Math.floor(size / 2), -Math.floor(size / 2) + i],
-      [-Math.floor(size / 2), -Math.floor(size / 2) + i]
+  }
+}
+function drawText(figure, points, circles) {
+  for (const [key, value] of Object.entries(points)) {
+    const loader = new FontLoader();
+    const font = loader.parse(regularFontJson);
+
+    let text = new THREE.Mesh(
+      new TextGeometry(key.toLocaleUpperCase(), {
+        font,
+        size: 0.3,
+        height: 0,
+      }),
+      new THREE.MeshBasicMaterial({
+        color: 0x000000,
+      })
+    );
+    text.position.set(value.x + 0.1, value.y + 0.1);
+    figure.add(text);
+  }
+  for (const [key, value] of Object.entries(circles)) {
+    const loader = new FontLoader();
+    const font = loader.parse(regularFontJson);
+
+    let text = new THREE.Mesh(
+      new TextGeometry(key.toLocaleUpperCase(), {
+        font,
+        size: 0.3,
+        height: 0,
+      }),
+      new THREE.MeshBasicMaterial({
+        color: 0x000000,
+      })
+    );
+    switch (key) {
+      case "y": {
+        text.position.set(value.x - 0.4, value.y - 0.4);
+        break;
+      }
+      case "z": {
+        text.position.set(value.x + 0.1, value.y + 0.1);
+        break;
+      }
+      default: {
+        text.position.set(value.x, value.y);
+      }
+    }
+    figure.add(text);
+  }
+}
+
+function calcGrid(size = 15) {
+  const gridPoints = [];
+  for (let i = 0; i < size; i++) {
+    gridPoints.push(
+      [
+        [-Math.floor(size / 2) + i, Math.floor(size / 2)],
+        [-Math.floor(size / 2) + i, -Math.floor(size / 2)],
+        new THREE.LineBasicMaterial({
+          color: 0xB7B7B7,
+        linewidth: 0.5,
+      }),
+      ],
+      [
+        [Math.floor(size / 2), -Math.floor(size / 2) + i],
+        [-Math.floor(size / 2), -Math.floor(size / 2) + i],
+        new THREE.LineBasicMaterial({
+          color: 0xB7B7B7,
+        linewidth: 0.5,
+      }),
+      ]
+    );
+  }
+  gridPoints.push(
+    [
+      [0, Math.floor(size / 2) + 1],
+      [0, -Math.floor(size / 2) - 1],
+      new THREE.LineBasicMaterial({
+        color: 0x000000,
+        linewidth: 2,
+      }),
+    ],
+    [
+      [Math.floor(size / 2) + 1, 0],
+      [-Math.floor(size / 2) - 1, 0],
+      new THREE.LineBasicMaterial({
+        color: 0x000000,
+        linewidth: 2,
+      }),
+    ],
+    [
+      [0, Math.floor(size / 2) + 1],
+      [0.3, Math.floor(size / 2) + 1 - 0.3],
+      new THREE.LineBasicMaterial({
+        color: 0x000000,
+        linewidth: 2,
+      }),
+    ],
+    [
+      [0, Math.floor(size / 2) + 1],
+      [-0.3, Math.floor(size / 2) + 1 - 0.3],
+      new THREE.LineBasicMaterial({
+        color: 0x000000,
+        linewidth: 2,
+      }),
+    ],
+    [
+      [Math.floor(size / 2) + 1, 0],
+      [Math.floor(size / 2) + 1 - 0.3, 0.3],
+      new THREE.LineBasicMaterial({
+        color: 0x000000,
+        linewidth: 2,
+      }),
+    ],
+    [
+      [Math.floor(size / 2) + 1, 0],
+      [Math.floor(size / 2) + 1 - 0.3, -0.3],
+      new THREE.LineBasicMaterial({
+        color: 0x000000,
+        linewidth: 2,
+      }),
+    ]
+  );
+  return Array.from(gridPoints);
+}
+function drawGrid(figure, points) {
+  for (const point of Object.values(points)) {
+    figure.add(
+      new THREE.Line(
+        new THREE.BufferGeometry().setFromPoints([
+          new THREE.Vector2(point[0][0], point[0][1]),
+          new THREE.Vector2(point[1][0], point[1][1]),
+        ]),
+        point[2]
+      )
     );
   }
 }
 
 function Scene() {
+  const canvasRef = useRef();
   // data storage
   const pointsDefault = {
     a: {
@@ -293,7 +446,7 @@ function Scene() {
       x: 2 + Math.sqrt(3),
       y: -1,
       r: 2,
-      aS: (210 / 180) * Math.PI,
+      aS: (-150 / 180) * Math.PI,
       aE: 0,
       xRef: useRef(),
       yRef: useRef(),
@@ -329,7 +482,7 @@ function Scene() {
       x: 0,
       y: -5,
       r: 3,
-      aS: -Math.PI,
+      aS: Math.PI,
       aE: 2 * Math.PI,
       xRef: useRef(),
       yRef: useRef(),
@@ -401,7 +554,9 @@ function Scene() {
                 ...circles,
                 [key]: {
                   ...circles[key],
-                  x: ~~e.target.value || ~~e.target.defaultValue,
+                  x: e.target.value
+                    ? ~~e.target.value
+                    : ~~e.target.defaultValue,
                 },
               })
             }
@@ -419,7 +574,9 @@ function Scene() {
                 ...circles,
                 [key]: {
                   ...circles[key],
-                  y: ~~e.target.value || ~~e.target.defaultValue,
+                  y: e.target.value
+                    ? ~~e.target.value
+                    : ~~e.target.defaultValue,
                 },
               })
             }
@@ -437,7 +594,7 @@ function Scene() {
                 ...circles,
                 [key]: {
                   ...circles[key],
-                  r: ~~e.target.value || ~~e.target.defaultValue,
+                  r: +e.target.value || +e.target.defaultValue,
                 },
               })
             }
@@ -455,7 +612,7 @@ function Scene() {
                 ...circles,
                 [key]: {
                   ...circles[key],
-                  aS: ~~e.target.value || ~~e.target.defaultValue,
+                  aS: +e.target.value || +e.target.defaultValue,
                 },
               })
             }
@@ -473,7 +630,7 @@ function Scene() {
                 ...circles,
                 [key]: {
                   ...circles[key],
-                  aE: ~~e.target.value || ~~e.target.defaultValue,
+                  aE: +e.target.value || +e.target.defaultValue,
                 },
               })
             }
@@ -562,11 +719,11 @@ function Scene() {
       },
       w: {
         x: {
-          value: 0,
+          value: 1,
           ref: useRef(),
         },
         y: {
-          value: 0,
+          value: 1,
           ref: useRef(),
         },
         o: {
@@ -727,72 +884,355 @@ function Scene() {
   );
 
   const resetPoints = () => {
-    // setPoints(pointsDefault);
-    // for (const point of Object.values(points)) {
-    //   point.xRef.current.value = point.xRef.current.defaultValue;
-    //   point.yRef.current.value = point.yRef.current.defaultValue;
-    // }
+    setPoints(pointsDefault);
+    for (const point of Object.values(points)) {
+      point.xRef.current.value = point.xRef.current.defaultValue;
+      point.yRef.current.value = point.yRef.current.defaultValue;
+    }
   };
   const resetCircles = () => {
-    // setCircles(circlesDefault);
-    // for (const circle of Object.values(circles)) {
-    //   circle.xRef.current.value = circle.xRef.current.defaultValue;
-    //   circle.yRef.current.value = circle.yRef.current.defaultValue;
-    //   circle.rRef.current.value = circle.rRef.current.defaultValue;
-    //   circle.aSRef.current.value = circle.aSRef.current.defaultValue;
-    //   circle.aERef.current.value = circle.aERef.current.defaultValue;
-    // }
+    setCircles(circlesDefault);
+    for (const circle of Object.values(circles)) {
+      circle.xRef.current.value = circle.xRef.current.defaultValue;
+      circle.yRef.current.value = circle.yRef.current.defaultValue;
+      circle.rRef.current.value = circle.rRef.current.defaultValue;
+      circle.aSRef.current.value = circle.aSRef.current.defaultValue;
+      circle.aERef.current.value = circle.aERef.current.defaultValue;
+    }
   };
   const resetEuTrans = () => {
-    // setParams(paramsDefault);
-    // for (const [key, param] of Object.entries(params)) {
-    //   if (!(key == "offset" || key == "rotation")) continue;
-    //   for (const setting of Object.values(param)) {
-    //     setting.ref.current.value = setting.ref.current.defaultValue;
-    //   }
-    // }
+    setParams(paramsDefault);
+    for (const [key, param] of Object.entries(params)) {
+      if (!(key === "offset" || key === "rotation")) continue;
+      for (const setting of Object.values(param)) {
+        setting.ref.current.value = setting.ref.current.defaultValue;
+      }
+    }
   };
   const resetAfTrans = () => {
-    // setParams(paramsDefault);
-    // for (const param of Object.values(params.vectors)) {
-    //   for (const setting of Object.values(param)) {
-    //     setting.ref.current.value = setting.ref.current.defaultValue;
-    //   }
-    // }
+    setParams(paramsDefault);
+    for (const param of Object.values(params.vectors)) {
+      for (const setting of Object.values(param)) {
+        setting.ref.current.value = setting.ref.current.defaultValue;
+      }
+    }
   };
   const resetPrTrans = () => {
-    // setParams(paramsDefault);
-    // for (const param of Object.values(params.projective)) {
-    //   for (const setting of Object.values(param)) {
-    //     setting.ref.current.value = setting.ref.current.defaultValue;
-    //   }
-    // }
+    setParams(paramsDefault);
+    for (const param of Object.values(params.projective)) {
+      for (const setting of Object.values(param)) {
+        setting.ref.current.value = setting.ref.current.defaultValue;
+      }
+    }
+  };
+
+  const [projectiveToggle, setProjectiveToggle] = useState(false);
+
+  const calcPoints = (gridPoints) => {
+    let pointsLocal = { ...points };
+    let gridLocal = { ...gridPoints };
+    let circlesLocal = {};
+    for (const [key, value] of Object.entries(circles)) {
+      let points = new THREE.EllipseCurve(
+        value.x, // ax
+        value.y, // aY
+        value.r, // xRadius
+        value.r, // yRadius
+        value.aS, // aStartAngle
+        value.aE, // aEndAngle
+        false, // aClockwise
+        0 // aRotation
+      ).getPoints(50);
+      circlesLocal[key] = {
+        points,
+      };
+    }
+    const rot = {
+      x: 0,
+      y: 0,
+    };
+    let ms;
+    if (projectiveToggle) {
+      ms = [
+        // Euclidean offset
+        [
+          [1, 0, 0],
+          [0, 1, 0],
+          [params.offset.x.value, params.offset.y.value, 1],
+        ],
+        // Euclidean rotation
+        [
+          [
+            Math.cos(params.rotation.angle.value),
+            Math.sin(params.rotation.angle.value),
+            0,
+          ],
+          [
+            -Math.sin(params.rotation.angle.value),
+            Math.cos(params.rotation.angle.value),
+            0,
+          ],
+          [
+            -rot.x * (Math.cos(params.rotation.angle.value) - 1) +
+              rot.y * Math.sin(params.rotation.angle.value),
+            -rot.x * Math.sin(params.rotation.angle.value) -
+              rot.y * (Math.cos(params.rotation.angle.value) - 1),
+            1,
+          ],
+        ],
+        // Affine
+        [
+          [params.vectors.x.x.value, params.vectors.y.x.value, 0],
+          [params.vectors.x.y.value, params.vectors.y.y.value, 0],
+          [params.vectors.x.o.value, params.vectors.y.o.value, 1],
+        ],
+        // Projective
+        [
+          [
+            params.projective.x.x.value * params.projective.w.x.value,
+            params.projective.y.x.value * params.projective.w.x.value,
+            params.projective.w.x.value,
+          ],
+          [
+            params.projective.x.y.value * params.projective.w.y.value,
+            params.projective.y.y.value * params.projective.w.y.value,
+            params.projective.w.y.value,
+          ],
+          [
+            params.projective.x.o.value * params.projective.w.o.value,
+            params.projective.y.o.value * params.projective.w.o.value,
+            params.projective.w.o.value,
+          ],
+        ],
+      ];
+    } else {
+      ms = [
+        // Euclidean offset
+        [
+          [1, 0, 0],
+          [0, 1, 0],
+          [params.offset.x.value, params.offset.y.value, 1],
+        ],
+        // Euclidean rotation
+        [
+          [
+            Math.cos(params.rotation.angle.value),
+            Math.sin(params.rotation.angle.value),
+            0,
+          ],
+          [
+            -Math.sin(params.rotation.angle.value),
+            Math.cos(params.rotation.angle.value),
+            0,
+          ],
+          [
+            -rot.x * (Math.cos(params.rotation.angle.value) - 1) +
+              rot.y * Math.sin(params.rotation.angle.value),
+            -rot.x * Math.sin(params.rotation.angle.value) -
+              rot.y * (Math.cos(params.rotation.angle.value) - 1),
+            1,
+          ],
+        ],
+        // Affine
+        [
+          [params.vectors.x.x.value, params.vectors.y.x.value, 0],
+          [params.vectors.x.y.value, params.vectors.y.y.value, 0],
+          [params.vectors.x.o.value, params.vectors.y.o.value, 1],
+        ],
+        // Projective
+        // [
+        //   [
+        //     params.projective.x.x.value * params.projective.w.x.value,
+        //     params.projective.y.x.value * params.projective.w.x.value,
+        //     params.projective.w.x.value
+        //   ],
+        //   [
+        //     params.projective.x.y.value * params.projective.w.y.value,
+        //     params.projective.y.y.value * params.projective.w.y.value,
+        //     params.projective.w.y.value
+        //   ],
+        //   [
+        //     params.projective.x.o.value * params.projective.w.o.value,
+        //     params.projective.y.o.value * params.projective.w.o.value,
+        //     params.projective.w.o.value
+        //   ],
+        // ],
+      ];
+    }
+
+    for (let [key, point] of Object.entries(pointsLocal)) {
+      const value = { ...point };
+      for (const m of ms) {
+        let x =
+          (value.x * m[0][0] + value.y * m[1][0] + m[2][0]) /
+          (value.x * m[0][2] + value.y * m[1][2] + m[2][2]);
+        let y =
+          (value.x * m[0][1] + value.y * m[1][1] + m[2][1]) /
+          (value.x * m[0][2] + value.y * m[1][2] + m[2][2]);
+
+        value.x = x;
+        value.y = y;
+      }
+      pointsLocal = {
+        ...pointsLocal,
+        [key]: {
+          ...pointsLocal[key],
+          x: value.x,
+          y: value.y,
+        },
+      };
+    }
+    for (let [key, circle] of Object.entries(circlesLocal)) {
+      let points = [];
+      for (let value of circle.points) {
+        for (const m of ms) {
+          let x =
+            (value.x * m[0][0] + value.y * m[1][0] + m[2][0]) /
+            (value.x * m[0][2] + value.y * m[1][2] + m[2][2]);
+          let y =
+            (value.x * m[0][1] + value.y * m[1][1] + m[2][1]) /
+            (value.x * m[0][2] + value.y * m[1][2] + m[2][2]);
+
+          value.x = x;
+          value.y = y;
+        }
+        points.push(new THREE.Vector2(value.x, value.y));
+      }
+      circlesLocal = {
+        ...circlesLocal,
+        [key]: {
+          points,
+        },
+      };
+    }
+
+    // grid
+    if (projectiveToggle) {
+      ms = [
+        // Affine
+        [
+          [params.vectors.x.x.value, params.vectors.y.x.value, 0],
+          [params.vectors.x.y.value, params.vectors.y.y.value, 0],
+          [params.vectors.x.o.value, params.vectors.y.o.value, 1],
+        ],
+        // Projective
+        [
+          [
+            params.projective.x.x.value * params.projective.w.x.value,
+            params.projective.y.x.value * params.projective.w.x.value,
+            params.projective.w.x.value,
+          ],
+          [
+            params.projective.x.y.value * params.projective.w.y.value,
+            params.projective.y.y.value * params.projective.w.y.value,
+            params.projective.w.y.value,
+          ],
+          [
+            params.projective.x.o.value * params.projective.w.o.value,
+            params.projective.y.o.value * params.projective.w.o.value,
+            params.projective.w.o.value,
+          ],
+        ],
+      ];
+    } else {
+      ms = [
+        // Affine
+        [
+          [params.vectors.x.x.value, params.vectors.y.x.value, 0],
+          [params.vectors.x.y.value, params.vectors.y.y.value, 0],
+          [params.vectors.x.o.value, params.vectors.y.o.value, 1],
+        ],
+        // Projective
+        // [
+        //   [
+        //     params.projective.x.x.value * params.projective.w.x.value,
+        //     params.projective.y.x.value * params.projective.w.x.value,
+        //     params.projective.w.x.value
+        //   ],
+        //   [
+        //     params.projective.x.y.value * params.projective.w.y.value,
+        //     params.projective.y.y.value * params.projective.w.y.value,
+        //     params.projective.w.y.value
+        //   ],
+        //   [
+        //     params.projective.x.o.value * params.projective.w.o.value,
+        //     params.projective.y.o.value * params.projective.w.o.value,
+        //     params.projective.w.o.value
+        //   ],
+        // ],
+      ];
+    }
+    for (const valueS of Object.values(gridLocal)) {
+      let value = Array.from(valueS);
+      for (const m of ms) {
+        let x1 =
+          (value[0][0] * m[0][0] + value[0][1] * m[1][0] + m[2][0]) /
+          (value[0][0] * m[0][2] + value[0][1] * m[1][2] + m[2][2]);
+        let y1 =
+          (value[0][0] * m[0][1] + value[0][1] * m[1][1] + m[2][1]) /
+          (value[0][0] * m[0][2] + value[0][1] * m[1][2] + m[2][2]);
+
+        value[0][0] = x1;
+        value[0][1] = y1;
+
+        let x2 =
+          (value[1][0] * m[0][0] + value[1][1] * m[1][0] + m[2][0]) /
+          (value[1][0] * m[0][2] + value[1][1] * m[1][2] + m[2][2]);
+        let y2 =
+          (value[1][0] * m[0][1] + value[1][1] * m[1][1] + m[2][1]) /
+          (value[1][0] * m[0][2] + value[1][1] * m[1][2] + m[2][2]);
+
+        value[1][0] = x2;
+        value[1][1] = y2;
+      }
+    }
+    
+    return [pointsLocal, circlesLocal, gridLocal];
   };
 
   useEffect(() => {
-      const paper = paperFull.setup(canvasRef.current);
-      paper.project.currentStyle = {
-        strokeColor: "#D7D8DA",
-        strokeWidth: 0.05,
-      };
-      const gridSize = 15;
-      drawGrid(paper, gridSize);
-      paper.project.currentStyle = {
-        strokeColor: "#1B4F72",
-        strokeWidth: 0.06,
-      };
-      drawAxes(paper, gridSize);
-      paper.project.currentStyle = {
-        strokeColor: "#3498DB",
-        strokeWidth: 0.08,
-      };
-      drawFigure(paper, points, circles);
+    // basic setup
+    const scene = new THREE.Scene();
+    scene.background = new THREE.Color(0xffffff);
 
-      // paper.view.center = [8,-8];
-      // paper.view.scaling = [15, -15];
-      paper.view.draw();
-      // paper.project.activeLayer.children[0].rotate(10)
-  }, [points]);
+    const camera = new THREE.PerspectiveCamera(75, 1, 0.1, 100000);
+    const cameraHeight = 12;
+    camera.position.z = cameraHeight;
+
+    const renderer = new THREE.WebGLRenderer({ canvas: canvasRef.current });
+    renderer.setSize(1000, 1000);
+
+    // creating an object
+    const figure = new THREE.Group();
+    // creating a material
+    const lineMaterial = new THREE.LineBasicMaterial({
+      color: 0x0000ff,
+      linewidth: 2,
+    });
+
+    const [pointsCalc, circlesCalc, gridCalc] = calcPoints(calcGrid(15));
+    
+    const grid = new THREE.Group();
+    // adding elements to the figure
+    drawGrid(grid, gridCalc);
+    grid.position.z -= 0.001;
+    // drawing lines
+    drawLines(figure, lineMaterial, pointsCalc);
+    // drawing circles
+    drawCircles(figure, lineMaterial, circlesCalc);
+    // drawing text
+    // drawText(figure, pointsCalc, circles);
+
+    // adding figure to the scene
+    scene.add(grid);
+    scene.add(figure);
+
+    renderer.render(scene, camera);
+
+    return () => {
+      renderer.dispose();
+    };
+  }, [points, circles, params, projectiveToggle]);
 
   return (
     <div className="grid items-start justify-center grid-cols-1 gap-2 md:grid-cols-2">
@@ -897,6 +1337,12 @@ function Scene() {
             <h2 className="text-lg font-bold text-center">
               Projective Transformation
             </h2>
+            <input
+              type="checkbox"
+              className="toggle"
+              checked={projectiveToggle}
+              onChange={() => setProjectiveToggle(!projectiveToggle)}
+            />
             <button
               className="px-2 py-1 text-xs transition-shadow border rounded-md shadow active:shadow-none"
               onClick={resetPrTrans}
