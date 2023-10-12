@@ -808,14 +808,10 @@ function Scene() {
           value: 0,
           ref: useRef(),
         },
-        // z: {
-        //   value: 0,
-        //   ref: useRef(),
-        // },
-        // o: {
-        //   value: 0,
-        //   ref: useRef(),
-        // },
+        o: {
+          value: 0,
+          ref: useRef(),
+        },
       },
       y: {
         x: {
@@ -826,50 +822,10 @@ function Scene() {
           value: 1,
           ref: useRef(),
         },
-        // z: {
-        //   value: 0,
-        //   ref: useRef(),
-        // },
-        // o: {
-        //   value: 0,
-        //   ref: useRef(),
-        // },
-      },
-      // z: {
-      //   x: {
-      //     value: 0,
-      //     ref: useRef(),
-      //   },
-      //   y: {
-      //     value: 0,
-      //     ref: useRef(),
-      //   },
-      //   z: {
-      //     value: 1,
-      //     ref: useRef(),
-      //   },
-      //   o: {
-      //     value: 0,
-      //     ref: useRef(),
-      //   },
-      // },
-      o: {
-        x: {
+        o: {
           value: 0,
           ref: useRef(),
         },
-        y: {
-          value: 0,
-          ref: useRef(),
-        },
-        // z: {
-        //   value: 0,
-        //   ref: useRef(),
-        // },
-        // o: {
-        //   value: 0,
-        //   ref: useRef(),
-        // },
       },
     },
     projective: {
@@ -882,14 +838,6 @@ function Scene() {
           value: 0,
           ref: useRef(),
         },
-        // z: {
-        //   value: 0,
-        //   ref: useRef(),
-        // },
-        // w: {
-        //   value: 0,
-        //   ref: useRef(),
-        // },
         o: {
           value: 0,
           ref: useRef(),
@@ -904,68 +852,20 @@ function Scene() {
           value: 1,
           ref: useRef(),
         },
-        // z: {
-        //   value: 0,
-        //   ref: useRef(),
-        // },
         o: {
           value: 0,
           ref: useRef(),
         },
-        // w: {
-        //   value: 0,
-        //   ref: useRef(),
-        // },
       },
-      // z: {
-      //   x: {
-      //     value: 0,
-      //     ref: useRef(),
-      //   },
-      //   y: {
-      //     value: 0,
-      //     ref: useRef(),
-      //   },
-      //   z: {
-      //     value: 1,
-      //     ref: useRef(),
-      //   },
-        // o: {
-        //   value: 0,
-        //   ref: useRef(),
-        // },
-      // },
-      // o: {
-      //   x: {
-      //     value: 0,
-      //     ref: useRef(),
-      //   },
-      //   y: {
-      //     value: 0,
-      //     ref: useRef(),
-      //   },
-      //   // z: {
-      //   //   value: 0,
-      //   //   ref: useRef(),
-      //   // },
-      //   w: {
-      //     value: 1,
-      //     ref: useRef(),
-      //   },
-      // },
       w: {
         x: {
-          value: 1,
+          value: 0,
           ref: useRef(),
         },
         y: {
-          value: 1,
+          value: 0,
           ref: useRef(),
         },
-        // z: {
-        //   value: 0,
-        //   ref: useRef(),
-        // },
         o: {
           value: 1,
           ref: useRef(),
@@ -1143,7 +1043,7 @@ function Scene() {
   const resetEuTrans = () => {
     setParams(paramsDefault);
     for (const [key, param] of Object.entries(params)) {
-      if (key == "vectors") continue;
+      if (!(key == "offset" || key == "rotation")) continue;
       for (const setting of Object.values(param)) {
         setting.ref.current.value = setting.ref.current.defaultValue;
       }
@@ -1178,10 +1078,6 @@ function Scene() {
     const renderer = new THREE.WebGLRenderer({ canvas: canvasRef.current });
     renderer.setSize(1000, 1000);
 
-    // const gridHelper = new THREE.GridHelper(15, 15);
-    // gridHelper.rotation.x = Math.PI / 2;
-    // scene.add(gridHelper);
-
     // creating an object
     const figure = new THREE.Group();
     // adding grid
@@ -1203,189 +1099,52 @@ function Scene() {
     // adding figure to the scene
     scene.add(figure);
 
-    // transformations
+    // euclidean transformation
     figure.position.x = params.offset.x.value;
     figure.position.y = params.offset.y.value;
     figure.rotation.z = params.rotation.angle.value;
 
-    const matrix = new THREE.Matrix4(
-      1,
-      0,
-      0,
-      0,
-      0,
-      1,
-      0,
-      0,
-      0,
-      0,
-      1,
-      0,
-      0,
-      0,
-      0,
-      1
-    );
-    // ! епределать o na w
-    const matrixAffine = new THREE.Matrix4(
-      params.vectors.x.x.value, // 1
-      params.vectors.y.x.value, // 0
-      0, // 0
-      params.vectors.o.x.value, // 0 d
+    // // affine transformation matrix
+    // const matrixAffine = new THREE.Matrix4().setFromMatrix3(
+    //   new THREE.Matrix3(
+    //     params.vectors.x.x.value,  
+    //     params.vectors.y.x.value, 
+    //     0,
 
-      params.vectors.x.y.value, // 0
-      params.vectors.y.y.value, // 1
-      0, // 0
-      params.vectors.o.y.value, // 0 h
+    //     params.vectors.x.y.value,   
+    //     params.vectors.y.y.value, 
+    //     0,
 
-      0, // 0
-      0, // 0
-      1, // 1
-      0, // 0 l
-
-      0, // 0 m
-      0, // 0 n
-      0, // 0 o
-      1 // 1 p
-    );
-
-    // const matrixAffine = new THREE.Matrix4(
-    //   params.vectors.x.x.value, // 1
-    //   params.vectors.y.x.value, // 0
-    //   params.vectors.z.x.value, // 0
-    //   0, // 0 d
-
-    //   params.vectors.x.y.value, // 0
-    //   params.vectors.y.y.value, // 1
-    //   params.vectors.z.y.value, // 0
-    //   0, // 0 h
-
-    //   params.vectors.x.z.value, // 0
-    //   params.vectors.y.z.value, // 0
-    //   params.vectors.z.z.value, // 1
-    //   0, // 0 l
-
-    //   params.vectors.x.o.value, // 0 m
-    //   params.vectors.y.o.value, // 0 n
-    //   params.vectors.z.o.value, // 0 o
-    //   1 // 1 p
-    // );
-    // const matrixAffine = new THREE.Matrix4().makeBasis(
-    //   new THREE.Vector3(
-    //     params.vectors.x.x.value,
-    //     params.vectors.x.y.value,
-    //     params.vectors.x.z.value
-    //   ),
-    //   new THREE.Vector3(
-    //     params.vectors.y.x.value,
-    //     params.vectors.y.y.value,
-    //     params.vectors.y.z.value
-    //   ),
-    //   new THREE.Vector3(
-    //     params.vectors.z.x.value,
-    //     params.vectors.z.y.value,
-    //     params.vectors.z.z.value
+    //     params.vectors.x.o.value, 
+    //     params.vectors.y.o.value, 
+    //     1,
     //   )
     // );
-    // Projective transformations
-    const matrixProjective = new THREE.Matrix4().setFromMatrix3(
-      new THREE.Matrix3(
-        params.projective.x.x.value * params.projective.w.x.value,  
-        params.projective.y.x.value * params.projective.w.x.value, 
-        params.projective.w.x.value,
 
-        params.projective.x.y.value * params.projective.w.y.value,   
-        params.projective.y.y.value * params.projective.w.y.value, 
-        params.projective.w.y.value,
+    // // projective transformation matrix
+    // const matrixProjective = new THREE.Matrix4().setFromMatrix3(
+    //   new THREE.Matrix3(
+    //     params.projective.x.x.value,  
+    //     params.projective.y.x.value, 
+    //     params.projective.w.x.value,
 
-        params.projective.x.o.value * params.projective.w.o.value, 
-        params.projective.y.o.value * params.projective.w.o.value, 
-        params.projective.w.o.value,
-      )
-    );
-    // const matrixProjective = new THREE.Matrix4(
-    //   params.projective.x.x.value, // 1
-    //   params.projective.y.x.value, // 0
-    //   0, // 0
-    //   params.projective.o.x.value, // 0 d
+    //     params.projective.x.y.value,   
+    //     params.projective.y.y.value, 
+    //     params.projective.w.y.value,
 
-    //   params.projective.x.y.value, // 0
-    //   params.projective.y.y.value, // 1
-    //   0, // 0
-    //   params.projective.o.y.value, // 0 h
-
-    //   params.projective.y.x.value * params.projective.y.w.value, // 0
-    //   params.projective.x.y.value * params.projective.x.w.value, // 0
-    //   1, // 1
-    //   params.projective.o.w.value, // 0 l
-
-    //   params.projective.x.w.value, // 0 m
-    //   params.projective.y.w.value, // 0 n
-    //   0, // 0 o
-    //   params.projective.o.w.value // 1 p
+    //     params.projective.x.o.value, 
+    //     params.projective.y.o.value, 
+    //     params.projective.w.o.value,
+    //   )
     // );
-    // const matrixProjective = new THREE.Matrix4(
-    //   params.projective.x.x.value, // 1
-    //   params.projective.y.x.value, // 0
-    //   0, // 0
-    //   params.projective.w.x.value, // 0 d
-
-    //   params.projective.x.y.value, // 0
-    //   params.projective.y.y.value, // 1
-    //   0, // 0
-    //   params.projective.w.y.value, // 0 h
-
-    //   params.projective.y.x.value * params.projective.w.x.value, // 0
-    //   params.projective.x.y.value * params.projective.w.y.value, // 0
-    //   1, // 1
-    //   params.projective.w.o.value, // 0 l
-
-    //   params.projective.x.o.value, // 0 m
-    //   params.projective.y.o.value, // 0 n
-    //   0, // 0 o
-    //   params.projective.w.o.value // 1 p
-    // );
-
-    const vectorX = new THREE.Vector3();
-    const vectorY = new THREE.Vector3();
-    const vectorZ = new THREE.Vector3();
-    matrixProjective.extractBasis(vectorX, vectorY, vectorZ);
-    console.log(vectorX, vectorY, vectorZ);
-    // console.log(camera.projectionMatrix);
-    // camera.updateProjectionMatrix(matrixProjective);
-    // Example of a simple perspective transformation
-
-    scene.applyMatrix4(matrixProjective);
-    camera.position.z =
-      cameraHeight * Math.max(...Array.from(matrixProjective.elements));
-    // scene.applyMatrix4(matrixAffine);
-    // camera.position.z =
-    //   cameraHeight * Math.max(...Array.from(matrixAffine.elements));
-    // const pers = new THREE.Matrix4(
-    //   2,0,0,0,
-    //     0,-2,0,0,
-    //     4,-1,-4.5,-1,
-    //     -1,-1.2,-4.5,-1
     
-    // );
-    // const cube = new THREE.Mesh(
-    //   new THREE.BoxGeometry(1, 1, 0),
-    //   new THREE.MeshBasicMaterial({ color: 0x00ff00 })
-    //   );
-    //   const proj = new THREE.Matrix4(
-    //     1,0,0,0,
-    //     0,1,0,0,
-    //     0,0,1,0,
-    //     0,0,0,1
-    //     )
-    // // // const vX = new THREE.Vector3(), vY = new THREE.Vector3(), vZ = new THREE.Vector3();
-    // // // proj.extractBasis(vX,vY,vZ);
-    // // // console.log(vX,vY,vZ);
-    // proj.makePerspective(0,1,0,1,1,5);
-    // // console.log(proj.elements);
-    // // console.log(pers.elements);
-    // cube.applyMatrix4(pers)
-    // scene.add(cube);
+    // // applying result transformation matrix
+    // const matrix = new THREE.Matrix4();
+    // matrix.multiplyMatrices(matrixProjective, matrixAffine)
+    
+    // scene.applyMatrix4(matrix);
+    // camera.position.z =
+    //   cameraHeight * Math.max(...Array.from(matrix.elements));
 
     renderer.render(scene, camera);
 
