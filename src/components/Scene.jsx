@@ -1,439 +1,143 @@
 import React, { useRef, useEffect, useState } from "react";
-import * as THREE from "three";
-import { FontLoader } from "three/examples/jsm/loaders/FontLoader";
-import { TextGeometry } from "three/examples/jsm/geometries/TextGeometry";
-import regularFontJson from "three/examples/fonts/helvetiker_regular.typeface.json";
-import boldFontJson from "three/examples/fonts/helvetiker_bold.typeface.json";
+import paperFull from "paper";
+// import { PaperContainer } from "@psychobolt/react-paperjs/dist/index.dev";
 
-function drawLines(figure, lineMaterial, points) {
-  // bone shape
-  figure.add(
-    new THREE.Line(
-      new THREE.BufferGeometry().setFromPoints([
-        new THREE.Vector2(points.a.x, points.a.y),
-        new THREE.Vector2(points.b.x, points.b.y),
-      ]),
-      lineMaterial
-    )
-  );
-  figure.add(
-    new THREE.Line(
-      new THREE.BufferGeometry().setFromPoints([
-        new THREE.Vector2(points.c.x, points.c.y),
-        new THREE.Vector2(points.d.x, points.d.y),
-      ]),
-      lineMaterial
-    )
-  );
-  figure.add(
-    new THREE.Line(
-      new THREE.BufferGeometry().setFromPoints([
-        new THREE.Vector2(points.d.x, points.d.y),
-        new THREE.Vector2(points.e.x, points.e.y),
-      ]),
-      lineMaterial
-    )
-  );
-  figure.add(
-    new THREE.Line(
-      new THREE.BufferGeometry().setFromPoints([
-        new THREE.Vector2(points.f.x, points.f.y),
-        new THREE.Vector2(points.g.x, points.g.y),
-      ]),
-      lineMaterial
-    )
-  );
-  figure.add(
-    new THREE.Line(
-      new THREE.BufferGeometry().setFromPoints([
-        new THREE.Vector2(points.h.x, points.h.y),
-        new THREE.Vector2(points.i.x, points.i.y),
-      ]),
-      lineMaterial
-    )
-  );
-  figure.add(
-    new THREE.Line(
-      new THREE.BufferGeometry().setFromPoints([
-        new THREE.Vector2(points.i.x, points.i.y),
-        new THREE.Vector2(points.j.x, points.j.y),
-      ]),
-      lineMaterial
-    )
-  );
-  // back shape
-  figure.add(
-    new THREE.Line(
-      new THREE.BufferGeometry().setFromPoints([
-        new THREE.Vector2(points.k.x, points.k.y),
-        new THREE.Vector2(points.l.x, points.l.y),
-      ]),
-      lineMaterial
-    )
-  );
-  figure.add(
-    new THREE.Line(
-      new THREE.BufferGeometry().setFromPoints([
-        new THREE.Vector2(points.l.x, points.l.y),
-        new THREE.Vector2(points.m.x, points.m.y),
-      ]),
-      lineMaterial
-    )
-  );
-  figure.add(
-    new THREE.Line(
-      new THREE.BufferGeometry().setFromPoints([
-        new THREE.Vector2(points.m.x, points.m.y),
-        new THREE.Vector2(points.n.x, points.n.y),
-      ]),
-      lineMaterial
-    )
-  );
-  figure.add(
-    new THREE.Line(
-      new THREE.BufferGeometry().setFromPoints([
-        new THREE.Vector2(points.n.x, points.n.y),
-        new THREE.Vector2(points.o.x, points.o.y),
-      ]),
-      lineMaterial
-    )
-  );
-  figure.add(
-    new THREE.Line(
-      new THREE.BufferGeometry().setFromPoints([
-        new THREE.Vector2(points.p.x, points.p.y),
-        new THREE.Vector2(points.q.x, points.q.y),
-      ]),
-      lineMaterial
-    )
-  );
-  figure.add(
-    new THREE.Line(
-      new THREE.BufferGeometry().setFromPoints([
-        new THREE.Vector2(points.q.x, points.q.y),
-        new THREE.Vector2(points.r.x, points.r.y),
-      ]),
-      lineMaterial
-    )
-  );
-  figure.add(
-    new THREE.Line(
-      new THREE.BufferGeometry().setFromPoints([
-        new THREE.Vector2(points.r.x, points.r.y),
-        new THREE.Vector2(points.s.x, points.s.y),
-      ]),
-      lineMaterial
-    )
-  );
-  figure.add(
-    new THREE.Line(
-      new THREE.BufferGeometry().setFromPoints([
-        new THREE.Vector2(points.s.x, points.s.y),
-        new THREE.Vector2(points.t.x, points.t.y),
-      ]),
-      lineMaterial
-    )
-  );
-  figure.add(
-    new THREE.Line(
-      new THREE.BufferGeometry().setFromPoints([
-        new THREE.Vector2(points.t.x, points.t.y),
-        new THREE.Vector2(points.k.x, points.k.y),
-      ]),
-      lineMaterial
-    )
-  );
+function drawFigure(paper, points, circles) {
+  // lines
+  new paper.Path.Line([points.a.x, points.a.y], [points.b.x, points.b.y]);
+  new paper.Path.Line([points.c.x, points.c.y], [points.d.x, points.d.y]);
+  new paper.Path.Line([points.d.x, points.d.y], [points.e.x, points.e.y]);
+  new paper.Path.Line([points.f.x, points.f.y], [points.g.x, points.g.y]);
+  new paper.Path.Line([points.h.x, points.h.y], [points.i.x, points.i.y]);
+  new paper.Path.Line([points.i.x, points.i.y], [points.j.x, points.j.y]);
+  new paper.Path.Line([points.k.x, points.k.y], [points.l.x, points.l.y]);
+  new paper.Path.Line([points.l.x, points.l.y], [points.m.x, points.m.y]);
+  new paper.Path.Line([points.m.x, points.m.y], [points.n.x, points.n.y]);
+  new paper.Path.Line([points.n.x, points.n.y], [points.o.x, points.o.y]);
+  new paper.Path.Line([points.p.x, points.p.y], [points.q.x, points.q.y]);
+  new paper.Path.Line([points.q.x, points.q.y], [points.r.x, points.r.y]);
+  new paper.Path.Line([points.r.x, points.r.y], [points.s.x, points.s.y]);
+  new paper.Path.Line([points.s.x, points.s.y], [points.t.x, points.t.y]);
+  new paper.Path.Line([points.t.x, points.t.y], [points.k.x, points.k.y]);
+  // circles
+  new paper.Path.Arc(getArcInfo(circles.u));
+  new paper.Path.Arc(getArcInfo(circles.v));
+  new paper.Path.Arc(getArcInfo(circles.w));
+  new paper.Path.Arc(getArcInfo(circles.x));
+  new paper.Path.Arc(getArcInfo(circles.y));
+  new paper.Path.Arc(getArcInfo(circles.z));
 }
-function drawCircles(figure, lineMaterial, circles) {
-  // u
-  figure.add(
-    new THREE.Line(
-      new THREE.BufferGeometry().setFromPoints(
-        new THREE.EllipseCurve(
-          circles.u.x, // ax
-          circles.u.y, // aY
-          circles.u.r, // xRadius
-          circles.u.r, // yRadius
-          circles.u.aS, // aStartAngle
-          circles.u.aE, // aEndAngle
-          false, // aClockwise
-          0 // aRotation
-        ).getPoints(50)
-      ),
-      lineMaterial
-    )
-  );
-  // v
-  figure.add(
-    new THREE.Line(
-      new THREE.BufferGeometry().setFromPoints(
-        new THREE.EllipseCurve(
-          circles.v.x, // ax
-          circles.v.y, // aY
-          circles.v.r, // xRadius
-          circles.v.r, // yRadius
-          circles.v.aS, // aStartAngle
-          circles.v.aE, // aEndAngle
-          false, // aClockwise
-          0 // aRotation
-        ).getPoints(50)
-      ),
-      lineMaterial
-    )
-  );
-  // w
-  figure.add(
-    new THREE.Line(
-      new THREE.BufferGeometry().setFromPoints(
-        new THREE.EllipseCurve(
-          circles.w.x, // ax
-          circles.w.y, // aY
-          circles.w.r, // xRadius
-          circles.w.r, // yRadius
-          circles.w.aS, // aStartAngle
-          circles.w.aE, // aEndAngle
-          false, // aClockwise
-          0 // aRotation
-        ).getPoints(50)
-      ),
-      lineMaterial
-    )
-  );
-  // x
-  figure.add(
-    new THREE.Line(
-      new THREE.BufferGeometry().setFromPoints(
-        new THREE.EllipseCurve(
-          circles.x.x, // ax
-          circles.x.y, // aY
-          circles.x.r, // xRadius
-          circles.x.r, // yRadius
-          circles.x.aS, // aStartAngle
-          circles.x.aE, // aEndAngle
-          false, // aClockwise
-          0 // aRotation
-        ).getPoints(50)
-      ),
-      lineMaterial
-    )
-  );
-  // y
-  figure.add(
-    new THREE.Line(
-      new THREE.BufferGeometry().setFromPoints(
-        new THREE.EllipseCurve(
-          circles.y.x, // ax
-          circles.y.y, // aY
-          circles.y.r, // xRadius
-          circles.y.r, // yRadius
-          circles.y.aS, // aStartAngle
-          circles.y.aE, // aEndAngle
-          false, // aClockwise
-          0 // aRotation
-        ).getPoints(50)
-      ),
-      lineMaterial
-    )
-  );
-  // z
-  figure.add(
-    new THREE.Line(
-      new THREE.BufferGeometry().setFromPoints(
-        new THREE.EllipseCurve(
-          circles.z.x, // ax
-          circles.z.y, // aY
-          circles.z.r, // xRadius
-          circles.z.r, // yRadius
-          circles.z.aS, // aStartAngle
-          circles.z.aE, // aEndAngle
-          false, // aClockwise
-          0 // aRotation
-        ).getPoints(50)
-      ),
-      lineMaterial
-    )
-  );
+function getArcInfo(circle) {
+  return {
+    from: {
+      x: circle.x + Math.cos(circle.aS) * circle.r,
+      y: circle.y + Math.sin(circle.aS) * circle.r,
+    },
+    through: {
+      x: circle.x + Math.cos((circle.aE - circle.aS) / 2) * circle.r,
+      y: circle.y + Math.sin((circle.aE - circle.aS) / 2) * circle.r,
+    },
+    to: {
+      x: circle.x + Math.cos(circle.aE) * circle.r,
+      y: circle.y + Math.sin(circle.aE) * circle.r,
+    },
+  };
 }
-function drawText(figure, points, circles) {
-  for (const [key, value] of Object.entries(points)) {
-    const loader = new FontLoader();
-    const font = loader.parse(regularFontJson);
 
-    let text = new THREE.Mesh(
-      new TextGeometry(key.toLocaleUpperCase(), {
-        font,
-        size: 0.3,
-        height: 0,
-      }),
-      new THREE.MeshBasicMaterial({
-        color: 0x000000,
-      })
-    );
-    text.position.set(value.x + 0.1, value.y + 0.1);
-    figure.add(text);
-  }
-  for (const [key, value] of Object.entries(circles)) {
-    const loader = new FontLoader();
-    const font = loader.parse(regularFontJson);
+// function drawText(figure, points, circles) {
+//   for (const [key, value] of Object.entries(points)) {
+//     const loader = new FontLoader();
+//     const font = loader.parse(regularFontJson);
 
-    let text = new THREE.Mesh(
-      new TextGeometry(key.toLocaleUpperCase(), {
-        font,
-        size: 0.3,
-        height: 0,
-      }),
-      new THREE.MeshBasicMaterial({
-        color: 0x000000,
-      })
-    );
-    switch (key) {
-      case "y": {
-        text.position.set(value.x - 0.4, value.y - 0.4);
-        break;
-      }
-      case "z": {
-        text.position.set(value.x + 0.1, value.y + 0.1);
-        break;
-      }
-      default: {
-        text.position.set(value.x, value.y);
-      }
-    }
-    figure.add(text);
-  }
-}
-function drawGrid(figure) {
-  const size = 15;
-  const gridMaterial = new THREE.LineBasicMaterial({
-    color: 0x767676,
-  });
-  // drawing a grid
-  for (let i = 0; i < size; i++) {
-    figure.add(
-      new THREE.Line(
-        new THREE.BufferGeometry().setFromPoints([
-          new THREE.Vector2(-Math.floor(size / 2) + i, Math.floor(size / 2)),
-          new THREE.Vector2(-Math.floor(size / 2) + i, -Math.floor(size / 2)),
-        ]),
-        gridMaterial
-      )
-    );
-    figure.add(
-      new THREE.Line(
-        new THREE.BufferGeometry().setFromPoints([
-          new THREE.Vector2(Math.floor(size / 2), -Math.floor(size / 2) + i),
-          new THREE.Vector2(-Math.floor(size / 2), -Math.floor(size / 2) + i),
-        ]),
-        gridMaterial
-      )
-    );
-  }
+//     let text = new THREE.Mesh(
+//       new TextGeometry(key.toLocaleUpperCase(), {
+//         font,
+//         size: 0.3,
+//         height: 0,
+//       }),
+//       new THREE.MeshBasicMaterial({
+//         color: 0x000000,
+//       })
+//     );
+//     text.position.set(value.x + 0.1, value.y + 0.1);
+//     figure.add(text);
+//   }
+//   for (const [key, value] of Object.entries(circles)) {
+//     const loader = new FontLoader();
+//     const font = loader.parse(regularFontJson);
+
+//     let text = new THREE.Mesh(
+//       new TextGeometry(key.toLocaleUpperCase(), {
+//         font,
+//         size: 0.3,
+//         height: 0,
+//       }),
+//       new THREE.MeshBasicMaterial({
+//         color: 0x000000,
+//       })
+//     );
+//     switch (key) {
+//       case "y": {
+//         text.position.set(value.x - 0.4, value.y - 0.4);
+//         break;
+//       }
+//       case "z": {
+//         text.position.set(value.x + 0.1, value.y + 0.1);
+//         break;
+//       }
+//       default: {
+//         text.position.set(value.x, value.y);
+//       }
+//     }
+//     figure.add(text);
+//   }
+// }
+
+function drawAxes(paper, size) {
   // drawing axes
   // y
-  figure.add(
-    new THREE.Line(
-      new THREE.BufferGeometry().setFromPoints([
-        new THREE.Vector2(0, Math.floor(size / 2) + 1),
-        new THREE.Vector2(0, -Math.floor(size / 2) - 1),
-      ]),
-      new THREE.LineBasicMaterial({
-        color: 0x000000,
-        linewidth: 2,
-      })
-    )
+  new paper.Path.Line(
+    [0, Math.floor(size / 2) + 1],
+    [0, -Math.floor(size / 2) - 1]
   );
   // x
-  figure.add(
-    new THREE.Line(
-      new THREE.BufferGeometry().setFromPoints([
-        new THREE.Vector2(Math.floor(size / 2) + 1, 0),
-        new THREE.Vector2(-Math.floor(size / 2) - 1, 0),
-      ]),
-      new THREE.LineBasicMaterial({
-        color: 0x000000,
-        linewidth: 2,
-      })
-    )
+  new paper.Path.Line(
+    [Math.floor(size / 2) + 1, 0],
+    [-Math.floor(size / 2) - 1, 0]
   );
   // drawing arrows
   // y
-  figure.add(
-    new THREE.Line(
-      new THREE.BufferGeometry().setFromPoints([
-        new THREE.Vector2(0, Math.floor(size / 2) + 1),
-        new THREE.Vector2(0.3, Math.floor(size / 2) + 1 - 0.3),
-      ]),
-      new THREE.LineBasicMaterial({
-        color: 0x000000,
-        linewidth: 2,
-      })
-    )
+  new paper.Path.Line(
+    [0, Math.floor(size / 2) + 1],
+    [0.3, Math.floor(size / 2) + 1 - 0.3]
   );
-  figure.add(
-    new THREE.Line(
-      new THREE.BufferGeometry().setFromPoints([
-        new THREE.Vector2(0, Math.floor(size / 2) + 1),
-        new THREE.Vector2(-0.3, Math.floor(size / 2) + 1 - 0.3),
-      ]),
-      new THREE.LineBasicMaterial({
-        color: 0x000000,
-        linewidth: 2,
-      })
-    )
+  new paper.Path.Line(
+    [0, Math.floor(size / 2) + 1],
+    [-0.3, Math.floor(size / 2) + 1 - 0.3]
   );
   // x
-  figure.add(
-    new THREE.Line(
-      new THREE.BufferGeometry().setFromPoints([
-        new THREE.Vector2(Math.floor(size / 2) + 1, 0),
-        new THREE.Vector2(Math.floor(size / 2) + 1 - 0.3, 0.3),
-      ]),
-      new THREE.LineBasicMaterial({
-        color: 0x000000,
-        linewidth: 2,
-      })
-    )
+  new paper.Path.Line(
+    [Math.floor(size / 2) + 1, 0],
+    [Math.floor(size / 2) + 1 - 0.3, 0.3]
   );
-  figure.add(
-    new THREE.Line(
-      new THREE.BufferGeometry().setFromPoints([
-        new THREE.Vector2(Math.floor(size / 2) + 1, 0),
-        new THREE.Vector2(Math.floor(size / 2) + 1 - 0.3, -0.3),
-      ]),
-      new THREE.LineBasicMaterial({
-        color: 0x000000,
-        linewidth: 2,
-      })
-    )
+  new paper.Path.Line(
+    [Math.floor(size / 2) + 1, 0],
+    [Math.floor(size / 2) + 1 - 0.3, -0.3]
   );
   // drawing axis's names
-  const loader = new FontLoader();
-  const font = loader.parse(boldFontJson);
-
-  let text = new THREE.Mesh(
-    new TextGeometry("X", {
-      font,
-      size: 0.35,
-      height: 0,
-    }),
-    new THREE.MeshBasicMaterial({
-      color: 0x000000,
-    })
-  );
-  text.position.set(Math.floor(size / 2) + 1, 0.3);
-  figure.add(text);
-  text = new THREE.Mesh(
-    new TextGeometry("Y", {
-      font,
-      size: 0.35,
-      height: 0,
-    }),
-    new THREE.MeshBasicMaterial({
-      color: 0x000000,
-    })
-  );
-  text.position.set(0.3, Math.floor(size / 2) + 1);
-  figure.add(text);
+}
+function drawGrid(paper, size) {
+  // drawing a grid
+  for (let i = 0; i < size; i++) {
+    new paper.Path.Line(
+      [-Math.floor(size / 2) + i, Math.floor(size / 2)],
+      [-Math.floor(size / 2) + i, -Math.floor(size / 2)]
+    );
+    new paper.Path.Line(
+      [Math.floor(size / 2), -Math.floor(size / 2) + i],
+      [-Math.floor(size / 2), -Math.floor(size / 2) + i]
+    );
+  }
 }
 
 function Scene() {
@@ -590,7 +294,7 @@ function Scene() {
       x: 2 + Math.sqrt(3),
       y: -1,
       r: 2,
-      aS: (-150 / 180) * Math.PI,
+      aS: (210 / 180) * Math.PI,
       aE: 0,
       xRef: useRef(),
       yRef: useRef(),
@@ -626,7 +330,7 @@ function Scene() {
       x: 0,
       y: -5,
       r: 3,
-      aS: Math.PI,
+      aS: -Math.PI,
       aE: 2 * Math.PI,
       xRef: useRef(),
       yRef: useRef(),
@@ -655,7 +359,7 @@ function Scene() {
                 ...points,
                 [key]: {
                   ...points[key],
-                  x: e.target.value || e.target.defaultValue,
+                  x: ~~e.target.value || ~~e.target.defaultValue,
                 },
               })
             }
@@ -673,7 +377,7 @@ function Scene() {
                 ...points,
                 [key]: {
                   ...points[key],
-                  y: +e.target.value || +e.target.defaultValue,
+                  y: ~~e.target.value || ~~e.target.defaultValue,
                 },
               })
             }
@@ -698,7 +402,7 @@ function Scene() {
                 ...circles,
                 [key]: {
                   ...circles[key],
-                  x: e.target.value || e.target.defaultValue,
+                  x: ~~e.target.value || ~~e.target.defaultValue,
                 },
               })
             }
@@ -716,7 +420,7 @@ function Scene() {
                 ...circles,
                 [key]: {
                   ...circles[key],
-                  y: +e.target.value || +e.target.defaultValue,
+                  y: ~~e.target.value || ~~e.target.defaultValue,
                 },
               })
             }
@@ -734,7 +438,7 @@ function Scene() {
                 ...circles,
                 [key]: {
                   ...circles[key],
-                  r: +e.target.value || +e.target.defaultValue,
+                  r: ~~e.target.value || ~~e.target.defaultValue,
                 },
               })
             }
@@ -752,7 +456,7 @@ function Scene() {
                 ...circles,
                 [key]: {
                   ...circles[key],
-                  aS: +e.target.value || +e.target.defaultValue,
+                  aS: ~~e.target.value || ~~e.target.defaultValue,
                 },
               })
             }
@@ -770,7 +474,7 @@ function Scene() {
                 ...circles,
                 [key]: {
                   ...circles[key],
-                  aE: +e.target.value || +e.target.defaultValue,
+                  aE: ~~e.target.value || ~~e.target.defaultValue,
                 },
               })
             }
@@ -1024,134 +728,72 @@ function Scene() {
   );
 
   const resetPoints = () => {
-    setPoints(pointsDefault);
-    for (const point of Object.values(points)) {
-      point.xRef.current.value = point.xRef.current.defaultValue;
-      point.yRef.current.value = point.yRef.current.defaultValue;
-    }
+    // setPoints(pointsDefault);
+    // for (const point of Object.values(points)) {
+    //   point.xRef.current.value = point.xRef.current.defaultValue;
+    //   point.yRef.current.value = point.yRef.current.defaultValue;
+    // }
   };
   const resetCircles = () => {
-    setCircles(circlesDefault);
-    for (const circle of Object.values(circles)) {
-      circle.xRef.current.value = circle.xRef.current.defaultValue;
-      circle.yRef.current.value = circle.yRef.current.defaultValue;
-      circle.rRef.current.value = circle.rRef.current.defaultValue;
-      circle.aSRef.current.value = circle.aSRef.current.defaultValue;
-      circle.aERef.current.value = circle.aERef.current.defaultValue;
-    }
+    // setCircles(circlesDefault);
+    // for (const circle of Object.values(circles)) {
+    //   circle.xRef.current.value = circle.xRef.current.defaultValue;
+    //   circle.yRef.current.value = circle.yRef.current.defaultValue;
+    //   circle.rRef.current.value = circle.rRef.current.defaultValue;
+    //   circle.aSRef.current.value = circle.aSRef.current.defaultValue;
+    //   circle.aERef.current.value = circle.aERef.current.defaultValue;
+    // }
   };
   const resetEuTrans = () => {
-    setParams(paramsDefault);
-    for (const [key, param] of Object.entries(params)) {
-      if (!(key == "offset" || key == "rotation")) continue;
-      for (const setting of Object.values(param)) {
-        setting.ref.current.value = setting.ref.current.defaultValue;
-      }
-    }
+    // setParams(paramsDefault);
+    // for (const [key, param] of Object.entries(params)) {
+    //   if (!(key == "offset" || key == "rotation")) continue;
+    //   for (const setting of Object.values(param)) {
+    //     setting.ref.current.value = setting.ref.current.defaultValue;
+    //   }
+    // }
   };
   const resetAfTrans = () => {
-    setParams(paramsDefault);
-    for (const param of Object.values(params.vectors)) {
-      for (const setting of Object.values(param)) {
-        setting.ref.current.value = setting.ref.current.defaultValue;
-      }
-    }
+    // setParams(paramsDefault);
+    // for (const param of Object.values(params.vectors)) {
+    //   for (const setting of Object.values(param)) {
+    //     setting.ref.current.value = setting.ref.current.defaultValue;
+    //   }
+    // }
   };
   const resetPrTrans = () => {
-    setParams(paramsDefault);
-    for (const param of Object.values(params.projective)) {
-      for (const setting of Object.values(param)) {
-        setting.ref.current.value = setting.ref.current.defaultValue;
-      }
-    }
+    // setParams(paramsDefault);
+    // for (const param of Object.values(params.projective)) {
+    //   for (const setting of Object.values(param)) {
+    //     setting.ref.current.value = setting.ref.current.defaultValue;
+    //   }
+    // }
   };
 
   useEffect(() => {
-    // basic setup
-    const scene = new THREE.Scene();
-    scene.background = new THREE.Color(0xffffff);
+      const paper = paperFull.setup(canvasRef.current);
+      paper.project.currentStyle = {
+        strokeColor: "#D7D8DA",
+        strokeWidth: 0.05,
+      };
+      const gridSize = 15;
+      drawGrid(paper, gridSize);
+      paper.project.currentStyle = {
+        strokeColor: "#1B4F72",
+        strokeWidth: 0.06,
+      };
+      drawAxes(paper, gridSize);
+      paper.project.currentStyle = {
+        strokeColor: "#3498DB",
+        strokeWidth: 0.08,
+      };
+      drawFigure(paper, points, circles);
 
-    const camera = new THREE.PerspectiveCamera(75, 1, 0.1, 100000);
-    const cameraHeight = 12;
-    camera.position.z = cameraHeight;
-
-    const renderer = new THREE.WebGLRenderer({ canvas: canvasRef.current });
-    renderer.setSize(1000, 1000);
-
-    // creating an object
-    const figure = new THREE.Group();
-    // adding grid
-    drawGrid(scene);
-    // creating a material
-    const lineMaterial = new THREE.LineBasicMaterial({
-      color: 0x0000ff,
-      linewidth: 2,
-    });
-
-    // adding elements to the figure
-    // drawing lines
-    drawLines(figure, lineMaterial, points);
-    // drawing circles
-    drawCircles(figure, lineMaterial, circles);
-    // drawing text
-    drawText(figure, points, circles);
-
-    // adding figure to the scene
-    scene.add(figure);
-
-    // euclidean transformation
-    figure.position.x = params.offset.x.value;
-    figure.position.y = params.offset.y.value;
-    figure.rotation.z = params.rotation.angle.value;
-
-    // // affine transformation matrix
-    // const matrixAffine = new THREE.Matrix4().setFromMatrix3(
-    //   new THREE.Matrix3(
-    //     params.vectors.x.x.value,  
-    //     params.vectors.y.x.value, 
-    //     0,
-
-    //     params.vectors.x.y.value,   
-    //     params.vectors.y.y.value, 
-    //     0,
-
-    //     params.vectors.x.o.value, 
-    //     params.vectors.y.o.value, 
-    //     1,
-    //   )
-    // );
-
-    // // projective transformation matrix
-    // const matrixProjective = new THREE.Matrix4().setFromMatrix3(
-    //   new THREE.Matrix3(
-    //     params.projective.x.x.value,  
-    //     params.projective.y.x.value, 
-    //     params.projective.w.x.value,
-
-    //     params.projective.x.y.value,   
-    //     params.projective.y.y.value, 
-    //     params.projective.w.y.value,
-
-    //     params.projective.x.o.value, 
-    //     params.projective.y.o.value, 
-    //     params.projective.w.o.value,
-    //   )
-    // );
-    
-    // // applying result transformation matrix
-    // const matrix = new THREE.Matrix4();
-    // matrix.multiplyMatrices(matrixProjective, matrixAffine)
-    
-    // scene.applyMatrix4(matrix);
-    // camera.position.z =
-    //   cameraHeight * Math.max(...Array.from(matrix.elements));
-
-    renderer.render(scene, camera);
-
-    return () => {
-      renderer.dispose();
-    };
-  }, [points, circles, params]);
+      // paper.view.center = [8,-8];
+      // paper.view.scaling = [15, -15];
+      paper.view.draw();
+      // paper.project.activeLayer.children[0].rotate(10)
+  }, [points]);
 
   return (
     <div className="grid items-start justify-center grid-cols-1 gap-2 md:grid-cols-2">
