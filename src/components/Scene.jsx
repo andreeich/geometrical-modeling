@@ -1,11 +1,7 @@
 import React, { useRef, useEffect, useState } from "react";
 import * as THREE from "three";
-import { FontLoader } from "three/examples/jsm/loaders/FontLoader";
-import { TextGeometry } from "three/examples/jsm/geometries/TextGeometry";
-import regularFontJson from "three/examples/fonts/helvetiker_regular.typeface.json";
-import boldFontJson from "three/examples/fonts/helvetiker_bold.typeface.json";
-import matrix from "matrix-js";
 
+// drawing functions
 function drawLines(figure, lineMaterial, points) {
   // bone shape
   figure.add(
@@ -155,55 +151,6 @@ function drawCircles(figure, lineMaterial, circles) {
     );
   }
 }
-function drawText(figure, points, circles) {
-  for (const [key, value] of Object.entries(points)) {
-    const loader = new FontLoader();
-    const font = loader.parse(regularFontJson);
-
-    let text = new THREE.Mesh(
-      new TextGeometry(key.toLocaleUpperCase(), {
-        font,
-        size: 0.3,
-        height: 0,
-      }),
-      new THREE.MeshBasicMaterial({
-        color: 0x000000,
-      })
-    );
-    text.position.set(value.x + 0.1, value.y + 0.1);
-    figure.add(text);
-  }
-  for (const [key, value] of Object.entries(circles)) {
-    const loader = new FontLoader();
-    const font = loader.parse(regularFontJson);
-
-    let text = new THREE.Mesh(
-      new TextGeometry(key.toLocaleUpperCase(), {
-        font,
-        size: 0.3,
-        height: 0,
-      }),
-      new THREE.MeshBasicMaterial({
-        color: 0x000000,
-      })
-    );
-    switch (key) {
-      case "y": {
-        text.position.set(value.x - 0.4, value.y - 0.4);
-        break;
-      }
-      case "z": {
-        text.position.set(value.x + 0.1, value.y + 0.1);
-        break;
-      }
-      default: {
-        text.position.set(value.x, value.y);
-      }
-    }
-    figure.add(text);
-  }
-}
-
 function calcGrid(size = 15) {
   const gridPoints = [];
   for (let i = 0; i < size; i++) {
@@ -212,17 +159,17 @@ function calcGrid(size = 15) {
         [-Math.floor(size / 2) + i, Math.floor(size / 2)],
         [-Math.floor(size / 2) + i, -Math.floor(size / 2)],
         new THREE.LineBasicMaterial({
-          color: 0xB7B7B7,
-        linewidth: 0.5,
-      }),
+          color: 0xb7b7b7,
+          linewidth: 0.5,
+        }),
       ],
       [
         [Math.floor(size / 2), -Math.floor(size / 2) + i],
         [-Math.floor(size / 2), -Math.floor(size / 2) + i],
         new THREE.LineBasicMaterial({
-          color: 0xB7B7B7,
-        linewidth: 0.5,
-      }),
+          color: 0xb7b7b7,
+          linewidth: 0.5,
+        }),
       ]
     );
   }
@@ -293,8 +240,7 @@ function drawGrid(figure, points) {
 }
 
 function Scene() {
-  const canvasRef = useRef();
-  // data storage
+  // data
   const pointsDefault = {
     a: {
       x: 2,
@@ -491,10 +437,105 @@ function Scene() {
       aERef: useRef(),
     },
   };
-
+  const paramsDefault = {
+    offset: {
+      x: {
+        value: 0,
+        ref: useRef(),
+      },
+      y: {
+        value: 0,
+        ref: useRef(),
+      },
+    },
+    rotation: {
+      angle: {
+        value: 0,
+        ref: useRef(),
+      },
+    },
+    vectors: {
+      x: {
+        x: {
+          value: 1,
+          ref: useRef(),
+        },
+        y: {
+          value: 0,
+          ref: useRef(),
+        },
+        o: {
+          value: 0,
+          ref: useRef(),
+        },
+      },
+      y: {
+        x: {
+          value: 0,
+          ref: useRef(),
+        },
+        y: {
+          value: 1,
+          ref: useRef(),
+        },
+        o: {
+          value: 0,
+          ref: useRef(),
+        },
+      },
+    },
+    projective: {
+      x: {
+        x: {
+          value: 1,
+          ref: useRef(),
+        },
+        y: {
+          value: 0,
+          ref: useRef(),
+        },
+        o: {
+          value: 0,
+          ref: useRef(),
+        },
+      },
+      y: {
+        x: {
+          value: 0,
+          ref: useRef(),
+        },
+        y: {
+          value: 1,
+          ref: useRef(),
+        },
+        o: {
+          value: 0,
+          ref: useRef(),
+        },
+      },
+      w: {
+        x: {
+          value: 1,
+          ref: useRef(),
+        },
+        y: {
+          value: 1,
+          ref: useRef(),
+        },
+        o: {
+          value: 1,
+          ref: useRef(),
+        },
+      },
+    },
+  };
+  // refs and states
+  const canvasRef = useRef();
   const [points, setPoints] = useState(pointsDefault);
   const [circles, setCircles] = useState(circlesDefault);
-
+  const [params, setParams] = useState(paramsDefault);
+  const [projectiveToggle, setProjectiveToggle] = useState(false);
+  // dom elements with refs
   const pointRows = Object.entries(points).map(([key, value]) => {
     return (
       <tr key={key}>
@@ -639,103 +680,6 @@ function Scene() {
       </tr>
     );
   });
-
-  // setting parameters for transformation
-  const paramsDefault = {
-    offset: {
-      x: {
-        value: 0,
-        ref: useRef(),
-      },
-      y: {
-        value: 0,
-        ref: useRef(),
-      },
-    },
-    rotation: {
-      angle: {
-        value: 0,
-        ref: useRef(),
-      },
-    },
-    vectors: {
-      x: {
-        x: {
-          value: 1,
-          ref: useRef(),
-        },
-        y: {
-          value: 0,
-          ref: useRef(),
-        },
-        o: {
-          value: 0,
-          ref: useRef(),
-        },
-      },
-      y: {
-        x: {
-          value: 0,
-          ref: useRef(),
-        },
-        y: {
-          value: 1,
-          ref: useRef(),
-        },
-        o: {
-          value: 0,
-          ref: useRef(),
-        },
-      },
-    },
-    projective: {
-      x: {
-        x: {
-          value: 1,
-          ref: useRef(),
-        },
-        y: {
-          value: 0,
-          ref: useRef(),
-        },
-        o: {
-          value: 0,
-          ref: useRef(),
-        },
-      },
-      y: {
-        x: {
-          value: 0,
-          ref: useRef(),
-        },
-        y: {
-          value: 1,
-          ref: useRef(),
-        },
-        o: {
-          value: 0,
-          ref: useRef(),
-        },
-      },
-      w: {
-        x: {
-          value: 1,
-          ref: useRef(),
-        },
-        y: {
-          value: 1,
-          ref: useRef(),
-        },
-        o: {
-          value: 1,
-          ref: useRef(),
-        },
-      },
-    },
-  };
-
-  const [params, setParams] = useState(paramsDefault);
-
   const offsetRows = Object.entries(params.offset).map(([key, value]) => {
     return (
       <label className="input-group input-group-xs" key={key}>
@@ -882,7 +826,7 @@ function Scene() {
       );
     }
   );
-
+  // reset functions
   const resetPoints = () => {
     setPoints(pointsDefault);
     for (const point of Object.values(points)) {
@@ -925,9 +869,7 @@ function Scene() {
       }
     }
   };
-
-  const [projectiveToggle, setProjectiveToggle] = useState(false);
-
+  // calc new points based on matrixes
   const calcPoints = (gridPoints) => {
     let pointsLocal = { ...points };
     let gridLocal = { ...gridPoints };
@@ -1186,42 +1128,34 @@ function Scene() {
         value[1][1] = y2;
       }
     }
-    
+
     return [pointsLocal, circlesLocal, gridLocal];
   };
-
+  // drawing a canvas
   useEffect(() => {
-    // basic setup
     const scene = new THREE.Scene();
     scene.background = new THREE.Color(0xffffff);
-
     const camera = new THREE.PerspectiveCamera(75, 1, 0.1, 100000);
     const cameraHeight = 12;
     camera.position.z = cameraHeight;
-
     const renderer = new THREE.WebGLRenderer({ canvas: canvasRef.current });
     renderer.setSize(1000, 1000);
 
-    // creating an object
     const figure = new THREE.Group();
-    // creating a material
     const lineMaterial = new THREE.LineBasicMaterial({
       color: 0x0000ff,
       linewidth: 2,
     });
 
+    // calc new points
     const [pointsCalc, circlesCalc, gridCalc] = calcPoints(calcGrid(15));
-    
+
     const grid = new THREE.Group();
     // adding elements to the figure
     drawGrid(grid, gridCalc);
     grid.position.z -= 0.001;
-    // drawing lines
     drawLines(figure, lineMaterial, pointsCalc);
-    // drawing circles
     drawCircles(figure, lineMaterial, circlesCalc);
-    // drawing text
-    // drawText(figure, pointsCalc, circles);
 
     // adding figure to the scene
     scene.add(grid);
