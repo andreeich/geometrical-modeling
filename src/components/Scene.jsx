@@ -438,23 +438,43 @@ function Scene() {
     },
   };
   const paramsDefault = {
-    offset: {
-      x: {
-        value: 0,
-        ref: useRef(),
+    euclidean: {
+      offset: {
+        x: {
+          value: 0,
+          ref: useRef(),
+        },
+        y: {
+          value: 0,
+          ref: useRef(),
+        },
       },
-      y: {
-        value: 0,
-        ref: useRef(),
+      rotation: {
+        angle: {
+          value: 0,
+          ref: useRef(),
+        },
+        x: {
+          value: 0,
+          ref: useRef(),
+        },
+        y: {
+          value: 0,
+          ref: useRef(),
+        },
+      },
+      scale: {
+        x: {
+          value: 1,
+          ref: useRef(),
+        },
+        y: {
+          value: 1,
+          ref: useRef(),
+        },
       },
     },
-    rotation: {
-      angle: {
-        value: 0,
-        ref: useRef(),
-      },
-    },
-    vectors: {
+    affine: {
       x: {
         x: {
           value: 1,
@@ -680,63 +700,51 @@ function Scene() {
       </tr>
     );
   });
-  const offsetRows = Object.entries(params.offset).map(([key, value]) => {
-    return (
-      <label className="input-group input-group-xs" key={key}>
-        <span>{key.charAt(0).toUpperCase() + key.slice(1)}</span>
-        <input
-          type="number"
-          placeholder={value.value}
-          defaultValue={value.value}
-          ref={value.ref}
-          onChange={(e) =>
-            setParams({
-              ...params,
-              offset: {
-                ...params.offset,
-                [key]: {
-                  ...params.offset[key],
-                  value: e.target.value
-                    ? ~~e.target.value
-                    : ~~e.target.defaultValue,
-                },
-              },
-            })
-          }
-          className="w-full input input-xs input-bordered"
-        />
-      </label>
-    );
-  });
-  const rotationRows = Object.entries(params.rotation).map(([key, value]) => {
-    return (
-      <label className="input-group input-group-xs" key={key}>
-        <span>{key.charAt(0).toUpperCase() + key.slice(1)}</span>
-        <input
-          type="number"
-          placeholder={value.value}
-          defaultValue={value.value}
-          ref={value.ref}
-          onChange={(e) =>
-            setParams({
-              ...params,
-              rotation: {
-                ...params.rotation,
-                [key]: {
-                  ...params.rotation[key],
-                  value: e.target.value
-                    ? ~~e.target.value
-                    : ~~e.target.defaultValue,
-                },
-              },
-            })
-          }
-          className="w-full input input-xs input-bordered"
-        />
-      </label>
-    );
-  });
-  const vectorsRows = Object.entries(params.vectors).map(([key, value]) => {
+  const euclideanRows = Object.entries(params.euclidean).map(
+    ([name, object]) => {
+      return (
+        <div className="form-control" key={name}>
+          <label className="label">
+            <span className="label-text">
+              {name.charAt(0).toUpperCase() + name.slice(1)}
+            </span>
+          </label>
+          <div className="gap-2 join join-vertical">
+            {Object.entries(object).map(([key, value]) => (
+              <label className="input-group input-group-xs" key={key}>
+                <span>{key.charAt(0).toUpperCase() + key.slice(1)}</span>
+                <input
+                  type="number"
+                  placeholder={value.value}
+                  defaultValue={value.value}
+                  ref={value.ref}
+                  onChange={(e) =>
+                    setParams({
+                      ...params,
+                      euclidean: {
+                        ...params.euclidean,
+                        [name]: {
+                          ...params.euclidean[name],
+                          [key]: {
+                            ...params.euclidean[name][key],
+                            value: e.target.value
+                              ? ~~e.target.value
+                              : ~~e.target.defaultValue,
+                          },
+                        },
+                      },
+                    })
+                  }
+                  className="w-full input input-xs input-bordered"
+                />
+              </label>
+            ))}
+          </div>
+        </div>
+      );
+    }
+  );
+  const affineRows = Object.entries(params.affine).map(([key, value]) => {
     return (
       <div className="form-control" key={key}>
         <label className="label">
@@ -757,12 +765,12 @@ function Scene() {
                   onChange={(e) =>
                     setParams({
                       ...params,
-                      vectors: {
-                        ...params.vectors,
+                      affine: {
+                        ...params.affine,
                         [key]: {
-                          ...params.vectors[key],
+                          ...params.affine[key],
                           [k]: {
-                            ...params.vectors[key][k],
+                            ...params.affine[key][k],
                             value: e.target.value
                               ? ~~e.target.value
                               : ~~e.target.defaultValue,
@@ -855,7 +863,7 @@ function Scene() {
   };
   const resetAfTrans = () => {
     setParams(paramsDefault);
-    for (const param of Object.values(params.vectors)) {
+    for (const param of Object.values(params.affine)) {
       for (const setting of Object.values(param)) {
         setting.ref.current.value = setting.ref.current.defaultValue;
       }
@@ -889,10 +897,6 @@ function Scene() {
         points,
       };
     }
-    const rot = {
-      x: 0,
-      y: 0,
-    };
     let ms;
     if (projectiveToggle) {
       ms = [
@@ -900,33 +904,43 @@ function Scene() {
         [
           [1, 0, 0],
           [0, 1, 0],
-          [params.offset.x.value, params.offset.y.value, 1],
+          [params.euclidean.offset.x.value, params.euclidean.offset.y.value, 1],
         ],
         // Euclidean rotation
         [
           [
-            Math.cos(params.rotation.angle.value),
-            Math.sin(params.rotation.angle.value),
+            Math.cos(params.euclidean.rotation.angle.value),
+            Math.sin(params.euclidean.rotation.angle.value),
             0,
           ],
           [
-            -Math.sin(params.rotation.angle.value),
-            Math.cos(params.rotation.angle.value),
+            -Math.sin(params.euclidean.rotation.angle.value),
+            Math.cos(params.euclidean.rotation.angle.value),
             0,
           ],
           [
-            -rot.x * (Math.cos(params.rotation.angle.value) - 1) +
-              rot.y * Math.sin(params.rotation.angle.value),
-            -rot.x * Math.sin(params.rotation.angle.value) -
-              rot.y * (Math.cos(params.rotation.angle.value) - 1),
+            -params.euclidean.rotation.x.value *
+              (Math.cos(params.euclidean.rotation.angle.value) - 1) +
+              params.euclidean.rotation.y.value *
+                Math.sin(params.euclidean.rotation.angle.value),
+            -params.euclidean.rotation.x.value *
+              Math.sin(params.euclidean.rotation.angle.value) -
+              params.euclidean.rotation.y.value *
+                (Math.cos(params.euclidean.rotation.angle.value) - 1),
             1,
           ],
         ],
+        // Euclidean scale
+        [
+          [params.euclidean.scale.x.value, 0, 0],
+          [0, params.euclidean.scale.y.value, 0],
+          [0, 0, 1],
+        ],
         // Affine
         [
-          [params.vectors.x.x.value, params.vectors.y.x.value, 0],
-          [params.vectors.x.y.value, params.vectors.y.y.value, 0],
-          [params.vectors.x.o.value, params.vectors.y.o.value, 1],
+          [params.affine.x.x.value, params.affine.y.x.value, 0],
+          [params.affine.x.y.value, params.affine.y.y.value, 0],
+          [params.affine.x.o.value, params.affine.y.o.value, 1],
         ],
         // Projective
         [
@@ -953,33 +967,43 @@ function Scene() {
         [
           [1, 0, 0],
           [0, 1, 0],
-          [params.offset.x.value, params.offset.y.value, 1],
+          [params.euclidean.offset.x.value, params.euclidean.offset.y.value, 1],
         ],
         // Euclidean rotation
         [
           [
-            Math.cos(params.rotation.angle.value),
-            Math.sin(params.rotation.angle.value),
+            Math.cos(params.euclidean.rotation.angle.value),
+            Math.sin(params.euclidean.rotation.angle.value),
             0,
           ],
           [
-            -Math.sin(params.rotation.angle.value),
-            Math.cos(params.rotation.angle.value),
+            -Math.sin(params.euclidean.rotation.angle.value),
+            Math.cos(params.euclidean.rotation.angle.value),
             0,
           ],
           [
-            -rot.x * (Math.cos(params.rotation.angle.value) - 1) +
-              rot.y * Math.sin(params.rotation.angle.value),
-            -rot.x * Math.sin(params.rotation.angle.value) -
-              rot.y * (Math.cos(params.rotation.angle.value) - 1),
+            -params.euclidean.rotation.x.value *
+              (Math.cos(params.euclidean.rotation.angle.value) - 1) +
+              params.euclidean.rotation.y.value *
+                Math.sin(params.euclidean.rotation.angle.value),
+            -params.euclidean.rotation.x.value *
+              Math.sin(params.euclidean.rotation.angle.value) -
+              params.euclidean.rotation.y.value *
+                (Math.cos(params.euclidean.rotation.angle.value) - 1),
             1,
           ],
         ],
+        // Euclidean scale
+        [
+          [params.euclidean.scale.x.value, 0, 0],
+          [0, params.euclidean.scale.y.value, 0],
+          [0, 0, 1],
+        ],
         // Affine
         [
-          [params.vectors.x.x.value, params.vectors.y.x.value, 0],
-          [params.vectors.x.y.value, params.vectors.y.y.value, 0],
-          [params.vectors.x.o.value, params.vectors.y.o.value, 1],
+          [params.affine.x.x.value, params.affine.y.x.value, 0],
+          [params.affine.x.y.value, params.affine.y.y.value, 0],
+          [params.affine.x.o.value, params.affine.y.o.value, 1],
         ],
         // Projective
         // [
@@ -1048,14 +1072,14 @@ function Scene() {
       };
     }
 
-    // grid
+    // calculation for grid
     if (projectiveToggle) {
       ms = [
         // Affine
         [
-          [params.vectors.x.x.value, params.vectors.y.x.value, 0],
-          [params.vectors.x.y.value, params.vectors.y.y.value, 0],
-          [params.vectors.x.o.value, params.vectors.y.o.value, 1],
+          [params.affine.x.x.value, params.affine.y.x.value, 0],
+          [params.affine.x.y.value, params.affine.y.y.value, 0],
+          [params.affine.x.o.value, params.affine.y.o.value, 1],
         ],
         // Projective
         [
@@ -1080,9 +1104,9 @@ function Scene() {
       ms = [
         // Affine
         [
-          [params.vectors.x.x.value, params.vectors.y.x.value, 0],
-          [params.vectors.x.y.value, params.vectors.y.y.value, 0],
-          [params.vectors.x.o.value, params.vectors.y.o.value, 1],
+          [params.affine.x.x.value, params.affine.y.x.value, 0],
+          [params.affine.x.y.value, params.affine.y.y.value, 0],
+          [params.affine.x.o.value, params.affine.y.o.value, 1],
         ],
         // Projective
         // [
@@ -1104,6 +1128,7 @@ function Scene() {
         // ],
       ];
     }
+
     for (const valueS of Object.values(gridLocal)) {
       let value = Array.from(valueS);
       for (const m of ms) {
@@ -1237,20 +1262,7 @@ function Scene() {
               Reset
             </button>
           </div>
-          <div className="flex flex-col">
-            <div className="form-control">
-              <label className="label">
-                <span className="label-text">Offset</span>
-              </label>
-              <div className="gap-2 join join-vertical">{offsetRows}</div>
-            </div>
-            <div className="form-control">
-              <label className="label">
-                <span className="label-text">Rotation</span>
-              </label>
-              <div className="gap-2 join join-vertical">{rotationRows}</div>
-            </div>
-          </div>
+          <div className="flex flex-col">{euclideanRows}</div>
         </div>
         <div className="p-4 space-y-2 border rounded-lg">
           <div className="flex items-center justify-between gap-2">
@@ -1264,7 +1276,7 @@ function Scene() {
               Reset
             </button>
           </div>
-          <div className="flex flex-col">{vectorsRows}</div>
+          <div className="flex flex-col">{affineRows}</div>
         </div>
         <div className="p-4 space-y-2 border rounded-lg">
           <div className="flex items-center justify-between gap-2">
