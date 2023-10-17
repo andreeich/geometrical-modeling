@@ -29,9 +29,9 @@ module.exports = {
           // 'base-200': 'optional',
           // 'base-300': 'optional',
           // 'info': '#3abff8',
-          // 'success': '#36d399',
+          success: "#36d399",
           // 'warning': '#fbbd23',
-          // 'error': '#f87272',
+          error: "#f87272",
 
           // ? border radius rounded-box utility class, used in card and other large boxes
           // '--rounded-box': '1rem',

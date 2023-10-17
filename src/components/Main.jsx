@@ -1,9 +1,13 @@
 import SceneOne from "./SceneOne";
 import SceneTwo from "./SceneTwo";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 
 function Main() {
-  const [lab, setLab] = useState(1);
+  const [lab, setLab] = useState(~~localStorage.getItem("lab") || 1);
+
+  useEffect(() => {
+    localStorage.setItem("lab", lab);
+  }, [lab]);
 
   return (
     <main className="grid grid-flow-row mt-navbar">
