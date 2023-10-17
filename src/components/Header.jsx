@@ -1,11 +1,13 @@
+import React from "react";
+
 function Header() {
   return (
-    <header className="fixed top-0 left-0 z-20 w-full bg-base-100">
+    <header className="fixed top-0 left-0 z-20 w-full bg-base-100/50 backdrop-blur-sm">
       <div className="container">
         <div className="flex-col text-center md:flex-row navbar md:text-start">
           <div className="navbar-start">
             <p className="text-lg">
-              <b>Geometrical modelling</b> | Laboratory 1
+              <b>Geometrical modelling</b>
             </p>
           </div>
           <div className="gap-4 navbar-end">

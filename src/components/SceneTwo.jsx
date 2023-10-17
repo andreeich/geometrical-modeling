@@ -239,7 +239,7 @@ function drawGrid(figure, points) {
   }
 }
 
-function Scene() {
+function SceneTwo() {
   // data
   const pointsDefault = {
     a: {
@@ -1303,4 +1303,4 @@ function Scene() {
   );
 }
 
-export default Scene;
+export default SceneTwo;
