@@ -1,37 +1,10 @@
 import React, { useRef, useEffect, useState } from "react";
 import * as THREE from "three";
 
+const math = require("mathjs");
+const algebra = require("algebra.js");
+
 // calc function
-function getDeltoidPoint(r, t) {
-  const x = 2 * r * Math.cos(t) + r * Math.cos(2 * t);
-  const y = 2 * r * Math.sin(t) - r * Math.sin(2 * t);
-  return [x, y];
-}
-function getFirstDerivativeDeltoidPoint(r, t) {
-  const xt = -2 * r * Math.sin(t) - 2 * r * Math.sin(2 * t);
-  const yt = 2 * r * Math.cos(t) - 2 * r * Math.cos(2 * t);
-  return [xt, yt];
-}
-function getTangentPoints(point) {
-  const pointD1 = getFirstDerivativeDeltoidPoint(point.r, point.t);
-  let points = [];
-  for (let i = -1; i <= 1; i++) {
-    let x = point.point[0] + 10 * i;
-    let y = point.point[1] + (pointD1[1] / pointD1[0]) * (x - point.point[0]);
-    points.push([x, y]);
-  }
-  return points;
-}
-function getNormalPoints(point) {
-  const pointD1 = getFirstDerivativeDeltoidPoint(point.r, point.t);
-  let points = [];
-  for (let i = -1; i <= 1; i++) {
-    let x = point.point[0] + 10 * i;
-    let y = point.point[1] - (pointD1[0] / pointD1[1]) * (x - point.point[0]);
-    points.push([x, y]);
-  }
-  return points;
-}
 function calcGrid(size = 15) {
   const gridPoints = [];
   for (let i = 0; i < size; i++) {
@@ -106,6 +79,45 @@ function calcGrid(size = 15) {
   );
   return Array.from(gridPoints);
 }
+function getDeltoidPoint(funcs, r, t) {
+  let scope = { r, t };
+  math.evaluate("x = " + funcs.x, scope);
+  math.evaluate("y = " + funcs.y, scope);
+  return [scope.x, scope.y];
+}
+function getFirstDerivativeDeltoidPoint(funcs, r, t) {
+  let scope = { r, t };
+  math.evaluate("x = " + funcs.xt, scope);
+  math.evaluate("y = " + funcs.yt, scope);
+  return [scope.x, scope.y];
+}
+function getSecondDerivativeDeltoidPoint(funcs, r, t) {
+  let scope = { r, t };
+  math.evaluate("x = " + funcs.xtt, scope);
+  math.evaluate("y = " + funcs.ytt, scope);
+  return [scope.x, scope.y];
+}
+function getTangentPoints(funcs, point) {
+  const pointD1 = getFirstDerivativeDeltoidPoint(funcs, point.r, point.t);
+  let points = [];
+  for (let i = -1; i <= 1; i++) {
+    let x = point.point[0] + 10 * i;
+    let y = point.point[1] + (pointD1[1] / pointD1[0]) * (x - point.point[0]);
+    points.push([x, y]);
+  }
+  return points;
+}
+function getNormalPoints(funcs, point) {
+  const pointD1 = getFirstDerivativeDeltoidPoint(funcs, point.r, point.t);
+  let points = [];
+  for (let i = -1; i <= 1; i++) {
+    let x = point.point[0] + 10 * i;
+    let y = point.point[1] - (pointD1[0] / pointD1[1]) * (x - point.point[0]);
+    points.push([x, y]);
+  }
+  return points;
+}
+
 // drawing functions
 function drawLine(figure, points, color = 0x000000) {
   const material = new THREE.LineBasicMaterial({ color });
@@ -200,12 +212,47 @@ function SceneTwo() {
     maxIndex: -1,
     ref: useRef(),
   };
+  const shapeDataDefault = {
+    length: {
+      name: "Arc length",
+      value: 0,
+    },
+    radius: {
+      name: "Radius of curvature",
+      value: 0,
+    },
+    area: {
+      name: "Area",
+      value: 0,
+    },
+    inflection: {
+      name: "Inflection points",
+      value: 0,
+    },
+    rings: {
+      name: "Area of rings",
+      value: 0,
+    },
+  };
   // refs and states
   const canvasRef = useRef();
   const [params, setParams] = useState(paramsDefault);
   const [euclidean, setEuclidean] = useState(euclideanDefault);
   const [addConst, setAddConst] = useState(addConstDefault);
   const [addConstToggle, setAddConstToggle] = useState(false);
+  const [shapeData, setShapeData] = useState(shapeDataDefault);
+  const [deltoidFuncs, setDeltoidFuncs] = useState(null);
+  if (deltoidFuncs == null) {
+    function DeltoidFuncs() {
+      this.x = "2r * cos(t) + r * cos(2t)";
+      this.y = "2r * sin(t) - r * sin(2t)";
+      this.xt = math.derivative(this.x, "t").toString();
+      this.yt = math.derivative(this.y, "t").toString();
+      this.xtt = math.derivative(this.xt, "t").toString();
+      this.ytt = math.derivative(this.yt, "t").toString();
+    }
+    setDeltoidFuncs(new DeltoidFuncs());
+  }
   // dom elements with refs
   const paramsRows = Object.entries(params).map(([key, v]) => {
     return (
@@ -293,6 +340,50 @@ function SceneTwo() {
     }
   };
 
+  // calc shape data
+  function calcShapeData() {
+    const l = 16 * params.r.value;
+    const s = (2 / 9) * Math.PI * (params.r.value * 3) ** 2;
+    setShapeData({
+      ...shapeData,
+      length: {
+        ...shapeData.length,
+        value: l.toFixed(4),
+      },
+      area: {
+        ...shapeData.area,
+        value: s.toFixed(4),
+      },
+    });
+  }
+  const calcInflectionPoints = (funcs) => {
+    let points = [];
+    const parser = math.parser();
+    parser.evaluate(
+      `f(t) = ${math.simplify(`(${deltoidFuncs.ytt}) / (${deltoidFuncs.xtt})`)}`
+    );
+    const f = math.simplify(`(${deltoidFuncs.ytt}) / (${deltoidFuncs.xtt})`);
+    console.log(f.toString());
+    // console.log(algebra.parse(new algebra.Fraction(1, 4)).toString());
+    var z = new algebra.Expression("z");
+    var eq1 = new algebra.Equation(
+      z.divide(z).add(1),
+      new algebra.Fraction(1, z)
+    );
+    console.log(eq1.toString());
+
+    for (let t = constants.t.start; t <= constants.t.end; t += 0.1) {
+      const res = parser.evaluate(`f(${t})`);
+      if (Math.round(res * 10) / 10 == 0) {
+        points.push({ r: params.r.value, t });
+      }
+    }
+
+    const newPoints = points.map((point) => {
+      return new THREE.Vector2(...getDeltoidPoint(funcs, point.r, point.t));
+    });
+    return newPoints;
+  };
   // calc new points based on matrixes
   const calcPoints = () => {
     let ms = [
@@ -338,7 +429,7 @@ function SceneTwo() {
     let pointsDetails = [];
 
     for (let t = constants.t.start; t <= constants.t.end; t += 0.1) {
-      let point = getDeltoidPoint(params.r.value, t);
+      let point = getDeltoidPoint(deltoidFuncs, params.r.value, t);
 
       for (const m of ms) {
         let x =
@@ -390,8 +481,8 @@ function SceneTwo() {
     let tangent = null;
     let normal = null;
     if (addConst.index >= 0 && addConst.index < pointsDetails.length) {
-      tangent = getTangentPoints(pointsDetails[addConst.index]);
-      normal = getNormalPoints(pointsDetails[addConst.index]);
+      tangent = getTangentPoints(deltoidFuncs, pointsDetails[addConst.index]);
+      normal = getNormalPoints(deltoidFuncs, pointsDetails[addConst.index]);
       for (let index in tangent) {
         let point = tangent[index];
         for (const m of ms) {
@@ -447,6 +538,7 @@ function SceneTwo() {
     grid.position.z -= 0.001;
     drawLine(figure, points, 0x0000ff);
 
+    // drawing additional constructions
     if (pointsDetails.length) {
       addConst.ref.current.max = pointsDetails.length - 1;
       if (addConstToggle) {
@@ -460,6 +552,10 @@ function SceneTwo() {
           drawPoint(figure, pointsDetails[addConst.index].point);
       }
     }
+    // updating shape information
+    calcShapeData();
+    // drawing points
+    const pointsss = calcInflectionPoints(deltoidFuncs);
 
     // adding figure to the scene
     scene.add(grid);
@@ -529,6 +625,23 @@ function SceneTwo() {
             <span className="badge badge-error">Tangent</span>
             <span className="badge badge-success">Normal</span>
           </div>
+        </div>
+        <div className="p-4 space-y-2 border rounded-lg">
+          <div className="flex items-center justify-between gap-2">
+            <h2 className="text-lg font-bold text-center">Shape Information</h2>
+          </div>
+          <table className="table table-auto">
+            <tbody>
+              <tr>
+                <th>{shapeData.length.name}</th>
+                <td>{shapeData.length.value}</td>
+              </tr>
+              <tr>
+                <th>{shapeData.area.name}</th>
+                <td>{shapeData.area.value}</td>
+              </tr>
+            </tbody>
+          </table>
         </div>
         <div className="p-4 space-y-2 border rounded-lg">
           <div className="flex items-center justify-between gap-2">
