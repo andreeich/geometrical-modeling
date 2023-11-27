@@ -555,7 +555,7 @@ function SceneTwo() {
     // updating shape information
     calcShapeData();
     // drawing points
-    const pointsss = calcInflectionPoints(deltoidFuncs);
+    // const pointsss = calcInflectionPoints(deltoidFuncs);
 
     // adding figure to the scene
     scene.add(grid);

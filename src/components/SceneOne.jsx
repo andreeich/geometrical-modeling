@@ -1,3 +1,4 @@
+import { log } from "mathjs";
 import React, { useRef, useEffect, useState } from "react";
 import * as THREE from "three";
 
@@ -16,8 +17,8 @@ function drawLines(figure, lineMaterial, points) {
   figure.add(
     new THREE.Line(
       new THREE.BufferGeometry().setFromPoints([
+        new THREE.Vector2(points.b.x, points.b.y),
         new THREE.Vector2(points.c.x, points.c.y),
-        new THREE.Vector2(points.d.x, points.d.y),
       ]),
       lineMaterial
     )
@@ -34,108 +35,8 @@ function drawLines(figure, lineMaterial, points) {
   figure.add(
     new THREE.Line(
       new THREE.BufferGeometry().setFromPoints([
+        new THREE.Vector2(points.e.x, points.e.y),
         new THREE.Vector2(points.f.x, points.f.y),
-        new THREE.Vector2(points.g.x, points.g.y),
-      ]),
-      lineMaterial
-    )
-  );
-  figure.add(
-    new THREE.Line(
-      new THREE.BufferGeometry().setFromPoints([
-        new THREE.Vector2(points.h.x, points.h.y),
-        new THREE.Vector2(points.i.x, points.i.y),
-      ]),
-      lineMaterial
-    )
-  );
-  figure.add(
-    new THREE.Line(
-      new THREE.BufferGeometry().setFromPoints([
-        new THREE.Vector2(points.i.x, points.i.y),
-        new THREE.Vector2(points.j.x, points.j.y),
-      ]),
-      lineMaterial
-    )
-  );
-  // back shape
-  figure.add(
-    new THREE.Line(
-      new THREE.BufferGeometry().setFromPoints([
-        new THREE.Vector2(points.k.x, points.k.y),
-        new THREE.Vector2(points.l.x, points.l.y),
-      ]),
-      lineMaterial
-    )
-  );
-  figure.add(
-    new THREE.Line(
-      new THREE.BufferGeometry().setFromPoints([
-        new THREE.Vector2(points.l.x, points.l.y),
-        new THREE.Vector2(points.m.x, points.m.y),
-      ]),
-      lineMaterial
-    )
-  );
-  figure.add(
-    new THREE.Line(
-      new THREE.BufferGeometry().setFromPoints([
-        new THREE.Vector2(points.m.x, points.m.y),
-        new THREE.Vector2(points.n.x, points.n.y),
-      ]),
-      lineMaterial
-    )
-  );
-  figure.add(
-    new THREE.Line(
-      new THREE.BufferGeometry().setFromPoints([
-        new THREE.Vector2(points.n.x, points.n.y),
-        new THREE.Vector2(points.o.x, points.o.y),
-      ]),
-      lineMaterial
-    )
-  );
-  figure.add(
-    new THREE.Line(
-      new THREE.BufferGeometry().setFromPoints([
-        new THREE.Vector2(points.p.x, points.p.y),
-        new THREE.Vector2(points.q.x, points.q.y),
-      ]),
-      lineMaterial
-    )
-  );
-  figure.add(
-    new THREE.Line(
-      new THREE.BufferGeometry().setFromPoints([
-        new THREE.Vector2(points.q.x, points.q.y),
-        new THREE.Vector2(points.r.x, points.r.y),
-      ]),
-      lineMaterial
-    )
-  );
-  figure.add(
-    new THREE.Line(
-      new THREE.BufferGeometry().setFromPoints([
-        new THREE.Vector2(points.r.x, points.r.y),
-        new THREE.Vector2(points.s.x, points.s.y),
-      ]),
-      lineMaterial
-    )
-  );
-  figure.add(
-    new THREE.Line(
-      new THREE.BufferGeometry().setFromPoints([
-        new THREE.Vector2(points.s.x, points.s.y),
-        new THREE.Vector2(points.t.x, points.t.y),
-      ]),
-      lineMaterial
-    )
-  );
-  figure.add(
-    new THREE.Line(
-      new THREE.BufferGeometry().setFromPoints([
-        new THREE.Vector2(points.t.x, points.t.y),
-        new THREE.Vector2(points.k.x, points.k.y),
       ]),
       lineMaterial
     )
@@ -243,179 +144,47 @@ function SceneOne() {
   // data
   const pointsDefault = {
     a: {
-      x: 2,
-      y: 2,
+      x: -1.5,
+      y: 4,
       xRef: useRef(),
       yRef: useRef(),
     },
     b: {
-      x: -2,
-      y: 2,
+      x: -5,
+      y: 0,
       xRef: useRef(),
       yRef: useRef(),
     },
     c: {
-      x: -4 - Math.sqrt(3),
-      y: 1,
+      x: -1.5,
+      y: -4,
       xRef: useRef(),
       yRef: useRef(),
     },
     d: {
-      x: -2 - Math.sqrt(3),
-      y: 0,
+      x: 1.5,
+      y: -4,
       xRef: useRef(),
       yRef: useRef(),
     },
     e: {
-      x: -4 - Math.sqrt(3),
-      y: -1,
-      xRef: useRef(),
-      yRef: useRef(),
-    },
-    f: {
-      x: -2,
-      y: -2,
-      xRef: useRef(),
-      yRef: useRef(),
-    },
-    g: {
-      x: 2,
-      y: -2,
-      xRef: useRef(),
-      yRef: useRef(),
-    },
-    h: {
-      x: 4 + Math.sqrt(3),
-      y: -1,
-      xRef: useRef(),
-      yRef: useRef(),
-    },
-    i: {
-      x: 2 + Math.sqrt(3),
+      x: 5,
       y: 0,
       xRef: useRef(),
       yRef: useRef(),
     },
-    j: {
-      x: 4 + Math.sqrt(3),
-      y: 1,
-      xRef: useRef(),
-      yRef: useRef(),
-    },
-    k: {
-      x: -4 - Math.sqrt(3),
-      y: 5,
-      xRef: useRef(),
-      yRef: useRef(),
-    },
-    l: {
-      x: -5 - Math.sqrt(3),
-      y: 3,
-      xRef: useRef(),
-      yRef: useRef(),
-    },
-    m: {
-      x: -5 - Math.sqrt(3),
-      y: -3,
-      xRef: useRef(),
-      yRef: useRef(),
-    },
-    n: {
-      x: -4 - Math.sqrt(3),
-      y: -5,
-      xRef: useRef(),
-      yRef: useRef(),
-    },
-    o: {
-      x: -3,
-      y: -5,
-      xRef: useRef(),
-      yRef: useRef(),
-    },
-    p: {
-      x: 3,
-      y: -5,
-      xRef: useRef(),
-      yRef: useRef(),
-    },
-    q: {
-      x: 4 + Math.sqrt(3),
-      y: -5,
-      xRef: useRef(),
-      yRef: useRef(),
-    },
-    r: {
-      x: 5 + Math.sqrt(3),
-      y: -3,
-      xRef: useRef(),
-      yRef: useRef(),
-    },
-    s: {
-      x: 5 + Math.sqrt(3),
-      y: 3,
-      xRef: useRef(),
-      yRef: useRef(),
-    },
-    t: {
-      x: 4 + Math.sqrt(3),
-      y: 5,
+    f: {
+      x: 1.5,
+      y: 4,
       xRef: useRef(),
       yRef: useRef(),
     },
   };
   const circlesDefault = {
-    u: {
-      x: -2 - Math.sqrt(3),
-      y: 1,
-      r: 2,
-      aS: (30 / 180) * Math.PI,
-      aE: Math.PI,
-      xRef: useRef(),
-      yRef: useRef(),
-      rRef: useRef(),
-      aSRef: useRef(),
-      aERef: useRef(),
-    },
-    v: {
-      x: -2 - Math.sqrt(3),
-      y: -1,
-      r: 2,
-      aS: Math.PI,
-      aE: (-30 / 180) * Math.PI,
-      xRef: useRef(),
-      yRef: useRef(),
-      rRef: useRef(),
-      aSRef: useRef(),
-      aERef: useRef(),
-    },
-    w: {
-      x: 2 + Math.sqrt(3),
-      y: -1,
-      r: 2,
-      aS: (-150 / 180) * Math.PI,
-      aE: 0,
-      xRef: useRef(),
-      yRef: useRef(),
-      rRef: useRef(),
-      aSRef: useRef(),
-      aERef: useRef(),
-    },
-    x: {
-      x: 2 + Math.sqrt(3),
-      y: 1,
-      r: 2,
-      aS: 0,
-      aE: (150 / 180) * Math.PI,
-      xRef: useRef(),
-      yRef: useRef(),
-      rRef: useRef(),
-      aSRef: useRef(),
-      aERef: useRef(),
-    },
-    y: {
+    g: {
       x: 0,
-      y: -5,
-      r: 2,
+      y: 0,
+      r: 1.5,
       aS: 0,
       aE: 2 * Math.PI,
       xRef: useRef(),
@@ -424,12 +193,48 @@ function SceneOne() {
       aSRef: useRef(),
       aERef: useRef(),
     },
-    z: {
+    h: {
       x: 0,
-      y: -5,
-      r: 3,
-      aS: Math.PI,
+      y: 4,
+      r: 1.5,
+      aS: 0,
       aE: 2 * Math.PI,
+      xRef: useRef(),
+      yRef: useRef(),
+      rRef: useRef(),
+      aSRef: useRef(),
+      aERef: useRef(),
+    },
+    i: {
+      x: -5,
+      y: 0,
+      r: 1.5,
+      aS: (48.81 / 180) * Math.PI,
+      aE: (-48.81 / 180) * Math.PI,
+      xRef: useRef(),
+      yRef: useRef(),
+      rRef: useRef(),
+      aSRef: useRef(),
+      aERef: useRef(),
+    },
+    j: {
+      x: 0,
+      y: -4,
+      r: 1.5,
+      aS: 0,
+      aE: 2 * Math.PI,
+      xRef: useRef(),
+      yRef: useRef(),
+      rRef: useRef(),
+      aSRef: useRef(),
+      aERef: useRef(),
+    },
+    k: {
+      x: 5,
+      y: 0,
+      r: 1.5,
+      aS: ((180 + 48.81) / 180) * Math.PI,
+      aE: ((180 - 48.81) / 180) * Math.PI,
       xRef: useRef(),
       yRef: useRef(),
       rRef: useRef(),
@@ -706,13 +511,18 @@ function SceneOne() {
         <div className="form-control" key={name}>
           <label className="label">
             <span className="label-text">
-              {name.charAt(0).toUpperCase() + name.slice(1)}
+              {name == "offset"
+                ? "Зміщення"
+                : name == "rotation"
+                ? "Обертання"
+                : name == "scale"
+                ? "Збільшення"
+                : "Параметр"}
             </span>
           </label>
-          <div className="gap-2 join join-vertical">
+          <div className="gap-6 join">
             {Object.entries(object).map(([key, value]) => (
-              <label className="input-group input-group-xs" key={key}>
-                <span>{key.charAt(0).toUpperCase() + key.slice(1)}</span>
+              <div className="join" key={key}>
                 <input
                   type="number"
                   placeholder={value.value}
@@ -737,7 +547,14 @@ function SceneOne() {
                   }
                   className="w-full input input-xs input-bordered"
                 />
-              </label>
+                <div className="indicator">
+                  <span className="indicator-item badge badge-secondary">
+                    {key == "angle"
+                      ? "Кут"
+                      : key.charAt(0).toUpperCase() + key.slice(1)}
+                  </span>
+                </div>
+              </div>
             ))}
           </div>
         </div>
@@ -749,14 +566,13 @@ function SceneOne() {
       <div className="form-control" key={key}>
         <label className="label">
           <span className="label-text">
-            {key.charAt(0).toUpperCase() + key.slice(1)} Vector
+            Вектор {key.charAt(0).toUpperCase() + key.slice(1)}
           </span>
         </label>
-        <div className="gap-2 join">
+        <div className="gap-6 join">
           {Object.entries(value).map(([k, v]) => {
             return (
-              <label className="input-group input-group-xs" key={k}>
-                <span>{k.charAt(0).toUpperCase() + k.slice(1)}</span>
+              <div className="join" key={k}>
                 <input
                   type="number"
                   placeholder={v.value}
@@ -781,7 +597,12 @@ function SceneOne() {
                   }
                   className="w-full input input-xs input-bordered"
                 />
-              </label>
+                <div className="indicator ">
+                  <span className="indicator-item badge badge-secondary">
+                    {k.charAt(0).toUpperCase() + k.slice(1)}
+                  </span>
+                </div>
+              </div>
             );
           })}
         </div>
@@ -794,14 +615,13 @@ function SceneOne() {
         <div className="form-control" key={key}>
           <label className="label">
             <span className="label-text">
-              {key.charAt(0).toUpperCase() + key.slice(1)} Vector
+              Вектор {key.charAt(0).toUpperCase() + key.slice(1)}
             </span>
           </label>
-          <div className="gap-2 join">
+          <div className="gap-6 join">
             {Object.entries(value).map(([k, v]) => {
               return (
-                <label className="input-group input-group-xs" key={k}>
-                  <span>{key.toUpperCase() + k}</span>
+                <div className="join" key={k}>
                   <input
                     type="number"
                     placeholder={v.value}
@@ -826,7 +646,12 @@ function SceneOne() {
                     }
                     className="w-full input input-xs input-bordered"
                   />
-                </label>
+                  <div className="indicator ">
+                    <span className="indicator-item badge badge-secondary">
+                      {key.toUpperCase() + k}
+                    </span>
+                  </div>
+                </div>
               );
             })}
           </div>
@@ -854,10 +679,11 @@ function SceneOne() {
   };
   const resetEuTrans = () => {
     setParams(paramsDefault);
-    for (const [key, param] of Object.entries(params)) {
-      if (!(key === "offset" || key === "rotation")) continue;
+    for (const param of Object.values(params)) {
       for (const setting of Object.values(param)) {
-        setting.ref.current.value = setting.ref.current.defaultValue;
+        for (const p of Object.values(setting)) {
+          p.ref.current.value = p.ref.current.defaultValue;
+        }
       }
     }
   };
@@ -1038,6 +864,7 @@ function SceneOne() {
 
         value.x = x;
         value.y = y;
+        if (x == NaN || y == NaN) console.error("Point NaN");
       }
       pointsLocal = {
         ...pointsLocal,
@@ -1061,6 +888,7 @@ function SceneOne() {
 
           value.x = x;
           value.y = y;
+          if (x == NaN || y == NaN) console.error("Circle NaN");
         }
         points.push(new THREE.Vector2(value.x, value.y));
       }
@@ -1151,6 +979,8 @@ function SceneOne() {
 
         value[1][0] = x2;
         value[1][1] = y2;
+        if (x1 == NaN || y1 == NaN) console.error("Grid1 NaN");
+        if (x2 == NaN || y2 == NaN) console.error("Grid2 NaN");
       }
     }
 
@@ -1168,7 +998,7 @@ function SceneOne() {
 
     const figure = new THREE.Group();
     const lineMaterial = new THREE.LineBasicMaterial({
-      color: 0x0000ff,
+      color: 0x099009,
       linewidth: 2,
     });
 
@@ -1194,30 +1024,70 @@ function SceneOne() {
   }, [points, circles, params, projectiveToggle]);
 
   return (
-    <div className="grid items-start justify-center grid-cols-1 gap-2 md:grid-cols-2">
-      <div className="top-16 md:sticky aspect-square">
+    <div className="grid items-center justify-center grid-cols-1 gap-2 place-items-center">
+      <div className="max-w-md aspect-square">
         <canvas ref={canvasRef} className="!w-full !h-full" />
       </div>
-      <div className="flex flex-col gap-4">
+      <div className="grid gap-4 md:grid-cols-2">
         <div className="p-4 space-y-2 border rounded-lg">
           <div className="flex items-center justify-between gap-2">
-            <h2 className="text-lg font-bold text-center">
-              Setting Line Points
-            </h2>
+            <h2 className="font-bold text-md">Евклідові перетворення</h2>
+            <button
+              className="px-2 py-1 text-xs transition-shadow border rounded-md shadow active:shadow-none"
+              onClick={resetEuTrans}
+            >
+              Скинути
+            </button>
+          </div>
+          <div className="flex flex-col">{euclideanRows}</div>
+        </div>
+        <div className="p-4 space-y-2 border rounded-lg">
+          <div className="flex items-center justify-between gap-2">
+            <h2 className="font-bold text-md">Афінні перетворення</h2>
+            <button
+              className="px-2 py-1 text-xs transition-shadow border rounded-md shadow active:shadow-none"
+              onClick={resetAfTrans}
+            >
+              Скинути
+            </button>
+          </div>
+          <div className="flex flex-col">{affineRows}</div>
+        </div>
+        <div className="p-4 space-y-2 border rounded-lg">
+          <div className="flex items-center justify-between gap-2">
+            <h2 className="font-bold text-md">Проективні перетворення</h2>
+            <input
+              type="checkbox"
+              className="toggle toggle-secondary"
+              checked={projectiveToggle}
+              onChange={() => setProjectiveToggle(!projectiveToggle)}
+            />
+            <button
+              className="px-2 py-1 text-xs transition-shadow border rounded-md shadow active:shadow-none"
+              onClick={resetPrTrans}
+            >
+              Скинути
+            </button>
+          </div>
+          <div className="flex flex-col">{projectiveRows}</div>
+        </div>
+        <div className="p-4 space-y-2 border rounded-lg">
+          <div className="flex items-center justify-between gap-2">
+            <h2 className="font-bold text-md">Параметри точок фігури</h2>
             <button
               className="px-2 py-1 text-xs transition-shadow border rounded-md shadow active:shadow-none"
               onClick={resetPoints}
             >
-              Reset
+              Скинути
             </button>
           </div>
           <div className="overflow-x-auto h-60 md:h-48">
             <table className="table table-pin-rows">
               <thead>
                 <tr>
-                  <th>Point</th>
-                  <th>X coordinate</th>
-                  <th>Y coordinate</th>
+                  <th>Точка</th>
+                  <th>X</th>
+                  <th>Y</th>
                 </tr>
               </thead>
               <tbody>{pointRows}</tbody>
@@ -1226,77 +1096,29 @@ function SceneOne() {
         </div>
         <div className="p-4 space-y-2 border rounded-lg">
           <div className="flex items-center justify-between gap-2">
-            <h2 className="text-lg font-bold text-center">Setting Circles</h2>
+            <h2 className="font-bold text-md">Параметри кіл фігури</h2>
             <button
               className="px-2 py-1 text-xs transition-shadow border rounded-md shadow active:shadow-none"
               onClick={resetCircles}
             >
-              Reset
+              Скинути
             </button>
           </div>
           <div className="overflow-x-auto h-60 md:h-48">
             <table className="table table-pin-rows">
               <thead>
                 <tr>
-                  <th>Circle</th>
-                  <th>X coordinate</th>
-                  <th>Y coordinate</th>
-                  <th>Radius</th>
-                  <th>Start Angle</th>
-                  <th>End Angle</th>
+                  <th>Коло</th>
+                  <th>X</th>
+                  <th>Y</th>
+                  <th>Радіус</th>
+                  <th>Початковий кут</th>
+                  <th>Кунцевий кут</th>
                 </tr>
               </thead>
               <tbody>{circlesRows}</tbody>
             </table>
           </div>
-        </div>
-        <div className="p-4 space-y-2 border rounded-lg">
-          <div className="flex items-center justify-between gap-2">
-            <h2 className="text-lg font-bold text-center">
-              Euclidean Transformation
-            </h2>
-            <button
-              className="px-2 py-1 text-xs transition-shadow border rounded-md shadow active:shadow-none"
-              onClick={resetEuTrans}
-            >
-              Reset
-            </button>
-          </div>
-          <div className="flex flex-col">{euclideanRows}</div>
-        </div>
-        <div className="p-4 space-y-2 border rounded-lg">
-          <div className="flex items-center justify-between gap-2">
-            <h2 className="text-lg font-bold text-center">
-              Affine Transformation
-            </h2>
-            <button
-              className="px-2 py-1 text-xs transition-shadow border rounded-md shadow active:shadow-none"
-              onClick={resetAfTrans}
-            >
-              Reset
-            </button>
-          </div>
-          <div className="flex flex-col">{affineRows}</div>
-        </div>
-        <div className="p-4 space-y-2 border rounded-lg">
-          <div className="flex items-center justify-between gap-2">
-            <h2 className="text-lg font-bold text-center">
-              Projective Transformation
-            </h2>
-            <input
-              type="checkbox"
-              className="toggle"
-              checked={projectiveToggle}
-              onChange={() => setProjectiveToggle(!projectiveToggle)}
-            />
-            <button
-              className="px-2 py-1 text-xs transition-shadow border rounded-md shadow active:shadow-none"
-              onClick={resetPrTrans}
-            >
-              Reset
-            </button>
-          </div>
-          <div className="flex flex-col">{projectiveRows}</div>
         </div>
       </div>
     </div>

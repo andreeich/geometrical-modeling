@@ -10,21 +10,21 @@ function Main() {
   }, [lab]);
 
   return (
-    <main className="grid grid-flow-row mt-navbar">
+    <main className="grid grid-flow-row">
       <section>
         <div className="container">
-          <div className="mb-10 tabs">
+          <div className="mb-10 tabs tabs-boxed">
             <a
-              className={`tab tab-bordered ${lab === 1 ? " tab-active" : ""}`}
+              className={`tab ${lab === 1 ? " tab-active" : ""}`}
               onClick={() => setLab(1)}
             >
-              Laboratory 1
+              Лабораторна 1
             </a>
             <a
-              className={`tab tab-bordered ${lab === 2 ? " tab-active" : ""}`}
+              className={`tab ${lab === 2 ? " tab-active" : ""}`}
               onClick={() => setLab(2)}
             >
-              Laboratory 2
+              Лабораторна 2
             </a>
           </div>
         </div>
