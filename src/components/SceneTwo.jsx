@@ -447,46 +447,42 @@ function SceneTwo() {
 
         point[0] = x;
         point[1] = y;
-        point[2] = -y1;
       }
-      if (!point[0] || !point[1] || !point[2]) continue;
+      if (!point[0] || !point[1]) continue;
       points.push(new THREE.Vector2(point[0], point[1]));
       pointsDetails.push({
         point: [point[0], point[1]],
         a: params.a.value,
         c: params.c.value,
       });
-      points.push(new THREE.Vector2(point[0], point[2]));
+    }
+    for (let x = -7; x <= 7; x += 0.1) {
+      let point = getDeltoidPoint(
+        deltoidFuncs,
+        params.a.value,
+        params.c.value,
+        x
+      );
+
+      for (const m of ms) {
+        let x =
+          (point[0] * m[0][0] + point[1] * m[1][0] + m[2][0]) /
+          (point[0] * m[0][2] + point[1] * m[1][2] + m[2][2]);
+        let y =
+          (point[0] * m[0][1] + point[1] * m[1][1] + m[2][1]) /
+          (point[0] * m[0][2] + point[1] * m[1][2] + m[2][2]);
+
+        point[0] = x;
+        point[1] = y;
+      }
+      if (!point[0] || !point[1]) continue;
+      points.push(new THREE.Vector2(point[0], -point[1]));
       pointsDetails.push({
-        point: [point[0], point[2]],
+        point: [point[0], -point[1]],
         a: params.a.value,
         c: params.c.value,
       });
     }
-    // for (let x = -10; x <= 10; x += 0.1) {
-    //   let point = getDeltoidPoint(
-    //     deltoidFuncs,
-    //     params.a.value,
-    //     params.c.value,
-    //     x
-    //   );
-    //   point[1] = -point[1];
-
-    //   for (const m of ms) {
-    //     let x =
-    //       (point[0] * m[0][0] + point[1] * m[1][0] + m[2][0]) /
-    //       (point[0] * m[0][2] + point[1] * m[1][2] + m[2][2]);
-    //     let y =
-    //       (point[0] * m[0][1] + point[1] * m[1][1] + m[2][1]) /
-    //       (point[0] * m[0][2] + point[1] * m[1][2] + m[2][2]);
-
-    //     point[0] = x;
-    //     point[1] = y;
-    //   }
-    //   if (!point[0] || !point[1]) continue;
-    //   points.push(new THREE.Vector2(point[0], point[1]));
-    //   pointsDetails.push({ point, a: params.a.value, c: params.c.value });
-    // }
 
     ms = [
       // Euclidean rotation
