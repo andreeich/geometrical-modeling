@@ -26,6 +26,15 @@ function drawLines(figure, lineMaterial, points) {
   figure.add(
     new THREE.Line(
       new THREE.BufferGeometry().setFromPoints([
+        new THREE.Vector2(points.c.x, points.c.y),
+        new THREE.Vector2(points.d.x, points.d.y),
+      ]),
+      lineMaterial
+    )
+  );
+  figure.add(
+    new THREE.Line(
+      new THREE.BufferGeometry().setFromPoints([
         new THREE.Vector2(points.d.x, points.d.y),
         new THREE.Vector2(points.e.x, points.e.y),
       ]),
@@ -37,6 +46,15 @@ function drawLines(figure, lineMaterial, points) {
       new THREE.BufferGeometry().setFromPoints([
         new THREE.Vector2(points.e.x, points.e.y),
         new THREE.Vector2(points.f.x, points.f.y),
+      ]),
+      lineMaterial
+    )
+  );
+  figure.add(
+    new THREE.Line(
+      new THREE.BufferGeometry().setFromPoints([
+        new THREE.Vector2(points.f.x, points.f.y),
+        new THREE.Vector2(points.a.x, points.a.y),
       ]),
       lineMaterial
     )
@@ -144,38 +162,38 @@ function SceneOne() {
   // data
   const pointsDefault = {
     a: {
-      x: -1.5,
-      y: 4,
+      x: 0,
+      y: 4.5,
       xRef: useRef(),
       yRef: useRef(),
     },
     b: {
-      x: -5,
-      y: 0,
+      x: -4,
+      y: 3,
       xRef: useRef(),
       yRef: useRef(),
     },
     c: {
-      x: -1.5,
-      y: -4,
+      x: -4,
+      y: -3,
       xRef: useRef(),
       yRef: useRef(),
     },
     d: {
-      x: 1.5,
-      y: -4,
+      x: 0,
+      y: -4.5,
       xRef: useRef(),
       yRef: useRef(),
     },
     e: {
-      x: 5,
-      y: 0,
+      x: 4,
+      y: -3,
       xRef: useRef(),
       yRef: useRef(),
     },
     f: {
-      x: 1.5,
-      y: 4,
+      x: 4,
+      y: 3,
       xRef: useRef(),
       yRef: useRef(),
     },
@@ -184,7 +202,7 @@ function SceneOne() {
     g: {
       x: 0,
       y: 0,
-      r: 1.5,
+      r: 2,
       aS: 0,
       aE: 2 * Math.PI,
       xRef: useRef(),
@@ -195,10 +213,10 @@ function SceneOne() {
     },
     h: {
       x: 0,
-      y: 4,
-      r: 1.5,
-      aS: 0,
-      aE: 2 * Math.PI,
+      y: 4.5,
+      r: 1,
+      aS: ((360 - 20) / 180) * Math.PI,
+      aE: ((90 - 70 + 180) / 180) * Math.PI,
       xRef: useRef(),
       yRef: useRef(),
       rRef: useRef(),
@@ -206,11 +224,11 @@ function SceneOne() {
       aERef: useRef(),
     },
     i: {
-      x: -5,
-      y: 0,
-      r: 1.5,
-      aS: (48.81 / 180) * Math.PI,
-      aE: (-48.81 / 180) * Math.PI,
+      x: -4,
+      y: -3,
+      r: 2,
+      aS: (1 / 2) * Math.PI,
+      aE: ((90 + 70 + 180) / 180) * Math.PI,
       xRef: useRef(),
       yRef: useRef(),
       rRef: useRef(),
@@ -219,10 +237,10 @@ function SceneOne() {
     },
     j: {
       x: 0,
-      y: -4,
-      r: 1.5,
-      aS: 0,
-      aE: 2 * Math.PI,
+      y: -4.5,
+      r: 1,
+      aS: ((180 - 20) / 180) * Math.PI,
+      aE: ((180 + 20 + 180) / 180) * Math.PI,
       xRef: useRef(),
       yRef: useRef(),
       rRef: useRef(),
@@ -230,11 +248,11 @@ function SceneOne() {
       aERef: useRef(),
     },
     k: {
-      x: 5,
-      y: 0,
-      r: 1.5,
-      aS: ((180 + 48.81) / 180) * Math.PI,
-      aE: ((180 - 48.81) / 180) * Math.PI,
+      x: 4,
+      y: -3,
+      r: 2,
+      aS: ((20 + 180) / 180) * Math.PI,
+      aE: (1 / 2) * Math.PI,
       xRef: useRef(),
       yRef: useRef(),
       rRef: useRef(),
