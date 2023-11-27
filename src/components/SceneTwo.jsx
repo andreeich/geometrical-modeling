@@ -581,7 +581,7 @@ function SceneTwo() {
     // adding elements to the figure
     drawGrid(grid, calcGrid());
     grid.position.z -= 0.001;
-    drawLine(figure, points, 0x099009);
+    drawLine(figure, points, 0x900990);
 
     // drawing additional constructions
     if (pointsDetails.length) {

@@ -998,7 +998,7 @@ function SceneOne() {
 
     const figure = new THREE.Group();
     const lineMaterial = new THREE.LineBasicMaterial({
-      color: 0x099009,
+      color: 0x900990,
       linewidth: 2,
     });
 
