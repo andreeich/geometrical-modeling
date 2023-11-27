@@ -103,7 +103,6 @@ function getTangentPoints(funcs, point) {
     point.c,
     point.point[0]
   );
-  console.log(pointD1);
   let points = [];
   for (let i = -1; i <= 1; i++) {
     let x = point.point[0] + 10 * i;
@@ -172,11 +171,11 @@ function SceneTwo() {
   // data
   const paramsDefault = {
     a: {
-      value: 1,
+      value: 4,
       ref: useRef(),
     },
     c: {
-      value: 1,
+      value: 4,
       ref: useRef(),
     },
   };
@@ -263,8 +262,7 @@ function SceneTwo() {
   // dom elements with refs
   const paramsRows = Object.entries(params).map(([key, v]) => {
     return (
-      <label className="input-group input-group-xs" key={key}>
-        <span>{key.charAt(0).toUpperCase() + key.slice(1)}</span>
+      <div className="join" key={key}>
         <input
           type="number"
           placeholder={v.value}
@@ -284,7 +282,12 @@ function SceneTwo() {
           }
           className="w-full input input-xs input-bordered"
         />
-      </label>
+        <div className="indicator">
+          <span className="indicator-item badge badge-secondary">
+            {key.charAt(0).toUpperCase() + key.slice(1)}
+          </span>
+        </div>
+      </div>
     );
   });
   const euclideanRows = Object.entries(euclidean).map(([name, object]) => {
@@ -292,35 +295,50 @@ function SceneTwo() {
       <div className="form-control" key={name}>
         <label className="label">
           <span className="label-text">
-            {name.charAt(0).toUpperCase() + name.slice(1)}
+            {name == "offset"
+              ? "Зміщення"
+              : name == "rotation"
+              ? "Обертання"
+              : name == "scale"
+              ? "Збільшення"
+              : "Параметр"}
           </span>
         </label>
-        <div className="gap-2 join join-vertical">
+        <div className="gap-6 join">
           {Object.entries(object).map(([key, value]) => (
-            <label className="input-group input-group-xs" key={key}>
-              <span>{key.charAt(0).toUpperCase() + key.slice(1)}</span>
+            <div className="join" key={key}>
               <input
                 type="number"
                 placeholder={value.value}
                 defaultValue={value.value}
                 ref={value.ref}
                 onChange={(e) =>
-                  setEuclidean({
-                    ...euclidean,
-                    [name]: {
-                      ...euclidean[name],
-                      [key]: {
-                        ...euclidean[name][key],
-                        value: e.target.value
-                          ? ~~e.target.value
-                          : ~~e.target.defaultValue,
+                  setParams({
+                    ...params,
+                    euclidean: {
+                      ...params.euclidean,
+                      [name]: {
+                        ...params.euclidean[name],
+                        [key]: {
+                          ...params.euclidean[name][key],
+                          value: e.target.value
+                            ? ~~e.target.value
+                            : ~~e.target.defaultValue,
+                        },
                       },
                     },
                   })
                 }
                 className="w-full input input-xs input-bordered"
               />
-            </label>
+              <div className="indicator">
+                <span className="indicator-item badge badge-secondary">
+                  {key == "angle"
+                    ? "Кут"
+                    : key.charAt(0).toUpperCase() + key.slice(1)}
+                </span>
+              </div>
+            </div>
           ))}
         </div>
       </div>
@@ -364,7 +382,7 @@ function SceneTwo() {
   //     },
   //   });
   // }
-  // calc new points based on matrixes
+  // // calc new points based on matrixes
   const calcPoints = () => {
     let ms = [
       // Euclidean offset
@@ -423,38 +441,52 @@ function SceneTwo() {
         let y =
           (point[0] * m[0][1] + point[1] * m[1][1] + m[2][1]) /
           (point[0] * m[0][2] + point[1] * m[1][2] + m[2][2]);
-
-        point[0] = x;
-        point[1] = y;
-      }
-      if (!point[0] || !point[1]) continue;
-      points.push(new THREE.Vector2(point[0], point[1]));
-      pointsDetails.push({ point, a: params.a.value, c: params.c.value });
-    }
-    for (let x = -10; x <= 10; x += 0.1) {
-      let point = getDeltoidPoint(
-        deltoidFuncs,
-        params.a.value,
-        params.c.value,
-        x
-      );
-      point[1] = -point[1];
-
-      for (const m of ms) {
-        let x =
-          (point[0] * m[0][0] + point[1] * m[1][0] + m[2][0]) /
-          (point[0] * m[0][2] + point[1] * m[1][2] + m[2][2]);
-        let y =
+        let y1 =
           (point[0] * m[0][1] + point[1] * m[1][1] + m[2][1]) /
           (point[0] * m[0][2] + point[1] * m[1][2] + m[2][2]);
 
         point[0] = x;
         point[1] = y;
+        point[2] = -y1;
       }
-      if (!point[0] || !point[1]) continue;
+      if (!point[0] || !point[1] || !point[2]) continue;
       points.push(new THREE.Vector2(point[0], point[1]));
-      pointsDetails.push({ point, a: params.a.value, c: params.c.value });
+      pointsDetails.push({
+        point: [point[0], point[1]],
+        a: params.a.value,
+        c: params.c.value,
+      });
+      points.push(new THREE.Vector2(point[0], point[2]));
+      pointsDetails.push({
+        point: [point[0], point[2]],
+        a: params.a.value,
+        c: params.c.value,
+      });
     }
+    // for (let x = -10; x <= 10; x += 0.1) {
+    //   let point = getDeltoidPoint(
+    //     deltoidFuncs,
+    //     params.a.value,
+    //     params.c.value,
+    //     x
+    //   );
+    //   point[1] = -point[1];
+
+    //   for (const m of ms) {
+    //     let x =
+    //       (point[0] * m[0][0] + point[1] * m[1][0] + m[2][0]) /
+    //       (point[0] * m[0][2] + point[1] * m[1][2] + m[2][2]);
+    //     let y =
+    //       (point[0] * m[0][1] + point[1] * m[1][1] + m[2][1]) /
+    //       (point[0] * m[0][2] + point[1] * m[1][2] + m[2][2]);
+
+    //     point[0] = x;
+    //     point[1] = y;
+    //   }
+    //   if (!point[0] || !point[1]) continue;
+    //   points.push(new THREE.Vector2(point[0], point[1]));
+    //   pointsDetails.push({ point, a: params.a.value, c: params.c.value });
+    // }
 
     ms = [
       // Euclidean rotation
@@ -507,7 +539,6 @@ function SceneTwo() {
           point[1] = y;
         }
         if (!point[0] || !point[1]) continue;
-        console.log(point);
 
         tangent[index] = new THREE.Vector2(...point);
       }
@@ -550,7 +581,7 @@ function SceneTwo() {
     // adding elements to the figure
     drawGrid(grid, calcGrid());
     grid.position.z -= 0.001;
-    drawLine(figure, points, 0x0000ff);
+    drawLine(figure, points, 0x099009);
 
     // drawing additional constructions
     if (pointsDetails.length) {
@@ -569,7 +600,6 @@ function SceneTwo() {
     // updating shape information
     // calcShapeData();
     // drawing points
-    // const pointsss = calcInflectionPoints(deltoidFuncs);
 
     // adding figure to the scene
     scene.add(grid);
@@ -583,29 +613,27 @@ function SceneTwo() {
   }, [params, euclidean, addConst]);
 
   return (
-    <div className="grid items-start justify-center grid-cols-1 gap-2 md:grid-cols-2">
-      <div className="top-16 md:sticky aspect-square">
+    <div className="grid items-center justify-center grid-cols-1 gap-2 place-items-center">
+      <div className="max-w-md aspect-square">
         <canvas ref={canvasRef} className="!w-full !h-full" />
       </div>
-      <div className="flex flex-col gap-4">
+      <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
         <div className="p-4 space-y-2 border rounded-lg">
           <div className="flex items-center justify-between gap-2">
-            <h2 className="text-lg font-bold text-center">
-              Setting Parameters
-            </h2>
+            <h2 className="text-lg font-bold text-center">Параметри фігури</h2>
             <button
               className="px-2 py-1 text-xs transition-shadow border rounded-md shadow active:shadow-none"
               onClick={resetParams}
             >
-              Reset
+              Скинути
             </button>
           </div>
-          <div className="flex flex-col">{paramsRows}</div>
+          <div className="flex flex-col gap-4">{paramsRows}</div>
         </div>
         <div className="p-4 space-y-2 border rounded-lg">
           <div className="flex items-center justify-between gap-2">
             <h2 className="text-lg font-bold text-center">
-              Additional Constructions
+              Додаткові конструкції
             </h2>
             <input
               type="checkbox"
@@ -616,7 +644,7 @@ function SceneTwo() {
           </div>
           <fieldset disabled={!addConstToggle} className="flex flex-col">
             <label className="gap-4 join">
-              <span className="text-sm">Point</span>
+              <span className="text-sm">Точка</span>
               <input
                 type="range"
                 min={1}
@@ -636,13 +664,13 @@ function SceneTwo() {
             </label>
           </fieldset>
           <div className="gap-2 join">
-            <span className="badge badge-error">Tangent</span>
-            <span className="badge badge-success">Normal</span>
+            <span className="badge badge-error">Дотична</span>
+            <span className="badge badge-success">Нормаль</span>
           </div>
         </div>
-        <div className="p-4 space-y-2 border rounded-lg">
+        {/* <div className="p-4 space-y-2 border rounded-lg">
           <div className="flex items-center justify-between gap-2">
-            <h2 className="text-lg font-bold text-center">Shape Information</h2>
+            <h2 className="text-lg font-bold text-center">Дані фігури</h2>
           </div>
           <table className="table table-auto">
             <tbody>
@@ -656,17 +684,17 @@ function SceneTwo() {
               </tr>
             </tbody>
           </table>
-        </div>
+        </div> */}
         <div className="p-4 space-y-2 border rounded-lg">
           <div className="flex items-center justify-between gap-2">
             <h2 className="text-lg font-bold text-center">
-              Euclidean Transformation
+              Евклідові перетоврення
             </h2>
             <button
               className="px-2 py-1 text-xs transition-shadow border rounded-md shadow active:shadow-none"
               onClick={resetEuclid}
             >
-              Reset
+              Скинути
             </button>
           </div>
           <fieldset disabled={addConstToggle} className="flex flex-col">
