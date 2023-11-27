@@ -79,27 +79,24 @@ function calcGrid(size = 15) {
   );
   return Array.from(gridPoints);
 }
-function getDeltoidPoint(funcs, a, c, x) {
-  let scope = { x, a, c };
-  math.evaluate("y = " + funcs.y, scope);
-  return [scope.x, scope.y];
+function getDeltoidPoint(funcs, a, b, c, x) {
+  let scope = { a, b, c, x };
+  math.evaluate("y1 = " + funcs.y1, scope);
+  math.evaluate("y2 = " + funcs.y2, scope);
+  return [scope.x, scope.y1, scope.y2];
 }
-function getFirstDerivativeDeltoidPoint(funcs, a, c, x) {
-  let scope = { a, c, x };
-  math.evaluate("y = " + funcs.yx, scope);
-  return [scope.x, scope.y];
-}
-function getSecondDerivativeDeltoidPoint(funcs, a, c, x) {
-  let scope = { r, t };
-  math.evaluate("x = " + funcs.xtt, scope);
-  math.evaluate("y = " + funcs.ytt, scope);
-  return [scope.x, scope.y];
+function getFirstDerivativeDeltoidPoint(funcs, a, b, c, x) {
+  let scope = { a, b, c, x };
+  math.evaluate("y1 = " + funcs.y1x, scope);
+  math.evaluate("y2 = " + funcs.y2x, scope);
+  return [scope.x, scope.y1, scope.y2];
 }
 function getTangentPoints(funcs, point) {
   if (!point.point[0] || !point.point[1]) return null;
   const pointD1 = getFirstDerivativeDeltoidPoint(
     funcs,
     point.a,
+    point.b,
     point.c,
     point.point[0]
   );
@@ -116,6 +113,7 @@ function getNormalPoints(funcs, point) {
   const pointD1 = getFirstDerivativeDeltoidPoint(
     funcs,
     point.a,
+    point.b,
     point.c,
     point.point[0]
   );
@@ -168,14 +166,17 @@ function drawPoint(figure, point, color = 0x000000, r = 0.1) {
 }
 
 function SceneTwo() {
-  // data
   const paramsDefault = {
     a: {
-      value: 4,
+      value: 8,
+      ref: useRef(),
+    },
+    b: {
+      value: 2,
       ref: useRef(),
     },
     c: {
-      value: 4,
+      value: 12,
       ref: useRef(),
     },
   };
@@ -252,9 +253,10 @@ function SceneTwo() {
   const [deltoidFuncs, setDeltoidFuncs] = useState(null);
   if (deltoidFuncs == null) {
     function DeltoidFuncs() {
-      this.y = "sqrt(sqrt(a^4+4*c^2*x^2)-x^2-c^2)";
-      this.yx = math.derivative(this.y, "x").toString();
-      this.yxx = math.derivative(this.yx, "x").toString();
+      this.y1 = "sqrt(b-x^2+sqrt(2*(a-b)*x^2+b^2-c))";
+      this.y1x = math.derivative(this.y1, "x").toString();
+      this.y2 = "sqrt(b-x^2-sqrt(2*(a-b)*x^2+b^2-c))";
+      this.y2x = math.derivative(this.y2, "x").toString();
     }
 
     setDeltoidFuncs(new DeltoidFuncs());
@@ -268,7 +270,14 @@ function SceneTwo() {
           placeholder={v.value}
           defaultValue={v.value}
           ref={v.ref}
-          step={0.1}
+          step={0.5}
+          max={
+            key == "b"
+              ? params.a.value
+              : key == "c"
+              ? params.a.value ** 2
+              : null
+          }
           onChange={(e) =>
             setParams({
               ...params,
@@ -425,14 +434,24 @@ function SceneTwo() {
 
     let points = [];
     let pointsDetails = [];
-
-    for (let x = -7; x <= 7; x += 0.1) {
+    let xB = math.evaluate("x = sqrt(a+sqrt(a^2-c))", {
+      a: params.a.value,
+      c: params.c.value,
+    });
+    let step =
+      math.evaluate("x = sqrt(sqrt(a^2-c))", {
+        a: params.a.value,
+        c: params.c.value,
+      }) / 30;
+    for (let x = -xB; x <= xB; x += step) {
       let point = getDeltoidPoint(
         deltoidFuncs,
         params.a.value,
+        params.b.value,
         params.c.value,
         x
       );
+      // console.log(point[0]);
 
       for (const m of ms) {
         let x =
@@ -442,51 +461,70 @@ function SceneTwo() {
           (point[0] * m[0][1] + point[1] * m[1][1] + m[2][1]) /
           (point[0] * m[0][2] + point[1] * m[1][2] + m[2][2]);
         let y1 =
-          (point[0] * m[0][1] + point[1] * m[1][1] + m[2][1]) /
-          (point[0] * m[0][2] + point[1] * m[1][2] + m[2][2]);
+          (point[0] * m[0][1] + point[2] * m[1][1] + m[2][1]) /
+          (point[0] * m[0][2] + point[2] * m[1][2] + m[2][2]);
 
         point[0] = x;
         point[1] = y;
-        point[2] = -y1;
+        // point[2] = y1;
       }
       if (!point[0] || !point[1] || !point[2]) continue;
       points.push(new THREE.Vector2(point[0], point[1]));
       pointsDetails.push({
         point: [point[0], point[1]],
         a: params.a.value,
+        b: params.b.value,
         c: params.c.value,
       });
-      points.push(new THREE.Vector2(point[0], point[2]));
-      pointsDetails.push({
-        point: [point[0], point[2]],
-        a: params.a.value,
-        c: params.c.value,
-      });
+      // points.push(new THREE.Vector2(point[0], point[2]));
+      // pointsDetails.push({
+      //   point: [point[0], point[2]],
+      //   a: params.a.value,
+      //   b: params.b.value,
+      //   c: params.c.value,
+      // });
     }
-    // for (let x = -10; x <= 10; x += 0.1) {
-    //   let point = getDeltoidPoint(
-    //     deltoidFuncs,
-    //     params.a.value,
-    //     params.c.value,
-    //     x
-    //   );
-    //   point[1] = -point[1];
+    for (let x = -xB; x <= xB; x += step) {
+      let point = getDeltoidPoint(
+        deltoidFuncs,
+        params.a.value,
+        params.b.value,
+        params.c.value,
+        x
+      );
+      // console.log(point[0]);
 
-    //   for (const m of ms) {
-    //     let x =
-    //       (point[0] * m[0][0] + point[1] * m[1][0] + m[2][0]) /
-    //       (point[0] * m[0][2] + point[1] * m[1][2] + m[2][2]);
-    //     let y =
-    //       (point[0] * m[0][1] + point[1] * m[1][1] + m[2][1]) /
-    //       (point[0] * m[0][2] + point[1] * m[1][2] + m[2][2]);
+      for (const m of ms) {
+        let x =
+          (point[0] * m[0][0] + point[1] * m[1][0] + m[2][0]) /
+          (point[0] * m[0][2] + point[1] * m[1][2] + m[2][2]);
+        let y =
+          (point[0] * m[0][1] + point[1] * m[1][1] + m[2][1]) /
+          (point[0] * m[0][2] + point[1] * m[1][2] + m[2][2]);
+        let y1 =
+          (point[0] * m[0][1] + point[2] * m[1][1] + m[2][1]) /
+          (point[0] * m[0][2] + point[2] * m[1][2] + m[2][2]);
 
-    //     point[0] = x;
-    //     point[1] = y;
-    //   }
-    //   if (!point[0] || !point[1]) continue;
-    //   points.push(new THREE.Vector2(point[0], point[1]));
-    //   pointsDetails.push({ point, a: params.a.value, c: params.c.value });
-    // }
+        point[0] = x;
+        point[1] = y;
+        // point[2] = -y1;
+      }
+      if (!point[0] || !point[1] || !point[2]) continue;
+      points.push(new THREE.Vector2(point[0], -point[1]));
+      pointsDetails.push({
+        point: [point[0], -point[1]],
+        a: params.a.value,
+        b: params.b.value,
+        c: params.c.value,
+      });
+      // points.push(new THREE.Vector2(point[0], -point[2]));
+      // pointsDetails.push({
+      //   point: [point[0], point[2]],
+      //   a: params.a.value,
+      //   b: params.b.value,
+      //   c: params.c.value,
+      // });
+    }
 
     ms = [
       // Euclidean rotation
