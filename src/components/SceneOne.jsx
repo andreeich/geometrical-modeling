@@ -330,11 +330,11 @@ function SceneOne() {
     projective: {
       x: {
         x: {
-          value: 1,
+          value: 100,
           ref: useRef(),
         },
         y: {
-          value: 0,
+          value: 90,
           ref: useRef(),
         },
         o: {
@@ -344,11 +344,11 @@ function SceneOne() {
       },
       y: {
         x: {
-          value: 0,
+          value: 40,
           ref: useRef(),
         },
         y: {
-          value: 1,
+          value: 100,
           ref: useRef(),
         },
         o: {
@@ -366,7 +366,7 @@ function SceneOne() {
           ref: useRef(),
         },
         o: {
-          value: 1,
+          value: 180,
           ref: useRef(),
         },
       },
