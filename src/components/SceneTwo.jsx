@@ -265,6 +265,11 @@ function SceneTwo() {
   const paramsRows = Object.entries(params).map(([key, v]) => {
     return (
       <div className="join" key={key}>
+        <div className="indicator">
+          <span className="indicator-item badge-xs badge badge-secondary">
+            {key.charAt(0).toUpperCase() + key.slice(1)}
+          </span>
+        </div>
         <input
           type="number"
           placeholder={v.value}
@@ -289,13 +294,8 @@ function SceneTwo() {
               },
             })
           }
-          className="w-full input input-xs input-bordered"
+          className="w-full input input-xs"
         />
-        <div className="indicator">
-          <span className="indicator-item badge badge-secondary">
-            {key.charAt(0).toUpperCase() + key.slice(1)}
-          </span>
-        </div>
       </div>
     );
   });
@@ -316,6 +316,13 @@ function SceneTwo() {
         <div className="gap-6 join">
           {Object.entries(object).map(([key, value]) => (
             <div className="join" key={key}>
+              <div className="indicator">
+                <span className="indicator-item badge badge-xs badge-secondary">
+                  {key == "angle"
+                    ? "Кут"
+                    : key.charAt(0).toUpperCase() + key.slice(1)}
+                </span>
+              </div>
               <input
                 type="number"
                 placeholder={value.value}
@@ -335,15 +342,8 @@ function SceneTwo() {
                     },
                   })
                 }
-                className="w-full input input-xs input-bordered"
+                className="w-full input input-xs"
               />
-              <div className="indicator">
-                <span className="indicator-item badge badge-secondary">
-                  {key == "angle"
-                    ? "Кут"
-                    : key.charAt(0).toUpperCase() + key.slice(1)}
-                </span>
-              </div>
             </div>
           ))}
         </div>
@@ -637,32 +637,29 @@ function SceneTwo() {
         <canvas ref={canvasRef} className="!w-full !h-full" />
       </div>
       <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
-        <div className="p-4 space-y-2 border rounded-lg">
+        <div className="p-4 space-y-2">
           <div className="flex items-center justify-between gap-2">
             <h2 className="text-lg font-bold text-center">Параметри фігури</h2>
-            <button
-              className="px-2 py-1 text-xs transition-shadow border rounded-md shadow active:shadow-none"
-              onClick={resetParams}
-            >
+            <button className="btn btn-xs btn-ghost" onClick={resetParams}>
               Скинути
             </button>
           </div>
           <div className="flex flex-col gap-4">{paramsRows}</div>
         </div>
-        <div className="p-4 space-y-2 border rounded-lg">
+        <div className="p-4 space-y-2">
           <div className="flex items-center justify-between gap-2">
             <h2 className="text-lg font-bold text-center">
               Додаткові конструкції
             </h2>
             <input
               type="checkbox"
-              className="toggle"
+              className="toggle toggle-info toggle-xs"
               checked={addConstToggle}
               onChange={handleAddConstToggle}
             />
           </div>
           <fieldset disabled={!addConstToggle} className="flex flex-col">
-            <label className="gap-4 join">
+            <label className="items-center gap-4 join">
               <span className="text-sm">Точка</span>
               <input
                 type="range"
@@ -678,16 +675,20 @@ function SceneTwo() {
                       : ~~e.target.defaultValue,
                   })
                 }
-                className="range range-sm"
+                className="range range-xs"
               />
             </label>
           </fieldset>
-          <div className="gap-2 join">
-            <span className="badge badge-error">Дотична</span>
-            <span className="badge badge-success">Нормаль</span>
+          <div className="items-end gap-2 join join-vertical">
+            <span className="items-center gap-2 text-xs join">
+              Дотична<span className="badge badge-error"></span>
+            </span>
+            <span className="items-center gap-2 text-xs join">
+              Нормаль<span className="badge badge-success"></span>
+            </span>
           </div>
         </div>
-        {/* <div className="p-4 space-y-2 border rounded-lg">
+        {/* <div className="p-4 space-y-2">
           <div className="flex items-center justify-between gap-2">
             <h2 className="text-lg font-bold text-center">Дані фігури</h2>
           </div>
@@ -704,15 +705,12 @@ function SceneTwo() {
             </tbody>
           </table>
         </div> */}
-        <div className="p-4 space-y-2 border rounded-lg">
+        <div className="p-4 space-y-2">
           <div className="flex items-center justify-between gap-2">
             <h2 className="text-lg font-bold text-center">
               Евклідові перетоврення
             </h2>
-            <button
-              className="px-2 py-1 text-xs transition-shadow border rounded-md shadow active:shadow-none"
-              onClick={resetEuclid}
-            >
+            <button className="btn btn-xs btn-ghost" onClick={resetEuclid}>
               Скинути
             </button>
           </div>

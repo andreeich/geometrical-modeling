@@ -541,6 +541,13 @@ function SceneOne() {
           <div className="gap-6 join">
             {Object.entries(object).map(([key, value]) => (
               <div className="join" key={key}>
+                <div className="indicator">
+                  <span className="indicator-item badge badge-secondary badge-xs">
+                    {key == "angle"
+                      ? "Кут"
+                      : key.charAt(0).toUpperCase() + key.slice(1)}
+                  </span>
+                </div>
                 <input
                   type="number"
                   placeholder={value.value}
@@ -563,15 +570,8 @@ function SceneOne() {
                       },
                     })
                   }
-                  className="w-full input input-xs input-bordered"
+                  className="w-full input input-xs"
                 />
-                <div className="indicator">
-                  <span className="indicator-item badge badge-secondary">
-                    {key == "angle"
-                      ? "Кут"
-                      : key.charAt(0).toUpperCase() + key.slice(1)}
-                  </span>
-                </div>
               </div>
             ))}
           </div>
@@ -591,6 +591,12 @@ function SceneOne() {
           {Object.entries(value).map(([k, v]) => {
             return (
               <div className="join" key={k}>
+                <div className="indicator ">
+                  <span className="indicator-item badge badge-secondary badge-xs">
+                    {k.charAt(0).toUpperCase() + k.slice(1)}
+                  </span>
+                </div>
+
                 <input
                   type="number"
                   placeholder={v.value}
@@ -613,13 +619,8 @@ function SceneOne() {
                       },
                     })
                   }
-                  className="w-full input input-xs input-bordered"
+                  className="w-full input input-xs"
                 />
-                <div className="indicator ">
-                  <span className="indicator-item badge badge-secondary">
-                    {k.charAt(0).toUpperCase() + k.slice(1)}
-                  </span>
-                </div>
               </div>
             );
           })}
@@ -640,6 +641,11 @@ function SceneOne() {
             {Object.entries(value).map(([k, v]) => {
               return (
                 <div className="join" key={k}>
+                  <div className="indicator ">
+                    <span className="indicator-item badge badge-secondary badge-xs">
+                      {key.toUpperCase() + k}
+                    </span>
+                  </div>
                   <input
                     type="number"
                     placeholder={v.value}
@@ -662,13 +668,8 @@ function SceneOne() {
                         },
                       })
                     }
-                    className="w-full input input-xs input-bordered"
+                    className="w-full input input-xs"
                   />
-                  <div className="indicator ">
-                    <span className="indicator-item badge badge-secondary">
-                      {key.toUpperCase() + k}
-                    </span>
-                  </div>
                 </div>
               );
             })}
@@ -1050,10 +1051,7 @@ function SceneOne() {
         <div className="p-4 space-y-2 border rounded-lg">
           <div className="flex items-center justify-between gap-2">
             <h2 className="font-bold text-md">Евклідові перетворення</h2>
-            <button
-              className="px-2 py-1 text-xs transition-shadow border rounded-md shadow active:shadow-none"
-              onClick={resetEuTrans}
-            >
+            <button className="btn btn-xs btn-ghost" onClick={resetEuTrans}>
               Скинути
             </button>
           </div>
@@ -1062,10 +1060,7 @@ function SceneOne() {
         <div className="p-4 space-y-2 border rounded-lg">
           <div className="flex items-center justify-between gap-2">
             <h2 className="font-bold text-md">Афінні перетворення</h2>
-            <button
-              className="px-2 py-1 text-xs transition-shadow border rounded-md shadow active:shadow-none"
-              onClick={resetAfTrans}
-            >
+            <button className="btn btn-xs btn-ghost" onClick={resetAfTrans}>
               Скинути
             </button>
           </div>
@@ -1076,14 +1071,11 @@ function SceneOne() {
             <h2 className="font-bold text-md">Проективні перетворення</h2>
             <input
               type="checkbox"
-              className="toggle toggle-secondary"
+              className="toggle toggle-xs toggle-secondary"
               checked={projectiveToggle}
               onChange={() => setProjectiveToggle(!projectiveToggle)}
             />
-            <button
-              className="px-2 py-1 text-xs transition-shadow border rounded-md shadow active:shadow-none"
-              onClick={resetPrTrans}
-            >
+            <button className="btn btn-xs btn-ghost" onClick={resetPrTrans}>
               Скинути
             </button>
           </div>
@@ -1092,10 +1084,7 @@ function SceneOne() {
         <div className="p-4 space-y-2 border rounded-lg">
           <div className="flex items-center justify-between gap-2">
             <h2 className="font-bold text-md">Параметри точок фігури</h2>
-            <button
-              className="px-2 py-1 text-xs transition-shadow border rounded-md shadow active:shadow-none"
-              onClick={resetPoints}
-            >
+            <button className="btn btn-xs btn-ghost" onClick={resetPoints}>
               Скинути
             </button>
           </div>
@@ -1115,10 +1104,7 @@ function SceneOne() {
         <div className="p-4 space-y-2 border rounded-lg">
           <div className="flex items-center justify-between gap-2">
             <h2 className="font-bold text-md">Параметри кіл фігури</h2>
-            <button
-              className="px-2 py-1 text-xs transition-shadow border rounded-md shadow active:shadow-none"
-              onClick={resetCircles}
-            >
+            <button className="btn btn-xs btn-ghost" onClick={resetCircles}>
               Скинути
             </button>
           </div>

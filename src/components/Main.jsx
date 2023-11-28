@@ -13,7 +13,7 @@ function Main() {
     <main className="grid grid-flow-row">
       <section>
         <div className="container">
-          <div className="mb-10 tabs tabs-boxed">
+          <div className="w-full mb-10 tabs tabs-lifted">
             <a
               className={`tab ${lab === 1 ? " tab-active" : ""}`}
               onClick={() => setLab(1)}
