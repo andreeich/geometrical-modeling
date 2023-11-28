@@ -1029,7 +1029,7 @@ function SceneOne() {
       <div className="max-w-md aspect-square">
         <canvas ref={canvasRef} className="!w-full !h-full" />
       </div>
-      <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
+      <div className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3">
         <div className="p-4 space-y-2 border rounded-lg">
           <div className="flex items-center justify-between gap-2">
             <h2 className="font-bold text-md">Евклідові перетворення</h2>
