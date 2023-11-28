@@ -80,20 +80,20 @@ function calcGrid(size = 15) {
   );
   return Array.from(gridPoints);
 }
-function getDeltoidPoint(funcs, a, c, x) {
-  let scope = { x, a, c };
+function getDeltoidPoint(funcs, a, c, mir = false) {
+  let p = Math.sqrt(Math.tan(Math.PI - a));
+  if (mir) p = -p;
+  let scope = { p, c };
+  math.evaluate("x = " + funcs.x, scope);
   math.evaluate("y = " + funcs.y, scope);
   return [scope.x, scope.y];
 }
-function getFirstDerivativeDeltoidPoint(funcs, a, c, x) {
-  let scope = { a, c, x };
-  math.evaluate("y = " + funcs.yx, scope);
-  return [scope.x, scope.y];
-}
-function getSecondDerivativeDeltoidPoint(funcs, a, c, x) {
-  let scope = { r, t };
-  math.evaluate("x = " + funcs.xtt, scope);
-  math.evaluate("y = " + funcs.ytt, scope);
+function getFirstDerivativeDeltoidPoint(funcs, a, c, mir = false) {
+  let p = Math.sqrt(Math.tan(Math.PI - a));
+  if (mir) p = -p;
+  let scope = { p, c };
+  math.evaluate("x = " + funcs.xt, scope);
+  math.evaluate("y = " + funcs.yt, scope);
   return [scope.x, scope.y];
 }
 function getTangentPoints(funcs, point) {
@@ -102,7 +102,7 @@ function getTangentPoints(funcs, point) {
     funcs,
     point.a,
     point.c,
-    point.point[0]
+    point.mir
   );
   let points = [];
   for (let i = -1; i <= 1; i++) {
@@ -118,7 +118,7 @@ function getNormalPoints(funcs, point) {
     funcs,
     point.a,
     point.c,
-    point.point[0]
+    point.mir
   );
   let points = [];
   for (let i = -1; i <= 1; i++) {
@@ -171,12 +171,8 @@ function drawPoint(figure, point, color = 0x000000, r = 0.1) {
 function SceneTwo() {
   // data
   const paramsDefault = {
-    a: {
-      value: 4,
-      ref: useRef(),
-    },
     c: {
-      value: 4,
+      value: 3.5,
       ref: useRef(),
     },
   };
@@ -222,24 +218,12 @@ function SceneTwo() {
     ref: useRef(),
   };
   const shapeDataDefault = {
-    length: {
-      name: "Arc length",
-      value: 0,
-    },
     radius: {
-      name: "Radius of curvature",
+      name: "Радіус кривизни",
       value: 0,
     },
     area: {
-      name: "Area",
-      value: 0,
-    },
-    inflection: {
-      name: "Inflection points",
-      value: 0,
-    },
-    rings: {
-      name: "Area of rings",
+      name: "Площа",
       value: 0,
     },
   };
@@ -253,9 +237,10 @@ function SceneTwo() {
   const [deltoidFuncs, setDeltoidFuncs] = useState(null);
   if (deltoidFuncs == null) {
     function DeltoidFuncs() {
-      this.y = "sqrt(sqrt(a^4+4*c^2*x^2)-x^2-c^2)";
-      this.yx = math.derivative(this.y, "x").toString();
-      this.yxx = math.derivative(this.yx, "x").toString();
+      this.x = "c * sqrt(2) * ((p + p^3)/(1 + p^4))";
+      this.y = "c * sqrt(2) * ((p - p^3)/(1 + p^4))";
+      this.xt = math.derivative(this.x, "p").toString();
+      this.yt = math.derivative(this.y, "p").toString();
     }
 
     setDeltoidFuncs(new DeltoidFuncs());
@@ -364,21 +349,21 @@ function SceneTwo() {
   };
 
   // calc shape data
-  // function calcShapeData() {
-  //   const l = 16 * params.r.value;
-  //   const s = (2 / 9) * Math.PI * (params.r.value * 3) ** 2;
-  //   setShapeData({
-  //     ...shapeData,
-  //     length: {
-  //       ...shapeData.length,
-  //       value: l.toFixed(4),
-  //     },
-  //     area: {
-  //       ...shapeData.area,
-  //       value: s.toFixed(4),
-  //     },
-  //   });
-  // }
+  function calcShapeData() {
+    const s = params.c.value ** 2;
+    const r = (2 * params.c.value ** 2) / (3 * Math.sqrt(2 * Math.cos(0)));
+    setShapeData({
+      ...shapeData,
+      radius: {
+        ...shapeData.radius,
+        value: r.toFixed(4),
+      },
+      area: {
+        ...shapeData.area,
+        value: s.toFixed(4),
+      },
+    });
+  }
   // // calc new points based on matrixes
   const calcPoints = () => {
     let ms = [
@@ -423,13 +408,8 @@ function SceneTwo() {
     let points = [];
     let pointsDetails = [];
 
-    for (let x = -7; x <= 7; x += 0.1) {
-      let point = getDeltoidPoint(
-        deltoidFuncs,
-        params.a.value,
-        params.c.value,
-        x
-      );
+    for (let a = 0; a <= Math.PI; a += Math.PI / 100) {
+      let point = getDeltoidPoint(deltoidFuncs, a, params.c.value, false);
 
       for (const m of ms) {
         let x =
@@ -445,19 +425,14 @@ function SceneTwo() {
       if (!point[0] || !point[1]) continue;
       points.push(new THREE.Vector2(point[0], point[1]));
       pointsDetails.push({
-        point: [point[0], point[1]],
-        a: params.a.value,
+        point,
+        a,
         c: params.c.value,
+        mir: false,
       });
     }
-    for (let x = -7; x <= 7; x += 0.1) {
-      let point = getDeltoidPoint(
-        deltoidFuncs,
-        params.a.value,
-        params.c.value,
-        x
-      );
-      point[1] = -point[1];
+    for (let a = 0; a <= Math.PI; a += Math.PI / 100) {
+      let point = getDeltoidPoint(deltoidFuncs, a, params.c.value, true);
 
       for (const m of ms) {
         let x =
@@ -473,11 +448,40 @@ function SceneTwo() {
       if (!point[0] || !point[1]) continue;
       points.push(new THREE.Vector2(point[0], point[1]));
       pointsDetails.push({
-        point: [point[0], point[1]],
-        a: params.a.value,
+        point,
+        a,
         c: params.c.value,
+        mir: true,
       });
     }
+    // for (let x = -7; x <= 7; x += 0.1) {
+    //   let point = getDeltoidPoint(
+    //     deltoidFuncs,
+    //     params.a.value,
+    //     params.c.value,
+    //     x
+    //   );
+    //   point[1] = -point[1];
+
+    //   for (const m of ms) {
+    //     let x =
+    //       (point[0] * m[0][0] + point[1] * m[1][0] + m[2][0]) /
+    //       (point[0] * m[0][2] + point[1] * m[1][2] + m[2][2]);
+    //     let y =
+    //       (point[0] * m[0][1] + point[1] * m[1][1] + m[2][1]) /
+    //       (point[0] * m[0][2] + point[1] * m[1][2] + m[2][2]);
+
+    //     point[0] = x;
+    //     point[1] = y;
+    //   }
+    //   if (!point[0] || !point[1]) continue;
+    //   points.push(new THREE.Vector2(point[0], point[1]));
+    //   pointsDetails.push({
+    //     point: [point[0], point[1]],
+    //     a: params.a.value,
+    //     c: params.c.value,
+    //   });
+    // }
 
     ms = [
       // Euclidean rotation
@@ -556,7 +560,7 @@ function SceneTwo() {
   // drawing a canvas
   useEffect(() => {
     const scene = new THREE.Scene();
-    scene.background = new THREE.Color(0xffffff);
+    scene.background = new THREE.Color(0xeae7e7);
     const camera = new THREE.PerspectiveCamera(75, 1, 0.1, 100000);
     const cameraHeight = 12;
     camera.position.z = cameraHeight;
@@ -572,24 +576,24 @@ function SceneTwo() {
     // adding elements to the figure
     drawGrid(grid, calcGrid());
     grid.position.z -= 0.001;
-    drawLine(figure, points, 0x099009);
+    drawLine(figure, points, 0x8e4262);
 
     // drawing additional constructions
     if (pointsDetails.length) {
       addConst.ref.current.max = pointsDetails.length - 1;
       if (addConstToggle) {
         if (tangent) {
-          drawLine(figure, tangent, 0xff0000);
+          drawLine(figure, tangent, 0xff5861);
         }
         if (normal) {
-          drawLine(figure, normal, 0x00ff00);
+          drawLine(figure, normal, 0x00aa6f);
         }
         if (tangent && normal)
           drawPoint(figure, pointsDetails[addConst.index].point);
       }
     }
     // updating shape information
-    // calcShapeData();
+    calcShapeData();
     // drawing points
 
     // adding figure to the scene
@@ -675,23 +679,27 @@ function SceneTwo() {
                   />
                 </label>
               </fieldset>
-              <div className="gap-2 join">
-                <span className="badge badge-error">Дотична</span>
-                <span className="badge badge-success">Нормаль</span>
+              <div className="justify-end w-full gap-2 join">
+                <div className="items-center gap-1 text-xs join">
+                  Дотична<span className="badge badge-error"></span>
+                </div>
+                <div className="items-center gap-1 text-xs join">
+                  Нормаль<span className="badge badge-success"></span>
+                </div>
               </div>
             </div>
           </div>
         </div>
 
-        {/* <div className="space-y-2 ">
+        <div className="space-y-2 ">
           <div className="flex items-center justify-between gap-2">
             <h2 className="text-lg font-bold text-center">Дані фігури</h2>
           </div>
           <table className="table table-auto">
             <tbody>
               <tr>
-                <th>{shapeData.length.name}</th>
-                <td>{shapeData.length.value}</td>
+                <th>{shapeData.radius.name}</th>
+                <td>{shapeData.radius.value}</td>
               </tr>
               <tr>
                 <th>{shapeData.area.name}</th>
@@ -699,7 +707,7 @@ function SceneTwo() {
               </tr>
             </tbody>
           </table>
-        </div> */}
+        </div>
       </div>
     </div>
   );
