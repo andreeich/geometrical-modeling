@@ -313,18 +313,15 @@ function SceneTwo() {
                 defaultValue={value.value}
                 ref={value.ref}
                 onChange={(e) =>
-                  setParams({
-                    ...params,
-                    euclidean: {
-                      ...params.euclidean,
-                      [name]: {
-                        ...params.euclidean[name],
-                        [key]: {
-                          ...params.euclidean[name][key],
-                          value: e.target.value
-                            ? ~~e.target.value
-                            : ~~e.target.defaultValue,
-                        },
+                  setEuclidean({
+                    ...euclidean,
+                    [name]: {
+                      ...euclidean[name],
+                      [key]: {
+                        ...euclidean[name][key],
+                        value: e.target.value
+                          ? ~~e.target.value
+                          : ~~e.target.defaultValue,
                       },
                     },
                   })
@@ -441,9 +438,6 @@ function SceneTwo() {
         let y =
           (point[0] * m[0][1] + point[1] * m[1][1] + m[2][1]) /
           (point[0] * m[0][2] + point[1] * m[1][2] + m[2][2]);
-        let y1 =
-          (point[0] * m[0][1] + point[1] * m[1][1] + m[2][1]) /
-          (point[0] * m[0][2] + point[1] * m[1][2] + m[2][2]);
 
         point[0] = x;
         point[1] = y;
@@ -463,6 +457,7 @@ function SceneTwo() {
         params.c.value,
         x
       );
+      point[1] = -point[1];
 
       for (const m of ms) {
         let x =
@@ -476,9 +471,9 @@ function SceneTwo() {
         point[1] = y;
       }
       if (!point[0] || !point[1]) continue;
-      points.push(new THREE.Vector2(point[0], -point[1]));
+      points.push(new THREE.Vector2(point[0], point[1]));
       pointsDetails.push({
-        point: [point[0], -point[1]],
+        point: [point[0], point[1]],
         a: params.a.value,
         c: params.c.value,
       });
