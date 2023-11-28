@@ -1048,7 +1048,7 @@ function SceneOne() {
         <canvas ref={canvasRef} className="!w-full !h-full" />
       </div>
       <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
-        <div className="p-4 space-y-2 border rounded-lg">
+        <div className="p-4 space-y-2">
           <div className="flex items-center justify-between gap-2">
             <h2 className="font-bold text-md">Евклідові перетворення</h2>
             <button className="btn btn-xs btn-ghost" onClick={resetEuTrans}>
@@ -1057,7 +1057,7 @@ function SceneOne() {
           </div>
           <div className="flex flex-col">{euclideanRows}</div>
         </div>
-        <div className="p-4 space-y-2 border rounded-lg">
+        <div className="p-4 space-y-2">
           <div className="flex items-center justify-between gap-2">
             <h2 className="font-bold text-md">Афінні перетворення</h2>
             <button className="btn btn-xs btn-ghost" onClick={resetAfTrans}>
@@ -1066,7 +1066,7 @@ function SceneOne() {
           </div>
           <div className="flex flex-col">{affineRows}</div>
         </div>
-        <div className="p-4 space-y-2 border rounded-lg">
+        <div className="p-4 space-y-2">
           <div className="flex items-center justify-between gap-2">
             <h2 className="font-bold text-md">Проективні перетворення</h2>
             <input
@@ -1081,7 +1081,7 @@ function SceneOne() {
           </div>
           <div className="flex flex-col">{projectiveRows}</div>
         </div>
-        <div className="p-4 space-y-2 border rounded-lg">
+        <div className="p-4 space-y-2">
           <div className="flex items-center justify-between gap-2">
             <h2 className="font-bold text-md">Параметри точок фігури</h2>
             <button className="btn btn-xs btn-ghost" onClick={resetPoints}>
@@ -1101,7 +1101,7 @@ function SceneOne() {
             </table>
           </div>
         </div>
-        <div className="p-4 space-y-2 border rounded-lg">
+        <div className="p-4 space-y-2">
           <div className="flex items-center justify-between gap-2">
             <h2 className="font-bold text-md">Параметри кіл фігури</h2>
             <button className="btn btn-xs btn-ghost" onClick={resetCircles}>
