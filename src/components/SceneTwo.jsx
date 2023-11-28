@@ -322,18 +322,15 @@ function SceneTwo() {
                 defaultValue={value.value}
                 ref={value.ref}
                 onChange={(e) =>
-                  setParams({
-                    ...params,
-                    euclidean: {
-                      ...params.euclidean,
-                      [name]: {
-                        ...params.euclidean[name],
-                        [key]: {
-                          ...params.euclidean[name][key],
-                          value: e.target.value
-                            ? ~~e.target.value
-                            : ~~e.target.defaultValue,
-                        },
+                  setEuclidean({
+                    ...euclidean,
+                    [name]: {
+                      ...euclidean[name],
+                      [key]: {
+                        ...euclidean[name][key],
+                        value: e.target.value
+                          ? ~~e.target.value
+                          : ~~e.target.defaultValue,
                       },
                     },
                   })
@@ -451,7 +448,6 @@ function SceneTwo() {
         params.c.value,
         x
       );
-      // console.log(point[0]);
 
       for (const m of ms) {
         let x =
@@ -460,13 +456,9 @@ function SceneTwo() {
         let y =
           (point[0] * m[0][1] + point[1] * m[1][1] + m[2][1]) /
           (point[0] * m[0][2] + point[1] * m[1][2] + m[2][2]);
-        let y1 =
-          (point[0] * m[0][1] + point[2] * m[1][1] + m[2][1]) /
-          (point[0] * m[0][2] + point[2] * m[1][2] + m[2][2]);
 
         point[0] = x;
         point[1] = y;
-        // point[2] = y1;
       }
       if (!point[0] || !point[1] || !point[2]) continue;
       points.push(new THREE.Vector2(point[0], point[1]));
@@ -476,13 +468,6 @@ function SceneTwo() {
         b: params.b.value,
         c: params.c.value,
       });
-      // points.push(new THREE.Vector2(point[0], point[2]));
-      // pointsDetails.push({
-      //   point: [point[0], point[2]],
-      //   a: params.a.value,
-      //   b: params.b.value,
-      //   c: params.c.value,
-      // });
     }
     for (let x = -xB; x <= xB; x += step) {
       let point = getDeltoidPoint(
@@ -492,7 +477,7 @@ function SceneTwo() {
         params.c.value,
         x
       );
-      // console.log(point[0]);
+      point[1] = -point[1];
 
       for (const m of ms) {
         let x =
@@ -501,18 +486,14 @@ function SceneTwo() {
         let y =
           (point[0] * m[0][1] + point[1] * m[1][1] + m[2][1]) /
           (point[0] * m[0][2] + point[1] * m[1][2] + m[2][2]);
-        let y1 =
-          (point[0] * m[0][1] + point[2] * m[1][1] + m[2][1]) /
-          (point[0] * m[0][2] + point[2] * m[1][2] + m[2][2]);
 
         point[0] = x;
         point[1] = y;
-        // point[2] = -y1;
       }
       if (!point[0] || !point[1] || !point[2]) continue;
-      points.push(new THREE.Vector2(point[0], -point[1]));
+      points.push(new THREE.Vector2(point[0], point[1]));
       pointsDetails.push({
-        point: [point[0], -point[1]],
+        point: [point[0], point[1]],
         a: params.a.value,
         b: params.b.value,
         c: params.c.value,
