@@ -526,10 +526,10 @@ function SceneOne() {
           <div className="gap-6 join">
             {Object.entries(object).map(([key, value]) => (
               <div
-                className="items-center gap-1 border join border-secondary"
+                className="items-center border join border-secondary"
                 key={key}
               >
-                <div className="px-2 py-1 text-xs font-bold text-base-100 bg-secondary rounded-s-md">
+                <div className="px-2 py-1 text-xs font-bold text-base-100 bg-secondary rounded-s-md rounded-e-none">
                   {key == "angle"
                     ? "Кут"
                     : key.charAt(0).toUpperCase() + key.slice(1)}
@@ -578,10 +578,10 @@ function SceneOne() {
           {Object.entries(value).map(([k, v]) => {
             return (
               <div
-                className="items-center gap-1 border join border-secondary"
+                className="items-center border join border-secondary"
                 key={k}
               >
-                <div className="px-2 py-1 text-xs font-bold text-base-100 bg-secondary rounded-s-md">
+                <div className="px-2 py-1 text-xs font-bold text-base-100 bg-secondary rounded-s-md rounded-e-none">
                   {k.charAt(0).toUpperCase() + k.slice(1)}
                 </div>
                 <input
@@ -628,10 +628,10 @@ function SceneOne() {
             {Object.entries(value).map(([k, v]) => {
               return (
                 <div
-                  className="items-center gap-1 border join border-secondary"
+                  className="items-center border join border-secondary"
                   key={k}
                 >
-                  <div className="px-2 py-1 text-xs font-bold text-base-100 bg-secondary rounded-s-md">
+                  <div className="px-2 py-1 text-xs font-bold text-base-100 bg-secondary rounded-s-md rounded-e-none">
                     {key.toUpperCase() + k}
                   </div>
                   <input
