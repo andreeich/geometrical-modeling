@@ -132,6 +132,7 @@ function drawLine(figure, points, color = 0x000000) {
   const geometry = new THREE.BufferGeometry().setFromPoints(points);
   const line = new THREE.Line(geometry, material);
   figure.add(line);
+  // console.log(points);
 }
 function drawGrid(figure, points) {
   for (const point of Object.values(points)) {
@@ -163,6 +164,26 @@ function drawPoint(figure, point, color = 0x000000, r = 0.1) {
   const geometry = new THREE.ShapeGeometry(shape);
   const ellipse = new THREE.Mesh(geometry, material);
   figure.add(ellipse);
+}
+function drawPoints(figure, points, color = 0x000000, r = 0.1) {
+  const material = new THREE.MeshBasicMaterial({ color });
+
+  points.forEach((point) => {
+    const shape = new THREE.Shape();
+    shape.absellipse(
+      point.x,
+      point.y, // ax, aY
+      r,
+      r, // xRadius, yRadius
+      0,
+      2 * Math.PI, // aStartAngle, aEndAngle
+      false, // aClockwise
+      0 // aRotation
+    );
+    const geometry = new THREE.ShapeGeometry(shape);
+    const ellipse = new THREE.Mesh(geometry, material);
+    figure.add(ellipse);
+  });
 }
 
 function SceneTwo() {
@@ -600,7 +621,8 @@ function SceneTwo() {
     // adding elements to the figure
     drawGrid(grid, calcGrid());
     grid.position.z -= 0.001;
-    drawLine(figure, points, 0x900990);
+    // drawLine(figure, points, 0x900990);
+    drawPoints(figure, points, 0x900990, 0.05);
 
     // drawing additional constructions
     if (pointsDetails.length) {
