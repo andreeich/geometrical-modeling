@@ -1,4 +1,3 @@
-import { log } from "mathjs";
 import React, { useRef, useEffect, useState } from "react";
 import * as THREE from "three";
 
@@ -999,7 +998,7 @@ function SceneOne() {
 
     const figure = new THREE.Group();
     const lineMaterial = new THREE.LineBasicMaterial({
-      color: 0x099009,
+      color: 0x387cfc,
       linewidth: 2,
     });
 

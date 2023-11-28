@@ -12,7 +12,7 @@ module.exports = {
   plugins: [require("daisyui")],
   daisyui: {
     // ? disable all colors
-    themes: ["wireframe"],
+    themes: ["emerald"],
     // ? default light and dark themes
     // themes: false,
     // ? customizing themes
