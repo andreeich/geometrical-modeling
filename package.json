@@ -6,7 +6,6 @@
     "./src/index.jsx"
   ],
   "dependencies": {
-    "@psychobolt/react-paperjs": "^1.0.3",
     "@splidejs/splide": "^4.1.4",
     "@testing-library/jest-dom": "^5.17.0",
     "@testing-library/react": "^13.4.0",

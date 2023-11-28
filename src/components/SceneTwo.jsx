@@ -636,7 +636,7 @@ function SceneTwo() {
       <div className="max-w-md aspect-square">
         <canvas ref={canvasRef} className="!w-full !h-full" />
       </div>
-      <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
+      <div className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3">
         <div className="p-4 space-y-2">
           <div className="flex items-center justify-between gap-2">
             <h2 className="text-lg font-bold text-center">Параметри фігури</h2>
@@ -645,6 +645,37 @@ function SceneTwo() {
             </button>
           </div>
           <div className="flex flex-col gap-4">{paramsRows}</div>
+        </div>
+
+        {/* <div className="p-4 space-y-2">
+          <div className="flex items-center justify-between gap-2">
+            <h2 className="text-lg font-bold text-center">Дані фігури</h2>
+          </div>
+          <table className="table table-auto">
+            <tbody>
+              <tr>
+                <th>{shapeData.length.name}</th>
+                <td>{shapeData.length.value}</td>
+              </tr>
+              <tr>
+                <th>{shapeData.area.name}</th>
+                <td>{shapeData.area.value}</td>
+              </tr>
+            </tbody>
+          </table>
+        </div> */}
+        <div className="p-4 space-y-2">
+          <div className="flex items-center justify-between gap-2">
+            <h2 className="text-lg font-bold text-center">
+              Евклідові перетоврення
+            </h2>
+            <button className="btn btn-xs btn-ghost" onClick={resetEuclid}>
+              Скинути
+            </button>
+          </div>
+          <fieldset disabled={addConstToggle} className="flex flex-col">
+            {euclideanRows}
+          </fieldset>
         </div>
         <div className="p-4 space-y-2">
           <div className="flex items-center justify-between gap-2">
@@ -687,36 +718,6 @@ function SceneTwo() {
               Нормаль<span className="badge badge-success"></span>
             </span>
           </div>
-        </div>
-        {/* <div className="p-4 space-y-2">
-          <div className="flex items-center justify-between gap-2">
-            <h2 className="text-lg font-bold text-center">Дані фігури</h2>
-          </div>
-          <table className="table table-auto">
-            <tbody>
-              <tr>
-                <th>{shapeData.length.name}</th>
-                <td>{shapeData.length.value}</td>
-              </tr>
-              <tr>
-                <th>{shapeData.area.name}</th>
-                <td>{shapeData.area.value}</td>
-              </tr>
-            </tbody>
-          </table>
-        </div> */}
-        <div className="p-4 space-y-2">
-          <div className="flex items-center justify-between gap-2">
-            <h2 className="text-lg font-bold text-center">
-              Евклідові перетоврення
-            </h2>
-            <button className="btn btn-xs btn-ghost" onClick={resetEuclid}>
-              Скинути
-            </button>
-          </div>
-          <fieldset disabled={addConstToggle} className="flex flex-col">
-            {euclideanRows}
-          </fieldset>
         </div>
       </div>
     </div>
