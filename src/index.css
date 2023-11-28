@@ -43,7 +43,7 @@ html {
 }
 
 main {
-  @apply grid grid-flow-row mt-10 mb-10;
+  @apply grid grid-flow-row mt-3 mb-3;
 }
 
 footer {

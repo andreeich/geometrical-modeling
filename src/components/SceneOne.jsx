@@ -1,5 +1,6 @@
 import React, { useRef, useEffect, useState } from "react";
 import * as THREE from "three";
+import { Icon } from "@iconify/react";
 
 // drawing functions
 function drawLines(figure, lineMaterial, points) {
@@ -25,6 +26,15 @@ function drawLines(figure, lineMaterial, points) {
   figure.add(
     new THREE.Line(
       new THREE.BufferGeometry().setFromPoints([
+        new THREE.Vector2(points.c.x, points.c.y),
+        new THREE.Vector2(points.d.x, points.d.y),
+      ]),
+      lineMaterial
+    )
+  );
+  figure.add(
+    new THREE.Line(
+      new THREE.BufferGeometry().setFromPoints([
         new THREE.Vector2(points.d.x, points.d.y),
         new THREE.Vector2(points.e.x, points.e.y),
       ]),
@@ -35,7 +45,7 @@ function drawLines(figure, lineMaterial, points) {
     new THREE.Line(
       new THREE.BufferGeometry().setFromPoints([
         new THREE.Vector2(points.e.x, points.e.y),
-        new THREE.Vector2(points.f.x, points.f.y),
+        new THREE.Vector2(points.a.x, points.a.y),
       ]),
       lineMaterial
     )
@@ -143,46 +153,40 @@ function SceneOne() {
   // data
   const pointsDefault = {
     a: {
-      x: -1.5,
-      y: 4,
+      x: 0,
+      y: 0.5,
       xRef: useRef(),
       yRef: useRef(),
     },
     b: {
-      x: -5,
-      y: 0,
+      x: -4,
+      y: -3,
       xRef: useRef(),
       yRef: useRef(),
     },
     c: {
-      x: -1.5,
-      y: -4,
+      x: -3,
+      y: -5,
       xRef: useRef(),
       yRef: useRef(),
     },
     d: {
-      x: 1.5,
-      y: -4,
+      x: 3,
+      y: -5,
       xRef: useRef(),
       yRef: useRef(),
     },
     e: {
-      x: 5,
-      y: 0,
-      xRef: useRef(),
-      yRef: useRef(),
-    },
-    f: {
-      x: 1.5,
-      y: 4,
+      x: 4,
+      y: -3,
       xRef: useRef(),
       yRef: useRef(),
     },
   };
   const circlesDefault = {
-    g: {
+    f: {
       x: 0,
-      y: 0,
+      y: 2,
       r: 1.5,
       aS: 0,
       aE: 2 * Math.PI,
@@ -192,9 +196,21 @@ function SceneOne() {
       aSRef: useRef(),
       aERef: useRef(),
     },
+    g: {
+      x: 0,
+      y: 2,
+      r: 2.5,
+      aS: ((-90 + 23.58) / 180) * Math.PI,
+      aE: ((270 - 23.58) / 180) * Math.PI,
+      xRef: useRef(),
+      yRef: useRef(),
+      rRef: useRef(),
+      aSRef: useRef(),
+      aERef: useRef(),
+    },
     h: {
       x: 0,
-      y: 4,
+      y: -2.8,
       r: 1.5,
       aS: 0,
       aE: 2 * Math.PI,
@@ -205,11 +221,11 @@ function SceneOne() {
       aERef: useRef(),
     },
     i: {
-      x: -5,
-      y: 0,
+      x: -4,
+      y: -3,
       r: 1.5,
-      aS: (48.81 / 180) * Math.PI,
-      aE: (-48.81 / 180) * Math.PI,
+      aS: (41.81 / 180) * Math.PI,
+      aE: (-63.44 / 180) * Math.PI,
       xRef: useRef(),
       yRef: useRef(),
       rRef: useRef(),
@@ -217,23 +233,11 @@ function SceneOne() {
       aERef: useRef(),
     },
     j: {
-      x: 0,
-      y: -4,
+      x: 4,
+      y: -3,
       r: 1.5,
-      aS: 0,
-      aE: 2 * Math.PI,
-      xRef: useRef(),
-      yRef: useRef(),
-      rRef: useRef(),
-      aSRef: useRef(),
-      aERef: useRef(),
-    },
-    k: {
-      x: 5,
-      y: 0,
-      r: 1.5,
-      aS: ((180 + 48.81) / 180) * Math.PI,
-      aE: ((180 - 48.81) / 180) * Math.PI,
+      aS: ((180 + 63.44) / 180) * Math.PI,
+      aE: ((180 - 41.81) / 180) * Math.PI,
       xRef: useRef(),
       yRef: useRef(),
       rRef: useRef(),
@@ -521,7 +525,16 @@ function SceneOne() {
           </label>
           <div className="gap-6 join">
             {Object.entries(object).map(([key, value]) => (
-              <div className="join" key={key}>
+              <div
+                className="items-center gap-1 border join border-secondary"
+                key={key}
+              >
+                <div className="px-2 py-1 text-xs font-bold text-base-100 bg-secondary rounded-s-md">
+                  {key == "angle"
+                    ? "Кут"
+                    : key.charAt(0).toUpperCase() + key.slice(1)}
+                  :
+                </div>
                 <input
                   type="number"
                   placeholder={value.value}
@@ -544,15 +557,8 @@ function SceneOne() {
                       },
                     })
                   }
-                  className="w-full input input-xs input-bordered"
+                  className="w-full input input-xs rounded-s-none"
                 />
-                <div className="indicator">
-                  <span className="indicator-item badge badge-secondary">
-                    {key == "angle"
-                      ? "Кут"
-                      : key.charAt(0).toUpperCase() + key.slice(1)}
-                  </span>
-                </div>
               </div>
             ))}
           </div>
@@ -571,7 +577,13 @@ function SceneOne() {
         <div className="gap-6 join">
           {Object.entries(value).map(([k, v]) => {
             return (
-              <div className="join" key={k}>
+              <div
+                className="items-center gap-1 border join border-secondary"
+                key={k}
+              >
+                <div className="px-2 py-1 text-xs font-bold text-base-100 bg-secondary rounded-s-md">
+                  {k.charAt(0).toUpperCase() + k.slice(1)}
+                </div>
                 <input
                   type="number"
                   placeholder={v.value}
@@ -594,13 +606,8 @@ function SceneOne() {
                       },
                     })
                   }
-                  className="w-full input input-xs input-bordered"
+                  className="w-full input input-xs rounded-s-none"
                 />
-                <div className="indicator ">
-                  <span className="indicator-item badge badge-secondary">
-                    {k.charAt(0).toUpperCase() + k.slice(1)}
-                  </span>
-                </div>
               </div>
             );
           })}
@@ -620,7 +627,13 @@ function SceneOne() {
           <div className="gap-6 join">
             {Object.entries(value).map(([k, v]) => {
               return (
-                <div className="join" key={k}>
+                <div
+                  className="items-center gap-1 border join border-secondary"
+                  key={k}
+                >
+                  <div className="px-2 py-1 text-xs font-bold text-base-100 bg-secondary rounded-s-md">
+                    {key.toUpperCase() + k}
+                  </div>
                   <input
                     type="number"
                     placeholder={v.value}
@@ -644,13 +657,8 @@ function SceneOne() {
                         },
                       })
                     }
-                    className="w-full input input-xs input-bordered"
+                    className="w-full input input-xs rounded-s-none"
                   />
-                  <div className="indicator ">
-                    <span className="indicator-item badge badge-secondary">
-                      {key.toUpperCase() + k}
-                    </span>
-                  </div>
                 </div>
               );
             })}
@@ -1024,100 +1032,110 @@ function SceneOne() {
   }, [points, circles, params, projectiveToggle]);
 
   return (
-    <div className="grid items-center justify-center grid-cols-1 gap-2 place-items-center">
-      <div className="max-w-md aspect-square">
+    <div className="grid items-start justify-center grid-cols-1 gap-2 md:grid-cols-2 place-items-center">
+      <div className="md:sticky md:top-3 aspect-square md:order-last">
         <canvas ref={canvasRef} className="!w-full !h-full" />
       </div>
-      <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
+      <div className="grid grid-cols-1 gap-4">
         <div className="p-4 space-y-2 border rounded-lg">
-          <div className="flex items-center justify-between gap-2">
-            <h2 className="font-bold text-md">Евклідові перетворення</h2>
-            <button
-              className="px-2 py-1 text-xs transition-shadow border rounded-md shadow active:shadow-none"
-              onClick={resetEuTrans}
-            >
-              Скинути
-            </button>
-          </div>
-          <div className="flex flex-col">{euclideanRows}</div>
-        </div>
-        <div className="p-4 space-y-2 border rounded-lg">
-          <div className="flex items-center justify-between gap-2">
-            <h2 className="font-bold text-md">Афінні перетворення</h2>
-            <button
-              className="px-2 py-1 text-xs transition-shadow border rounded-md shadow active:shadow-none"
-              onClick={resetAfTrans}
-            >
-              Скинути
-            </button>
-          </div>
-          <div className="flex flex-col">{affineRows}</div>
-        </div>
-        <div className="p-4 space-y-2 border rounded-lg">
-          <div className="flex items-center justify-between gap-2">
-            <h2 className="font-bold text-md">Проективні перетворення</h2>
-            <input
-              type="checkbox"
-              className="toggle toggle-secondary"
-              checked={projectiveToggle}
-              onChange={() => setProjectiveToggle(!projectiveToggle)}
-            />
-            <button
-              className="px-2 py-1 text-xs transition-shadow border rounded-md shadow active:shadow-none"
-              onClick={resetPrTrans}
-            >
-              Скинути
-            </button>
-          </div>
-          <div className="flex flex-col">{projectiveRows}</div>
-        </div>
-        <div className="p-4 space-y-2 border rounded-lg">
-          <div className="flex items-center justify-between gap-2">
-            <h2 className="font-bold text-md">Параметри точок фігури</h2>
-            <button
-              className="px-2 py-1 text-xs transition-shadow border rounded-md shadow active:shadow-none"
-              onClick={resetPoints}
-            >
-              Скинути
-            </button>
-          </div>
-          <div className="overflow-x-auto h-60 md:h-48">
-            <table className="table table-pin-rows">
-              <thead>
-                <tr>
-                  <th>Точка</th>
-                  <th>X</th>
-                  <th>Y</th>
-                </tr>
-              </thead>
-              <tbody>{pointRows}</tbody>
-            </table>
+          <h2 className="text-lg font-bold">Налаштування параметрів</h2>
+          <div className="space-y-6">
+            <div className="space-y-2">
+              <div className="flex items-center justify-between gap-2">
+                <h3 className="font-bold text-md">Точки</h3>
+                <button
+                  className="btn btn-sm btn-secondary"
+                  onClick={resetPoints}
+                >
+                  <Icon icon="heroicons:backspace" />
+                </button>
+              </div>
+              <div className="overflow-x-auto h-60 md:h-48">
+                <table className="table table-pin-rows">
+                  <thead>
+                    <tr>
+                      <th>Точка</th>
+                      <th>X</th>
+                      <th>Y</th>
+                    </tr>
+                  </thead>
+                  <tbody>{pointRows}</tbody>
+                </table>
+              </div>
+            </div>
+            <div className="space-y-2">
+              <div className="flex items-center justify-between gap-2">
+                <h3 className="font-bold text-md">Кола</h3>
+                <button
+                  className="btn btn-sm btn-secondary"
+                  onClick={resetCircles}
+                >
+                  <Icon icon="heroicons:backspace" />
+                </button>
+              </div>
+              <div className="overflow-x-auto h-60 md:h-48">
+                <table className="table table-pin-rows">
+                  <thead>
+                    <tr>
+                      <th>Коло</th>
+                      <th>X</th>
+                      <th>Y</th>
+                      <th>Радіус</th>
+                      <th>Початковий кут</th>
+                      <th>Кунцевий кут</th>
+                    </tr>
+                  </thead>
+                  <tbody>{circlesRows}</tbody>
+                </table>
+              </div>
+            </div>
           </div>
         </div>
         <div className="p-4 space-y-2 border rounded-lg">
-          <div className="flex items-center justify-between gap-2">
-            <h2 className="font-bold text-md">Параметри кіл фігури</h2>
-            <button
-              className="px-2 py-1 text-xs transition-shadow border rounded-md shadow active:shadow-none"
-              onClick={resetCircles}
-            >
-              Скинути
-            </button>
-          </div>
-          <div className="overflow-x-auto h-60 md:h-48">
-            <table className="table table-pin-rows">
-              <thead>
-                <tr>
-                  <th>Коло</th>
-                  <th>X</th>
-                  <th>Y</th>
-                  <th>Радіус</th>
-                  <th>Початковий кут</th>
-                  <th>Кунцевий кут</th>
-                </tr>
-              </thead>
-              <tbody>{circlesRows}</tbody>
-            </table>
+          <h2 className="text-lg font-bold">Перетворення</h2>
+          <div className="space-y-6">
+            <div className="space-y-2 ">
+              <div className="flex items-center justify-between gap-2">
+                <h2 className="font-bold text-md">Евклідові</h2>
+                <button
+                  className="btn btn-sm btn-secondary"
+                  onClick={resetEuTrans}
+                >
+                  <Icon icon="heroicons:backspace" />
+                </button>
+              </div>
+              <div className="flex flex-col">{euclideanRows}</div>
+            </div>
+            <div className="space-y-2 ">
+              <div className="flex items-center justify-between gap-2">
+                <h2 className="font-bold text-md">Афінні</h2>
+                <button
+                  className="btn btn-sm btn-secondary"
+                  onClick={resetAfTrans}
+                >
+                  <Icon icon="heroicons:backspace" />
+                </button>
+              </div>
+              <div className="flex flex-col">{affineRows}</div>
+            </div>
+            <div className="space-y-2 ">
+              <div className="flex items-center justify-between gap-2">
+                <h2 className="font-bold text-md">Проективні</h2>
+                <input
+                  type="checkbox"
+                  className="toggle toggle-secondary"
+                  checked={projectiveToggle}
+                  onChange={() => setProjectiveToggle(!projectiveToggle)}
+                />
+                <button
+                  className="btn btn-sm btn-secondary"
+                  onClick={resetPrTrans}
+                >
+                  <Icon icon="heroicons:backspace" />
+                </button>
+              </div>
+              <div className="flex flex-col">{projectiveRows}</div>
+            </div>
           </div>
         </div>
       </div>
