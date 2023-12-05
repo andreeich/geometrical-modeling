@@ -307,10 +307,6 @@ function SceneOne() {
           value: 0,
           ref: useRef(),
         },
-        o: {
-          value: 0,
-          ref: useRef(),
-        },
       },
       y: {
         x: {
@@ -321,7 +317,13 @@ function SceneOne() {
           value: 1,
           ref: useRef(),
         },
-        o: {
+      },
+      o: {
+        x: {
+          value: 0,
+          ref: useRef(),
+        },
+        y: {
           value: 0,
           ref: useRef(),
         },
@@ -337,8 +339,8 @@ function SceneOne() {
           value: 90,
           ref: useRef(),
         },
-        o: {
-          value: 0,
+        w: {
+          value: 1,
           ref: useRef(),
         },
       },
@@ -351,21 +353,21 @@ function SceneOne() {
           value: 100,
           ref: useRef(),
         },
-        o: {
-          value: 0,
+        w: {
+          value: 1,
           ref: useRef(),
         },
       },
-      w: {
+      o: {
         x: {
-          value: 1,
+          value: 0,
           ref: useRef(),
         },
         y: {
-          value: 1,
+          value: 0,
           ref: useRef(),
         },
-        o: {
+        w: {
           value: 180,
           ref: useRef(),
         },
@@ -783,26 +785,26 @@ function SceneOne() {
         ],
         // Affine
         [
-          [params.affine.x.x.value, params.affine.y.x.value, 0],
-          [params.affine.x.y.value, params.affine.y.y.value, 0],
-          [params.affine.x.o.value, params.affine.y.o.value, 1],
+          [params.affine.x.x.value, params.affine.x.y.value, 0],
+          [params.affine.y.x.value, params.affine.y.y.value, 0],
+          [params.affine.o.x.value, params.affine.o.y.value, 1],
         ],
         // Projective
         [
           [
-            params.projective.x.x.value * params.projective.w.x.value,
-            params.projective.y.x.value * params.projective.w.x.value,
-            params.projective.w.x.value,
+            params.projective.x.x.value * params.projective.x.w.value,
+            params.projective.x.y.value * params.projective.x.w.value,
+            params.projective.x.w.value,
           ],
           [
-            params.projective.x.y.value * params.projective.w.y.value,
-            params.projective.y.y.value * params.projective.w.y.value,
-            params.projective.w.y.value,
+            params.projective.y.x.value * params.projective.y.w.value,
+            params.projective.y.y.value * params.projective.y.w.value,
+            params.projective.y.w.value,
           ],
           [
-            params.projective.x.o.value * params.projective.w.o.value,
-            params.projective.y.o.value * params.projective.w.o.value,
-            params.projective.w.o.value,
+            params.projective.o.x.value * params.projective.o.w.value,
+            params.projective.o.y.value * params.projective.o.w.value,
+            params.projective.o.w.value,
           ],
         ],
       ];
@@ -846,9 +848,9 @@ function SceneOne() {
         ],
         // Affine
         [
-          [params.affine.x.x.value, params.affine.y.x.value, 0],
-          [params.affine.x.y.value, params.affine.y.y.value, 0],
-          [params.affine.x.o.value, params.affine.y.o.value, 1],
+          [params.affine.x.x.value, params.affine.x.y.value, 0],
+          [params.affine.y.x.value, params.affine.y.y.value, 0],
+          [params.affine.o.x.value, params.affine.o.y.value, 1],
         ],
         // Projective
         // [
@@ -924,26 +926,26 @@ function SceneOne() {
       ms = [
         // Affine
         [
-          [params.affine.x.x.value, params.affine.y.x.value, 0],
-          [params.affine.x.y.value, params.affine.y.y.value, 0],
-          [params.affine.x.o.value, params.affine.y.o.value, 1],
+          [params.affine.x.x.value, params.affine.x.y.value, 0],
+          [params.affine.y.x.value, params.affine.y.y.value, 0],
+          [params.affine.o.x.value, params.affine.o.y.value, 1],
         ],
         // Projective
         [
           [
-            params.projective.x.x.value * params.projective.w.x.value,
-            params.projective.y.x.value * params.projective.w.x.value,
-            params.projective.w.x.value,
+            params.projective.x.x.value * params.projective.x.w.value,
+            params.projective.x.y.value * params.projective.x.w.value,
+            params.projective.x.w.value,
           ],
           [
-            params.projective.x.y.value * params.projective.w.y.value,
-            params.projective.y.y.value * params.projective.w.y.value,
-            params.projective.w.y.value,
+            params.projective.y.x.value * params.projective.y.w.value,
+            params.projective.y.y.value * params.projective.y.w.value,
+            params.projective.y.w.value,
           ],
           [
-            params.projective.x.o.value * params.projective.w.o.value,
-            params.projective.y.o.value * params.projective.w.o.value,
-            params.projective.w.o.value,
+            params.projective.o.x.value * params.projective.o.w.value,
+            params.projective.o.y.value * params.projective.o.w.value,
+            params.projective.o.w.value,
           ],
         ],
       ];
@@ -951,9 +953,9 @@ function SceneOne() {
       ms = [
         // Affine
         [
-          [params.affine.x.x.value, params.affine.y.x.value, 0],
-          [params.affine.x.y.value, params.affine.y.y.value, 0],
-          [params.affine.x.o.value, params.affine.y.o.value, 1],
+          [params.affine.x.x.value, params.affine.x.y.value, 0],
+          [params.affine.y.x.value, params.affine.y.y.value, 0],
+          [params.affine.o.x.value, params.affine.o.y.value, 1],
         ],
         // Projective
         // [
