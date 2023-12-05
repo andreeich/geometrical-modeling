@@ -12,7 +12,7 @@ module.exports = {
   plugins: [require("daisyui")],
   daisyui: {
     // ? disable all colors
-    themes: ["lofi"],
+    themes: ["lemonade"],
     // ? default light and dark themes
     // themes: false,
     // ? customizing themes

@@ -35,15 +35,6 @@ function drawLines(figure, lineMaterial, points) {
   figure.add(
     new THREE.Line(
       new THREE.BufferGeometry().setFromPoints([
-        new THREE.Vector2(points.d.x, points.d.y),
-        new THREE.Vector2(points.e.x, points.e.y),
-      ]),
-      lineMaterial
-    )
-  );
-  figure.add(
-    new THREE.Line(
-      new THREE.BufferGeometry().setFromPoints([
         new THREE.Vector2(points.e.x, points.e.y),
         new THREE.Vector2(points.f.x, points.f.y),
       ]),
@@ -53,7 +44,79 @@ function drawLines(figure, lineMaterial, points) {
   figure.add(
     new THREE.Line(
       new THREE.BufferGeometry().setFromPoints([
-        new THREE.Vector2(points.f.x, points.f.y),
+        new THREE.Vector2(points.g.x, points.g.y),
+        new THREE.Vector2(points.h.x, points.h.y),
+      ]),
+      lineMaterial
+    )
+  );
+  figure.add(
+    new THREE.Line(
+      new THREE.BufferGeometry().setFromPoints([
+        new THREE.Vector2(points.i.x, points.i.y),
+        new THREE.Vector2(points.j.x, points.j.y),
+      ]),
+      lineMaterial
+    )
+  );
+  figure.add(
+    new THREE.Line(
+      new THREE.BufferGeometry().setFromPoints([
+        new THREE.Vector2(points.j.x, points.j.y),
+        new THREE.Vector2(points.k.x, points.k.y),
+      ]),
+      lineMaterial
+    )
+  );
+  figure.add(
+    new THREE.Line(
+      new THREE.BufferGeometry().setFromPoints([
+        new THREE.Vector2(points.k.x, points.k.y),
+        new THREE.Vector2(points.l.x, points.l.y),
+      ]),
+      lineMaterial
+    )
+  );
+  figure.add(
+    new THREE.Line(
+      new THREE.BufferGeometry().setFromPoints([
+        new THREE.Vector2(points.l.x, points.l.y),
+        new THREE.Vector2(points.m.x, points.m.y),
+      ]),
+      lineMaterial
+    )
+  );
+  figure.add(
+    new THREE.Line(
+      new THREE.BufferGeometry().setFromPoints([
+        new THREE.Vector2(points.m.x, points.m.y),
+        new THREE.Vector2(points.n.x, points.n.y),
+      ]),
+      lineMaterial
+    )
+  );
+  figure.add(
+    new THREE.Line(
+      new THREE.BufferGeometry().setFromPoints([
+        new THREE.Vector2(points.n.x, points.n.y),
+        new THREE.Vector2(points.o.x, points.o.y),
+      ]),
+      lineMaterial
+    )
+  );
+  figure.add(
+    new THREE.Line(
+      new THREE.BufferGeometry().setFromPoints([
+        new THREE.Vector2(points.o.x, points.o.y),
+        new THREE.Vector2(points.p.x, points.p.y),
+      ]),
+      lineMaterial
+    )
+  );
+  figure.add(
+    new THREE.Line(
+      new THREE.BufferGeometry().setFromPoints([
+        new THREE.Vector2(points.p.x, points.p.y),
         new THREE.Vector2(points.a.x, points.a.y),
       ]),
       lineMaterial
@@ -162,47 +225,107 @@ function SceneOne() {
   // data
   const pointsDefault = {
     a: {
-      x: 0,
-      y: 4.5,
+      x: 6,
+      y: 6,
       xRef: useRef(),
       yRef: useRef(),
     },
     b: {
-      x: -4,
-      y: 3,
+      x: 1.5,
+      y: 6,
       xRef: useRef(),
       yRef: useRef(),
     },
     c: {
-      x: -4,
-      y: -3,
+      x: 1.5,
+      y: 5,
       xRef: useRef(),
       yRef: useRef(),
     },
     d: {
-      x: 0,
-      y: -4.5,
+      x: -3,
+      y: 5,
       xRef: useRef(),
       yRef: useRef(),
     },
     e: {
-      x: 4,
-      y: -3,
+      x: -5.75,
+      y: 1,
       xRef: useRef(),
       yRef: useRef(),
     },
     f: {
-      x: 4,
-      y: 3,
+      x: -1.24,
+      y: 1,
+      xRef: useRef(),
+      yRef: useRef(),
+    },
+    g: {
+      x: -1.24,
+      y: -1,
+      xRef: useRef(),
+      yRef: useRef(),
+    },
+    h: {
+      x: -5.75,
+      y: -1,
+      xRef: useRef(),
+      yRef: useRef(),
+    },
+    i: {
+      x: -3,
+      y: -5,
+      xRef: useRef(),
+      yRef: useRef(),
+    },
+    j: {
+      x: 1.5,
+      y: -5,
+      xRef: useRef(),
+      yRef: useRef(),
+    },
+    k: {
+      x: 1.5,
+      y: -6,
+      xRef: useRef(),
+      yRef: useRef(),
+    },
+    l: {
+      x: 6,
+      y: -6,
+      xRef: useRef(),
+      yRef: useRef(),
+    },
+    m: {
+      x: 6,
+      y: -2,
+      xRef: useRef(),
+      yRef: useRef(),
+    },
+    n: {
+      x: 5,
+      y: -2,
+      xRef: useRef(),
+      yRef: useRef(),
+    },
+    o: {
+      x: 5,
+      y: 2,
+      xRef: useRef(),
+      yRef: useRef(),
+    },
+    p: {
+      x: 6,
+      y: 2,
       xRef: useRef(),
       yRef: useRef(),
     },
   };
   const circlesDefault = {
-    g: {
-      x: 0,
-      y: 0,
-      r: 2,
+    r: {
+      x: 4,
+      y: 4,
+      r: 1,
       aS: 0,
       aE: 2 * Math.PI,
       xRef: useRef(),
@@ -211,48 +334,60 @@ function SceneOne() {
       aSRef: useRef(),
       aERef: useRef(),
     },
-    h: {
-      x: 0,
-      y: 4.5,
-      r: 1,
-      aS: ((360 - 20) / 180) * Math.PI,
-      aE: ((90 - 70 + 180) / 180) * Math.PI,
-      xRef: useRef(),
-      yRef: useRef(),
-      rRef: useRef(),
-      aSRef: useRef(),
-      aERef: useRef(),
-    },
-    i: {
-      x: -4,
-      y: -3,
-      r: 2,
-      aS: (1 / 2) * Math.PI,
-      aE: ((90 + 70 + 180) / 180) * Math.PI,
-      xRef: useRef(),
-      yRef: useRef(),
-      rRef: useRef(),
-      aSRef: useRef(),
-      aERef: useRef(),
-    },
-    j: {
-      x: 0,
-      y: -4.5,
-      r: 1,
-      aS: ((180 - 20) / 180) * Math.PI,
-      aE: ((180 + 20 + 180) / 180) * Math.PI,
-      xRef: useRef(),
-      yRef: useRef(),
-      rRef: useRef(),
-      aSRef: useRef(),
-      aERef: useRef(),
-    },
-    k: {
+    s: {
       x: 4,
-      y: -3,
-      r: 2,
-      aS: ((20 + 180) / 180) * Math.PI,
-      aE: (1 / 2) * Math.PI,
+      y: -4,
+      r: 1,
+      aS: 0,
+      aE: 2 * Math.PI,
+      xRef: useRef(),
+      yRef: useRef(),
+      rRef: useRef(),
+      aSRef: useRef(),
+      aERef: useRef(),
+    },
+    t: {
+      x: 3.5,
+      y: 0,
+      r: 1,
+      aS: 0,
+      aE: 2 * Math.PI,
+      xRef: useRef(),
+      yRef: useRef(),
+      rRef: useRef(),
+      aSRef: useRef(),
+      aERef: useRef(),
+    },
+    q: {
+      x: 0,
+      y: 0,
+      r: 1.6,
+      aS: ((180 + 38.68) / 180) * Math.PI,
+      aE: ((180 - 38.68) / 180) * Math.PI,
+      xRef: useRef(),
+      yRef: useRef(),
+      rRef: useRef(),
+      aSRef: useRef(),
+      aERef: useRef(),
+    },
+    x: {
+      x: 0,
+      y: 0,
+      r: 5.83,
+      aS: ((180 - 59) / 180) * Math.PI,
+      aE: ((180 - 10) / 180) * Math.PI,
+      xRef: useRef(),
+      yRef: useRef(),
+      rRef: useRef(),
+      aSRef: useRef(),
+      aERef: useRef(),
+    },
+    y: {
+      x: 0,
+      y: 0,
+      r: 5.83,
+      aS: ((180 + 10) / 180) * Math.PI,
+      aE: ((180 + 59) / 180) * Math.PI,
       xRef: useRef(),
       yRef: useRef(),
       rRef: useRef(),
@@ -604,6 +739,7 @@ function SceneOne() {
                   placeholder={v.value}
                   defaultValue={v.value}
                   ref={v.ref}
+                  step={0.1}
                   onChange={(e) =>
                     setParams({
                       ...params,
@@ -614,8 +750,8 @@ function SceneOne() {
                           [k]: {
                             ...params.affine[key][k],
                             value: e.target.value
-                              ? ~~e.target.value
-                              : ~~e.target.defaultValue,
+                              ? parseFloat(e.target.value)
+                              : parseFloat(e.target.defaultValue),
                           },
                         },
                       },
@@ -653,6 +789,7 @@ function SceneOne() {
                     placeholder={v.value}
                     defaultValue={v.value}
                     ref={v.ref}
+                    step={5}
                     onChange={(e) =>
                       setParams({
                         ...params,
@@ -1010,7 +1147,7 @@ function SceneOne() {
   // drawing a canvas
   useEffect(() => {
     const scene = new THREE.Scene();
-    scene.background = new THREE.Color(0xffffff);
+    scene.background = new THREE.Color(0xf8fdef);
     const camera = new THREE.PerspectiveCamera(75, 1, 0.1, 100000);
     const cameraHeight = 12;
     camera.position.z = cameraHeight;
@@ -1019,7 +1156,7 @@ function SceneOne() {
 
     const figure = new THREE.Group();
     const lineMaterial = new THREE.LineBasicMaterial({
-      color: 0x900990,
+      color: 0xaa003b,
       linewidth: 2,
     });
 
@@ -1046,7 +1183,7 @@ function SceneOne() {
 
   return (
     <div className="grid items-center justify-center grid-cols-1 gap-2 place-items-center">
-      <div className="max-w-md aspect-square">
+      <div className="max-w-lg aspect-square">
         <canvas ref={canvasRef} className="!w-full !h-full" />
       </div>
       <div className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3">
