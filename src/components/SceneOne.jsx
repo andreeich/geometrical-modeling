@@ -292,10 +292,6 @@ function SceneOne() {
           value: 0,
           ref: useRef(),
         },
-        o: {
-          value: 0,
-          ref: useRef(),
-        },
       },
       y: {
         x: {
@@ -306,7 +302,13 @@ function SceneOne() {
           value: 1,
           ref: useRef(),
         },
-        o: {
+      },
+      o: {
+        x: {
+          value: 0,
+          ref: useRef(),
+        },
+        y: {
           value: 0,
           ref: useRef(),
         },
@@ -322,8 +324,8 @@ function SceneOne() {
           value: 90,
           ref: useRef(),
         },
-        o: {
-          value: 0,
+        w: {
+          value: 1,
           ref: useRef(),
         },
       },
@@ -336,21 +338,21 @@ function SceneOne() {
           value: 100,
           ref: useRef(),
         },
-        o: {
-          value: 0,
+        w: {
+          value: 1,
           ref: useRef(),
         },
       },
-      w: {
+      o: {
         x: {
-          value: 1,
+          value: 0,
           ref: useRef(),
         },
         y: {
-          value: 1,
+          value: 0,
           ref: useRef(),
         },
-        o: {
+        w: {
           value: 180,
           ref: useRef(),
         },
