@@ -1107,64 +1107,10 @@ function SceneOne() {
 
   return (
     <div className="grid items-start justify-center grid-cols-1 gap-2 md:grid-cols-2 place-items-center">
-      <div className="md:sticky md:top-3 aspect-square md:order-last">
+      <div className="md:sticky md:top-3 aspect-square">
         <canvas ref={canvasRef} className="!w-full !h-full" />
       </div>
       <div className="grid grid-cols-1 gap-4">
-        <div className="p-4 space-y-2 border rounded-lg">
-          <h2 className="text-lg font-bold">Налаштування параметрів</h2>
-          <div className="space-y-6">
-            <div className="space-y-2">
-              <div className="flex items-center justify-between gap-2">
-                <h3 className="font-bold text-md">Точки</h3>
-                <button
-                  className="btn btn-sm btn-secondary"
-                  onClick={resetPoints}
-                >
-                  <Icon icon="heroicons:backspace" />
-                </button>
-              </div>
-              <div className="overflow-x-auto h-60 md:h-48">
-                <table className="table table-pin-rows">
-                  <thead>
-                    <tr>
-                      <th>Точка</th>
-                      <th>X</th>
-                      <th>Y</th>
-                    </tr>
-                  </thead>
-                  <tbody>{pointRows}</tbody>
-                </table>
-              </div>
-            </div>
-            <div className="space-y-2">
-              <div className="flex items-center justify-between gap-2">
-                <h3 className="font-bold text-md">Кола</h3>
-                <button
-                  className="btn btn-sm btn-secondary"
-                  onClick={resetCircles}
-                >
-                  <Icon icon="heroicons:backspace" />
-                </button>
-              </div>
-              <div className="overflow-x-auto h-60 md:h-48">
-                <table className="table table-pin-rows">
-                  <thead>
-                    <tr>
-                      <th>Коло</th>
-                      <th>X</th>
-                      <th>Y</th>
-                      <th>Радіус</th>
-                      <th>Початковий кут</th>
-                      <th>Кунцевий кут</th>
-                    </tr>
-                  </thead>
-                  <tbody>{circlesRows}</tbody>
-                </table>
-              </div>
-            </div>
-          </div>
-        </div>
         <div className="p-4 space-y-2 border rounded-lg">
           <h2 className="text-lg font-bold">Перетворення</h2>
           <div className="space-y-6">
@@ -1209,6 +1155,82 @@ function SceneOne() {
                 </button>
               </div>
               <div className="flex flex-col">{projectiveRows}</div>
+            </div>
+          </div>
+        </div>
+        <div className="p-4 space-y-2 border rounded-lg">
+          <h2 className="text-lg font-bold">Параметри</h2>
+          <div className="space-y-1">
+            <div className="space-y-1">
+              <div className="w-full dropdown dropdown-left">
+                <div
+                  tabIndex={0}
+                  role="button"
+                  className="flex items-center justify-between gap-2"
+                >
+                  <h3 className="font-bold text-md">Точки</h3>
+                  <button
+                    className="btn btn-sm btn-ghost"
+                    onClick={resetPoints}
+                  >
+                    <Icon icon="heroicons:backspace" />
+                  </button>
+                </div>
+                <div
+                  tabIndex={0}
+                  className="shadow w-72 dropdown-content z-[1] rounded-box bg-base-100"
+                >
+                  <div className="overflow-x-auto h-60 md:h-48">
+                    <table className="table table-pin-rows">
+                      <thead>
+                        <tr>
+                          <th>Точка</th>
+                          <th>X</th>
+                          <th>Y</th>
+                        </tr>
+                      </thead>
+                      <tbody>{pointRows}</tbody>
+                    </table>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div className="space-y-2">
+              <div className="w-full dropdown dropdown-left">
+                <div
+                  tabIndex={0}
+                  role="button"
+                  className="flex items-center justify-between gap-2"
+                >
+                  <h3 className="font-bold text-md">Кола</h3>
+                  <button
+                    className="btn btn-sm btn-ghost"
+                    onClick={resetCircles}
+                  >
+                    <Icon icon="heroicons:backspace" />
+                  </button>
+                </div>
+                <div
+                  tabIndex={0}
+                  className="shadow w-72 dropdown-content z-[1] rounded-box bg-base-100"
+                >
+                  <div className="overflow-x-auto h-60 md:h-48">
+                    <table className="table table-pin-rows">
+                      <thead>
+                        <tr>
+                          <th>Коло</th>
+                          <th>X</th>
+                          <th>Y</th>
+                          <th>Радіус</th>
+                          <th>Початковий кут</th>
+                          <th>Кунцевий кут</th>
+                        </tr>
+                      </thead>
+                      <tbody>{circlesRows}</tbody>
+                    </table>
+                  </div>
+                </div>
+              </div>
             </div>
           </div>
         </div>
