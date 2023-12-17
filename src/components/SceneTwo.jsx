@@ -660,23 +660,31 @@ function SceneTwo() {
               </div>
               <fieldset disabled={!addConstToggle} className="flex flex-col">
                 <label className="gap-4 join">
-                  <span className="text-sm">Точка</span>
-                  <input
-                    type="range"
-                    min={1}
-                    max={0}
-                    value={addConst.index}
-                    ref={addConst.ref}
-                    onChange={(e) =>
-                      setAddConst({
-                        ...addConst,
-                        index: e.target.value
-                          ? ~~e.target.value
-                          : ~~e.target.defaultValue,
-                      })
-                    }
-                    className="range range-sm range-secondary"
-                  />
+                  <div className="w-full">
+                    <input
+                      type="range"
+                      min={1}
+                      max={0}
+                      value={addConst.index}
+                      ref={addConst.ref}
+                      onChange={(e) =>
+                        setAddConst({
+                          ...addConst,
+                          index: e.target.value
+                            ? ~~e.target.value
+                            : ~~e.target.defaultValue,
+                        })
+                      }
+                      className="range range-xs range-secondary"
+                    />
+                    <div className="flex justify-between w-full px-2 text-xs">
+                      <span>|</span>
+                      <span>|</span>
+                      <span>|</span>
+                      <span>|</span>
+                      <span>|</span>
+                    </div>
+                  </div>
                 </label>
               </fieldset>
               <div className="justify-end w-full gap-2 join">

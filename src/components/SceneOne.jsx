@@ -852,26 +852,26 @@ function SceneOne() {
         ],
         // Affine
         [
-          [params.affine.x.x.value, params.affine.y.x.value, 0],
-          [params.affine.x.y.value, params.affine.y.y.value, 0],
-          [params.affine.x.o.value, params.affine.y.o.value, 1],
+          [params.affine.x.x.value, params.affine.x.y.value, 0],
+          [params.affine.y.x.value, params.affine.y.y.value, 0],
+          [params.affine.o.x.value, params.affine.o.y.value, 1],
         ],
         // Projective
         [
           [
-            params.projective.x.x.value * params.projective.w.x.value,
-            params.projective.y.x.value * params.projective.w.x.value,
-            params.projective.w.x.value,
+            params.projective.x.x.value * params.projective.x.w.value,
+            params.projective.x.y.value * params.projective.x.w.value,
+            params.projective.x.w.value,
           ],
           [
-            params.projective.x.y.value * params.projective.w.y.value,
-            params.projective.y.y.value * params.projective.w.y.value,
-            params.projective.w.y.value,
+            params.projective.y.x.value * params.projective.y.w.value,
+            params.projective.y.y.value * params.projective.y.w.value,
+            params.projective.y.w.value,
           ],
           [
-            params.projective.x.o.value * params.projective.w.o.value,
-            params.projective.y.o.value * params.projective.w.o.value,
-            params.projective.w.o.value,
+            params.projective.o.x.value * params.projective.o.w.value,
+            params.projective.o.y.value * params.projective.o.w.value,
+            params.projective.o.w.value,
           ],
         ],
       ];
@@ -915,9 +915,9 @@ function SceneOne() {
         ],
         // Affine
         [
-          [params.affine.x.x.value, params.affine.y.x.value, 0],
-          [params.affine.x.y.value, params.affine.y.y.value, 0],
-          [params.affine.x.o.value, params.affine.y.o.value, 1],
+          [params.affine.x.x.value, params.affine.x.y.value, 0],
+          [params.affine.y.x.value, params.affine.y.y.value, 0],
+          [params.affine.o.x.value, params.affine.o.y.value, 1],
         ],
         // Projective
         // [
@@ -991,38 +991,110 @@ function SceneOne() {
     // calculation for grid
     if (projectiveToggle) {
       ms = [
+        // Euclidean offset
+        // [
+        //   [1, 0, 0],
+        //   [0, 1, 0],
+        //   [params.euclidean.offset.x.value, params.euclidean.offset.y.value, 1],
+        // ],
+        // // Euclidean rotation
+        // [
+        //   [
+        //     Math.cos(params.euclidean.rotation.angle.value),
+        //     Math.sin(params.euclidean.rotation.angle.value),
+        //     0,
+        //   ],
+        //   [
+        //     -Math.sin(params.euclidean.rotation.angle.value),
+        //     Math.cos(params.euclidean.rotation.angle.value),
+        //     0,
+        //   ],
+        //   [
+        //     -params.euclidean.rotation.x.value *
+        //       (Math.cos(params.euclidean.rotation.angle.value) - 1) +
+        //       params.euclidean.rotation.y.value *
+        //         Math.sin(params.euclidean.rotation.angle.value),
+        //     -params.euclidean.rotation.x.value *
+        //       Math.sin(params.euclidean.rotation.angle.value) -
+        //       params.euclidean.rotation.y.value *
+        //         (Math.cos(params.euclidean.rotation.angle.value) - 1),
+        //     1,
+        //   ],
+        // ],
+        // // Euclidean scale
+        // [
+        //   [params.euclidean.scale.x.value, 0, 0],
+        //   [0, params.euclidean.scale.y.value, 0],
+        //   [0, 0, 1],
+        // ],
         // Affine
         [
-          [params.affine.x.x.value, params.affine.y.x.value, 0],
-          [params.affine.x.y.value, params.affine.y.y.value, 0],
-          [params.affine.x.o.value, params.affine.y.o.value, 1],
+          [params.affine.x.x.value, params.affine.x.y.value, 0],
+          [params.affine.y.x.value, params.affine.y.y.value, 0],
+          [params.affine.o.x.value, params.affine.o.y.value, 1],
         ],
         // Projective
         [
           [
-            params.projective.x.x.value * params.projective.w.x.value,
-            params.projective.y.x.value * params.projective.w.x.value,
-            params.projective.w.x.value,
+            params.projective.x.x.value * params.projective.x.w.value,
+            params.projective.x.y.value * params.projective.x.w.value,
+            params.projective.x.w.value,
           ],
           [
-            params.projective.x.y.value * params.projective.w.y.value,
-            params.projective.y.y.value * params.projective.w.y.value,
-            params.projective.w.y.value,
+            params.projective.y.x.value * params.projective.y.w.value,
+            params.projective.y.y.value * params.projective.y.w.value,
+            params.projective.y.w.value,
           ],
           [
-            params.projective.x.o.value * params.projective.w.o.value,
-            params.projective.y.o.value * params.projective.w.o.value,
-            params.projective.w.o.value,
+            params.projective.o.x.value * params.projective.o.w.value,
+            params.projective.o.y.value * params.projective.o.w.value,
+            params.projective.o.w.value,
           ],
         ],
       ];
     } else {
       ms = [
+        // // Euclidean offset
+        // [
+        //   [1, 0, 0],
+        //   [0, 1, 0],
+        //   [params.euclidean.offset.x.value, params.euclidean.offset.y.value, 1],
+        // ],
+        // // Euclidean rotation
+        // [
+        //   [
+        //     Math.cos(params.euclidean.rotation.angle.value),
+        //     Math.sin(params.euclidean.rotation.angle.value),
+        //     0,
+        //   ],
+        //   [
+        //     -Math.sin(params.euclidean.rotation.angle.value),
+        //     Math.cos(params.euclidean.rotation.angle.value),
+        //     0,
+        //   ],
+        //   [
+        //     -params.euclidean.rotation.x.value *
+        //       (Math.cos(params.euclidean.rotation.angle.value) - 1) +
+        //       params.euclidean.rotation.y.value *
+        //         Math.sin(params.euclidean.rotation.angle.value),
+        //     -params.euclidean.rotation.x.value *
+        //       Math.sin(params.euclidean.rotation.angle.value) -
+        //       params.euclidean.rotation.y.value *
+        //         (Math.cos(params.euclidean.rotation.angle.value) - 1),
+        //     1,
+        //   ],
+        // ],
+        // // Euclidean scale
+        // [
+        //   [params.euclidean.scale.x.value, 0, 0],
+        //   [0, params.euclidean.scale.y.value, 0],
+        //   [0, 0, 1],
+        // ],
         // Affine
         [
-          [params.affine.x.x.value, params.affine.y.x.value, 0],
-          [params.affine.x.y.value, params.affine.y.y.value, 0],
-          [params.affine.x.o.value, params.affine.y.o.value, 1],
+          [params.affine.x.x.value, params.affine.x.y.value, 0],
+          [params.affine.y.x.value, params.affine.y.y.value, 0],
+          [params.affine.o.x.value, params.affine.o.y.value, 1],
         ],
         // Projective
         // [
